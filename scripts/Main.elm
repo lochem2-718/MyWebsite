@@ -2,7 +2,6 @@ module Main exposing (Model, Msg, init, subscriptions, update, view)
 
 import Browser
 import Browser.Navigation as Nav
-import Grid exposing (..)
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (..)
@@ -38,29 +37,31 @@ view : Model -> Browser.Document Msg
 view model =
     { title = "Jared Weinberger"
     , body =
-        [ grid [ class "background" ]
+        [ div [ class "background" ]
             [ div [ class "navbar" ]
-                [ div [ class "contents" ]
+                [ ul [class "nav-list"]
                     [ navbarButton [ onClick (PageChanged Home) ] "Home" (model.page == Home)
                     , navbarButton [ onClick (PageChanged AboutMe) ] "About Me" (model.page == AboutMe)
-                    , img [ class "logo", src "./images/logo-no-bg.png" ] []
+                    , li [] [ div [ class "nav-item logo-div" ] [ img [ class "logo", src "./images/logo-no-bg.png" ] [] ] ]
                     , navbarButton [ onClick (PageChanged MartialArts) ] "Martial Arts" (model.page == MartialArts)
                     , navbarButton [ onClick (PageChanged WebDevelopment) ] "Web Development" (model.page == WebDevelopment)
                     ]
                 ]
             , hr [] []
-            , case model.page of
-                Home ->
-                    Home.view
+            , div [ class "main-content" ]
+                [ case model.page of
+                    Home ->
+                        Home.view
 
-                AboutMe ->
-                    AboutMe.view
+                    AboutMe ->
+                        AboutMe.view
 
-                MartialArts ->
-                    MartialArts.view
+                    MartialArts ->
+                        MartialArts.view
 
-                WebDevelopment ->
-                    WebDevelopment.view
+                    WebDevelopment ->
+                        WebDevelopment.view
+                ]
             ]
         ]
     }
@@ -68,14 +69,21 @@ view model =
 
 navbarButton : List (Attribute msg) -> String -> Bool -> Html msg
 navbarButton attributes content selected =
-    div
-        (classList
-            [ ( "nav-item", True )
-            , ( "item-active", selected )
-            ]
-            :: attributes
-        )
-        [ text content ]
+    li []
+        [ div
+            (class
+                ("nav-link nav-item"
+                    ++ (if selected then
+                            " item-active"
+
+                        else
+                            ""
+                       )
+                )
+                :: attributes
+            )
+            [ text content ]
+        ]
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )

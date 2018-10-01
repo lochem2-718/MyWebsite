@@ -53,29 +53,29 @@ li {
   width: 50%;
 }
 
-nav {
-  opacity: 100%;
-}
-
 .logo {
-  height: 100%;
-  left: 100%;
-  display: inline-block;
-  margin: auto;
+  height: 5em;
 }
 
 .navbar {
   height: 5em;
-  padding: 0 20% 0 20%;
 }
-.navbar .contents {
-  height: 5em;
+
+.nav-list {
+  list-style-type: none;
+  margin: auto;
+}
+.nav-list li {
+  display: inline;
+  padding: 3em;
 }
 
 .nav-item {
-  cursor: pointer;
   display: inline-block;
-  margin: auto;
+}
+
+.nav-link {
+  cursor: pointer;
   font-size: 1.5em;
   color: #ffffff;
 }
@@ -84,7 +84,7 @@ nav {
   color: #a62139;
 }
 
-.nav-item:hover {
+.nav-link:hover {
   color: #a62139;
 }
 

@@ -1,19 +1,10 @@
 .grid-container {
   display: grid;
-  align-items: auto;
   grid-template-columns: 20% 20% 20% 20% 20%;
 }
 
-.navbar {
-  grid-column: 1/6;
-}
-.navbar .contents {
+.main-content {
   grid-column: 2/span 3;
-}
-
-article {
-  grid-column: 2/span 3;
-  overflow: auto;
 }
 
 /*# sourceMappingURL=layout.css.map */

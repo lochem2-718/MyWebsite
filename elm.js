@@ -5184,7 +5184,16 @@ var author$project$Main$update = F2(
 					elm$core$Platform$Cmd$none);
 		}
 	});
+var author$project$Main$AboutMe = {$: 'AboutMe'};
+var author$project$Main$MartialArts = {$: 'MartialArts'};
+var author$project$Main$PageChanged = function (a) {
+	return {$: 'PageChanged', a: a};
+};
+var author$project$Main$WebDevelopment = {$: 'WebDevelopment'};
 var elm$html$Html$div = _VirtualDom_node('div');
+var elm$html$Html$li = _VirtualDom_node('li');
+var elm$virtual_dom$VirtualDom$text = _VirtualDom_text;
+var elm$html$Html$text = elm$virtual_dom$VirtualDom$text;
 var elm$json$Json$Encode$string = _Json_wrap;
 var elm$html$Html$Attributes$stringProperty = F2(
 	function (key, string) {
@@ -5194,65 +5203,24 @@ var elm$html$Html$Attributes$stringProperty = F2(
 			elm$json$Json$Encode$string(string));
 	});
 var elm$html$Html$Attributes$class = elm$html$Html$Attributes$stringProperty('className');
-var author$project$Grid$grid = F2(
-	function (attributes, items) {
-		return A2(
-			elm$html$Html$div,
-			A2(
-				elm$core$List$cons,
-				elm$html$Html$Attributes$class('grid-container'),
-				attributes),
-			items);
-	});
-var author$project$Main$AboutMe = {$: 'AboutMe'};
-var author$project$Main$MartialArts = {$: 'MartialArts'};
-var author$project$Main$PageChanged = function (a) {
-	return {$: 'PageChanged', a: a};
-};
-var author$project$Main$WebDevelopment = {$: 'WebDevelopment'};
-var elm$virtual_dom$VirtualDom$text = _VirtualDom_text;
-var elm$html$Html$text = elm$virtual_dom$VirtualDom$text;
-var elm$core$List$filter = F2(
-	function (isGood, list) {
-		return A3(
-			elm$core$List$foldr,
-			F2(
-				function (x, xs) {
-					return isGood(x) ? A2(elm$core$List$cons, x, xs) : xs;
-				}),
-			_List_Nil,
-			list);
-	});
-var elm$core$Tuple$second = function (_n0) {
-	var y = _n0.b;
-	return y;
-};
-var elm$html$Html$Attributes$classList = function (classes) {
-	return elm$html$Html$Attributes$class(
-		A2(
-			elm$core$String$join,
-			' ',
-			A2(
-				elm$core$List$map,
-				elm$core$Tuple$first,
-				A2(elm$core$List$filter, elm$core$Tuple$second, classes))));
-};
 var author$project$Main$navbarButton = F3(
 	function (attributes, content, selected) {
 		return A2(
-			elm$html$Html$div,
-			A2(
-				elm$core$List$cons,
-				elm$html$Html$Attributes$classList(
-					_List_fromArray(
-						[
-							_Utils_Tuple2('nav-item', true),
-							_Utils_Tuple2('item-active', selected)
-						])),
-				attributes),
+			elm$html$Html$li,
+			_List_Nil,
 			_List_fromArray(
 				[
-					elm$html$Html$text(content)
+					A2(
+					elm$html$Html$div,
+					A2(
+						elm$core$List$cons,
+						elm$html$Html$Attributes$class(
+							'nav-link nav-item' + (selected ? ' item-active' : '')),
+						attributes),
+					_List_fromArray(
+						[
+							elm$html$Html$text(content)
+						]))
 				]));
 	});
 var elm$html$Html$article = _VirtualDom_node('article');
@@ -5261,7 +5229,6 @@ var elm$html$Html$h1 = _VirtualDom_node('h1');
 var elm$html$Html$h2 = _VirtualDom_node('h2');
 var elm$html$Html$h3 = _VirtualDom_node('h3');
 var elm$html$Html$header = _VirtualDom_node('header');
-var elm$html$Html$li = _VirtualDom_node('li');
 var elm$html$Html$p = _VirtualDom_node('p');
 var elm$html$Html$section = _VirtualDom_node('section');
 var elm$html$Html$table = _VirtualDom_node('table');
@@ -5272,30 +5239,34 @@ var elm$html$Html$tr = _VirtualDom_node('tr');
 var elm$html$Html$ul = _VirtualDom_node('ul');
 var elm$html$Html$Attributes$id = elm$html$Html$Attributes$stringProperty('id');
 var author$project$Pages$AboutMe$view = A2(
-	elm$html$Html$div,
-	_List_fromArray(
-		[
-			elm$html$Html$Attributes$class('main-content')
-		]),
+	elm$html$Html$article,
+	_List_Nil,
 	_List_fromArray(
 		[
 			A2(
-			elm$html$Html$article,
+			elm$html$Html$header,
 			_List_Nil,
 			_List_fromArray(
 				[
 					A2(
-					elm$html$Html$header,
+					elm$html$Html$h1,
 					_List_Nil,
 					_List_fromArray(
 						[
-							A2(
-							elm$html$Html$h1,
-							_List_Nil,
-							_List_fromArray(
-								[
-									elm$html$Html$text('About Me')
-								]))
+							elm$html$Html$text('About Me')
+						]))
+				])),
+			A2(
+			elm$html$Html$section,
+			_List_Nil,
+			_List_fromArray(
+				[
+					A2(
+					elm$html$Html$h2,
+					_List_Nil,
+					_List_fromArray(
+						[
+							elm$html$Html$text('Bio')
 						])),
 					A2(
 					elm$html$Html$section,
@@ -5303,568 +5274,433 @@ var author$project$Pages$AboutMe$view = A2(
 					_List_fromArray(
 						[
 							A2(
-							elm$html$Html$h2,
+							elm$html$Html$h3,
 							_List_Nil,
 							_List_fromArray(
 								[
-									elm$html$Html$text('Bio')
+									elm$html$Html$text('Early Life')
 								])),
-							A2(
-							elm$html$Html$section,
-							_List_Nil,
-							_List_fromArray(
-								[
-									A2(
-									elm$html$Html$h3,
-									_List_Nil,
-									_List_fromArray(
-										[
-											elm$html$Html$text('Early Life')
-										])),
-									A2(
-									elm$html$Html$p,
-									_List_Nil,
-									_List_fromArray(
-										[
-											elm$html$Html$text('I was in a military family and moved around a ton. I also got born and stuff.')
-										]))
-								])),
-							A2(
-							elm$html$Html$section,
-							_List_Nil,
-							_List_fromArray(
-								[
-									A2(
-									elm$html$Html$h3,
-									_List_Nil,
-									_List_fromArray(
-										[
-											elm$html$Html$text('Recent')
-										])),
-									A2(
-									elm$html$Html$p,
-									_List_Nil,
-									_List_fromArray(
-										[
-											elm$html$Html$text('Spent the summer doing web programming making websites of the web variety for Wiegand Glas in Germany.')
-										]))
-								]))
-						])),
-					A2(
-					elm$html$Html$section,
-					_List_Nil,
-					_List_fromArray(
-						[
-							A2(
-							elm$html$Html$h2,
-							_List_Nil,
-							_List_fromArray(
-								[
-									elm$html$Html$text('Work Experience')
-								])),
-							A2(
-							elm$html$Html$div,
-							_List_fromArray(
-								[
-									elm$html$Html$Attributes$class('table-container')
-								]),
-							_List_fromArray(
-								[
-									A2(
-									elm$html$Html$table,
-									_List_fromArray(
-										[
-											elm$html$Html$Attributes$class('table')
-										]),
-									_List_fromArray(
-										[
-											A2(
-											elm$html$Html$thead,
-											_List_Nil,
-											_List_fromArray(
-												[
-													A2(
-													elm$html$Html$tr,
-													_List_Nil,
-													_List_fromArray(
-														[
-															A2(
-															elm$html$Html$th,
-															_List_Nil,
-															_List_fromArray(
-																[
-																	elm$html$Html$text('Position')
-																])),
-															A2(
-															elm$html$Html$th,
-															_List_Nil,
-															_List_fromArray(
-																[
-																	elm$html$Html$text('Employer')
-																])),
-															A2(
-															elm$html$Html$th,
-															_List_Nil,
-															_List_fromArray(
-																[
-																	elm$html$Html$text('Start Year')
-																])),
-															A2(
-															elm$html$Html$th,
-															_List_Nil,
-															_List_fromArray(
-																[
-																	elm$html$Html$text('End Year')
-																]))
-														]))
-												])),
-											A2(
-											elm$html$Html$tr,
-											_List_Nil,
-											_List_fromArray(
-												[
-													A2(
-													elm$html$Html$td,
-													_List_Nil,
-													_List_fromArray(
-														[
-															elm$html$Html$text('Lifeguard')
-														])),
-													A2(
-													elm$html$Html$td,
-													_List_Nil,
-													_List_fromArray(
-														[
-															elm$html$Html$text('Oro Valley')
-														])),
-													A2(
-													elm$html$Html$td,
-													_List_Nil,
-													_List_fromArray(
-														[
-															elm$html$Html$text('2015')
-														])),
-													A2(
-													elm$html$Html$td,
-													_List_Nil,
-													_List_fromArray(
-														[
-															elm$html$Html$text('2017')
-														]))
-												])),
-											A2(
-											elm$html$Html$tr,
-											_List_Nil,
-											_List_fromArray(
-												[
-													A2(
-													elm$html$Html$td,
-													_List_Nil,
-													_List_fromArray(
-														[
-															elm$html$Html$text('Web Programming Intern')
-														])),
-													A2(
-													elm$html$Html$td,
-													_List_Nil,
-													_List_fromArray(
-														[
-															elm$html$Html$text('Wiegand Glas')
-														])),
-													A2(
-													elm$html$Html$td,
-													_List_Nil,
-													_List_fromArray(
-														[
-															elm$html$Html$text('2018')
-														])),
-													A2(
-													elm$html$Html$td,
-													_List_Nil,
-													_List_fromArray(
-														[
-															elm$html$Html$text('2018')
-														]))
-												]))
-										]))
-								]))
-						])),
-					A2(
-					elm$html$Html$section,
-					_List_Nil,
-					_List_fromArray(
-						[
-							A2(
-							elm$html$Html$h2,
-							_List_Nil,
-							_List_fromArray(
-								[
-									elm$html$Html$text('Accomplishments')
-								])),
-							A2(
-							elm$html$Html$ul,
-							_List_Nil,
-							_List_fromArray(
-								[
-									A2(
-									elm$html$Html$li,
-									_List_Nil,
-									_List_fromArray(
-										[
-											elm$html$Html$text('Dean\'s List')
-										])),
-									A2(
-									elm$html$Html$li,
-									_List_Nil,
-									_List_fromArray(
-										[
-											elm$html$Html$text('NAU Honors College')
-										])),
-									A2(
-									elm$html$Html$li,
-									_List_Nil,
-									_List_fromArray(
-										[
-											elm$html$Html$text('Other Cool Stuff')
-										]))
-								]))
-						])),
-					A2(
-					elm$html$Html$section,
-					_List_Nil,
-					_List_fromArray(
-						[
-							A2(
-							elm$html$Html$h2,
-							_List_Nil,
-							_List_fromArray(
-								[
-									elm$html$Html$text('Hobbies & Interests')
-								])),
-							A2(
-							elm$html$Html$ul,
-							_List_Nil,
-							_List_fromArray(
-								[
-									A2(
-									elm$html$Html$li,
-									_List_Nil,
-									_List_fromArray(
-										[
-											elm$html$Html$text('Sword Fighting')
-										])),
-									A2(
-									elm$html$Html$li,
-									_List_Nil,
-									_List_fromArray(
-										[
-											elm$html$Html$text('Karate')
-										])),
-									A2(
-									elm$html$Html$li,
-									_List_Nil,
-									_List_fromArray(
-										[
-											elm$html$Html$text('Swimming')
-										])),
-									A2(
-									elm$html$Html$li,
-									_List_Nil,
-									_List_fromArray(
-										[
-											elm$html$Html$text('Biking')
-										])),
-									A2(
-									elm$html$Html$li,
-									_List_Nil,
-									_List_fromArray(
-										[
-											elm$html$Html$text('Not running')
-										])),
-									A2(
-									elm$html$Html$li,
-									_List_Nil,
-									_List_fromArray(
-										[
-											elm$html$Html$text('Full Stack Web Development')
-										])),
-									A2(
-									elm$html$Html$li,
-									_List_Nil,
-									_List_fromArray(
-										[
-											elm$html$Html$text('Other cool stuff')
-										]))
-								]))
-						])),
-					A2(
-					elm$html$Html$footer,
-					_List_Nil,
-					_List_fromArray(
-						[
 							A2(
 							elm$html$Html$p,
+							_List_Nil,
 							_List_fromArray(
 								[
-									elm$html$Html$Attributes$id('copyright')
-								]),
+									elm$html$Html$text('I was in a military family and moved around a ton. I also got born and stuff.')
+								]))
+						])),
+					A2(
+					elm$html$Html$section,
+					_List_Nil,
+					_List_fromArray(
+						[
+							A2(
+							elm$html$Html$h3,
+							_List_Nil,
 							_List_fromArray(
 								[
-									elm$html$Html$text('© Jared Weinberger the Magnificent')
+									elm$html$Html$text('Recent')
+								])),
+							A2(
+							elm$html$Html$p,
+							_List_Nil,
+							_List_fromArray(
+								[
+									elm$html$Html$text('Spent the summer doing web programming making websites of the web variety for Wiegand Glas in Germany.')
 								]))
 						]))
-				]))
-		]));
-var author$project$Pages$Home$view = A2(
-	elm$html$Html$div,
-	_List_fromArray(
-		[
-			elm$html$Html$Attributes$class('main-content')
-		]),
-	_List_fromArray(
-		[
+				])),
 			A2(
-			elm$html$Html$article,
+			elm$html$Html$section,
 			_List_Nil,
 			_List_fromArray(
 				[
 					A2(
-					elm$html$Html$section,
+					elm$html$Html$h2,
 					_List_Nil,
 					_List_fromArray(
 						[
-							A2(
-							elm$html$Html$h2,
-							_List_Nil,
-							_List_fromArray(
-								[
-									elm$html$Html$text('About This Site')
-								])),
-							A2(
-							elm$html$Html$p,
-							_List_Nil,
-							_List_fromArray(
-								[
-									elm$html$Html$text('This site exists to fulfill homework requirements for CS 212 - Introduction to Web Programming.' + ('Many of the things I put on this site are not serious. I will, after I finish CS 212, refactor this website' + 'into a sort of resume website, but NOT TODAAAAAAAYYYYYYYYYYYYYYYYYYYYY!!!!!'))
-								]))
+							elm$html$Html$text('Work Experience')
 						])),
-					A2(
-					elm$html$Html$section,
-					_List_Nil,
-					_List_fromArray(
-						[
-							A2(
-							elm$html$Html$h2,
-							_List_Nil,
-							_List_fromArray(
-								[
-									elm$html$Html$text('Things I want To Learn')
-								])),
-							A2(
-							elm$html$Html$ul,
-							_List_Nil,
-							_List_fromArray(
-								[
-									A2(
-									elm$html$Html$li,
-									_List_Nil,
-									_List_fromArray(
-										[
-											elm$html$Html$text('Angular')
-										])),
-									A2(
-									elm$html$Html$li,
-									_List_Nil,
-									_List_fromArray(
-										[
-											elm$html$Html$text('React')
-										])),
-									A2(
-									elm$html$Html$li,
-									_List_Nil,
-									_List_fromArray(
-										[
-											elm$html$Html$text('More Elm')
-										])),
-									A2(
-									elm$html$Html$li,
-									_List_Nil,
-									_List_fromArray(
-										[
-											elm$html$Html$text('SQL server management')
-										])),
-									A2(
-									elm$html$Html$li,
-									_List_Nil,
-									_List_fromArray(
-										[
-											elm$html$Html$text('Flask')
-										])),
-									A2(
-									elm$html$Html$li,
-									_List_Nil,
-									_List_fromArray(
-										[
-											elm$html$Html$text('Django')
-										])),
-									A2(
-									elm$html$Html$li,
-									_List_Nil,
-									_List_fromArray(
-										[
-											elm$html$Html$text('Spring')
-										])),
-									A2(
-									elm$html$Html$li,
-									_List_Nil,
-									_List_fromArray(
-										[
-											elm$html$Html$text('Material Design library')
-										]))
-								]))
-						])),
-					A2(
-					elm$html$Html$footer,
-					_List_Nil,
-					_List_fromArray(
-						[
-							A2(
-							elm$html$Html$p,
-							_List_fromArray(
-								[
-									elm$html$Html$Attributes$id('copyright')
-								]),
-							_List_fromArray(
-								[
-									elm$html$Html$text('© Jared Weinberger the Magnificent')
-								]))
-						]))
-				]))
-		]));
-var author$project$Pages$MartialArts$view = A2(
-	elm$html$Html$div,
-	_List_fromArray(
-		[
-			elm$html$Html$Attributes$class('main-content')
-		]),
-	_List_fromArray(
-		[
-			A2(
-			elm$html$Html$article,
-			_List_Nil,
-			_List_fromArray(
-				[
 					A2(
 					elm$html$Html$div,
 					_List_fromArray(
 						[
-							elm$html$Html$Attributes$class('main-title')
+							elm$html$Html$Attributes$class('table-container')
 						]),
 					_List_fromArray(
 						[
 							A2(
-							elm$html$Html$header,
-							_List_Nil,
+							elm$html$Html$table,
 							_List_fromArray(
 								[
-									A2(
-									elm$html$Html$h1,
-									_List_Nil,
-									_List_fromArray(
-										[
-											elm$html$Html$text('Martial Arts')
-										]))
-								]))
-						])),
-					A2(
-					elm$html$Html$section,
-					_List_Nil,
-					_List_fromArray(
-						[
-							A2(
-							elm$html$Html$h2,
-							_List_Nil,
-							_List_fromArray(
-								[
-									elm$html$Html$text('Benefits')
-								])),
-							A2(
-							elm$html$Html$p,
-							_List_Nil,
-							_List_fromArray(
-								[
-									elm$html$Html$text('It can be really cool because you get to scream a lot in white pajamas.')
-								]))
-						])),
-					A2(
-					elm$html$Html$section,
-					_List_Nil,
-					_List_fromArray(
-						[
-							A2(
-							elm$html$Html$h2,
-							_List_Nil,
-							_List_fromArray(
-								[
-									elm$html$Html$text('Weapons')
-								])),
-							A2(
-							elm$html$Html$p,
-							_List_Nil,
-							_List_fromArray(
-								[
-									elm$html$Html$text('We get to use cool-ass weapons like spears and sticks and swords and nunchaku and stuff.')
-								]))
-						])),
-					A2(
-					elm$html$Html$section,
-					_List_Nil,
-					_List_fromArray(
-						[
-							A2(
-							elm$html$Html$h2,
-							_List_Nil,
-							_List_fromArray(
-								[
-									elm$html$Html$text('Accomplishments')
-								])),
-							A2(
-							elm$html$Html$p,
-							_List_Nil,
-							_List_fromArray(
-								[
-									elm$html$Html$text('I done got like a billion million-dan black belts and stuff.')
-								]))
-						])),
-					A2(
-					elm$html$Html$footer,
-					_List_Nil,
-					_List_fromArray(
-						[
-							A2(
-							elm$html$Html$p,
-							_List_fromArray(
-								[
-									elm$html$Html$Attributes$id('copyright')
+									elm$html$Html$Attributes$class('table')
 								]),
 							_List_fromArray(
 								[
-									elm$html$Html$text('© Jared Weinberger the Magnificent')
+									A2(
+									elm$html$Html$thead,
+									_List_Nil,
+									_List_fromArray(
+										[
+											A2(
+											elm$html$Html$tr,
+											_List_Nil,
+											_List_fromArray(
+												[
+													A2(
+													elm$html$Html$th,
+													_List_Nil,
+													_List_fromArray(
+														[
+															elm$html$Html$text('Position')
+														])),
+													A2(
+													elm$html$Html$th,
+													_List_Nil,
+													_List_fromArray(
+														[
+															elm$html$Html$text('Employer')
+														])),
+													A2(
+													elm$html$Html$th,
+													_List_Nil,
+													_List_fromArray(
+														[
+															elm$html$Html$text('Start Year')
+														])),
+													A2(
+													elm$html$Html$th,
+													_List_Nil,
+													_List_fromArray(
+														[
+															elm$html$Html$text('End Year')
+														]))
+												]))
+										])),
+									A2(
+									elm$html$Html$tr,
+									_List_Nil,
+									_List_fromArray(
+										[
+											A2(
+											elm$html$Html$td,
+											_List_Nil,
+											_List_fromArray(
+												[
+													elm$html$Html$text('Lifeguard')
+												])),
+											A2(
+											elm$html$Html$td,
+											_List_Nil,
+											_List_fromArray(
+												[
+													elm$html$Html$text('Oro Valley')
+												])),
+											A2(
+											elm$html$Html$td,
+											_List_Nil,
+											_List_fromArray(
+												[
+													elm$html$Html$text('2015')
+												])),
+											A2(
+											elm$html$Html$td,
+											_List_Nil,
+											_List_fromArray(
+												[
+													elm$html$Html$text('2017')
+												]))
+										])),
+									A2(
+									elm$html$Html$tr,
+									_List_Nil,
+									_List_fromArray(
+										[
+											A2(
+											elm$html$Html$td,
+											_List_Nil,
+											_List_fromArray(
+												[
+													elm$html$Html$text('Web Programming Intern')
+												])),
+											A2(
+											elm$html$Html$td,
+											_List_Nil,
+											_List_fromArray(
+												[
+													elm$html$Html$text('Wiegand Glas')
+												])),
+											A2(
+											elm$html$Html$td,
+											_List_Nil,
+											_List_fromArray(
+												[
+													elm$html$Html$text('2018')
+												])),
+											A2(
+											elm$html$Html$td,
+											_List_Nil,
+											_List_fromArray(
+												[
+													elm$html$Html$text('2018')
+												]))
+										]))
 								]))
+						]))
+				])),
+			A2(
+			elm$html$Html$section,
+			_List_Nil,
+			_List_fromArray(
+				[
+					A2(
+					elm$html$Html$h2,
+					_List_Nil,
+					_List_fromArray(
+						[
+							elm$html$Html$text('Accomplishments')
+						])),
+					A2(
+					elm$html$Html$ul,
+					_List_Nil,
+					_List_fromArray(
+						[
+							A2(
+							elm$html$Html$li,
+							_List_Nil,
+							_List_fromArray(
+								[
+									elm$html$Html$text('Dean\'s List')
+								])),
+							A2(
+							elm$html$Html$li,
+							_List_Nil,
+							_List_fromArray(
+								[
+									elm$html$Html$text('NAU Honors College')
+								])),
+							A2(
+							elm$html$Html$li,
+							_List_Nil,
+							_List_fromArray(
+								[
+									elm$html$Html$text('Other Cool Stuff')
+								]))
+						]))
+				])),
+			A2(
+			elm$html$Html$section,
+			_List_Nil,
+			_List_fromArray(
+				[
+					A2(
+					elm$html$Html$h2,
+					_List_Nil,
+					_List_fromArray(
+						[
+							elm$html$Html$text('Hobbies & Interests')
+						])),
+					A2(
+					elm$html$Html$ul,
+					_List_Nil,
+					_List_fromArray(
+						[
+							A2(
+							elm$html$Html$li,
+							_List_Nil,
+							_List_fromArray(
+								[
+									elm$html$Html$text('Sword Fighting')
+								])),
+							A2(
+							elm$html$Html$li,
+							_List_Nil,
+							_List_fromArray(
+								[
+									elm$html$Html$text('Karate')
+								])),
+							A2(
+							elm$html$Html$li,
+							_List_Nil,
+							_List_fromArray(
+								[
+									elm$html$Html$text('Swimming')
+								])),
+							A2(
+							elm$html$Html$li,
+							_List_Nil,
+							_List_fromArray(
+								[
+									elm$html$Html$text('Biking')
+								])),
+							A2(
+							elm$html$Html$li,
+							_List_Nil,
+							_List_fromArray(
+								[
+									elm$html$Html$text('Not running')
+								])),
+							A2(
+							elm$html$Html$li,
+							_List_Nil,
+							_List_fromArray(
+								[
+									elm$html$Html$text('Full Stack Web Development')
+								])),
+							A2(
+							elm$html$Html$li,
+							_List_Nil,
+							_List_fromArray(
+								[
+									elm$html$Html$text('Other cool stuff')
+								]))
+						]))
+				])),
+			A2(
+			elm$html$Html$footer,
+			_List_Nil,
+			_List_fromArray(
+				[
+					A2(
+					elm$html$Html$p,
+					_List_fromArray(
+						[
+							elm$html$Html$Attributes$id('copyright')
+						]),
+					_List_fromArray(
+						[
+							elm$html$Html$text('© Jared Weinberger the Magnificent')
 						]))
 				]))
 		]));
-var author$project$Pages$WebDevelopment$view = A2(
-	elm$html$Html$div,
-	_List_fromArray(
-		[
-			elm$html$Html$Attributes$class('main-content')
-		]),
+var author$project$Pages$Home$view = A2(
+	elm$html$Html$article,
+	_List_Nil,
 	_List_fromArray(
 		[
 			A2(
-			elm$html$Html$article,
+			elm$html$Html$section,
 			_List_Nil,
+			_List_fromArray(
+				[
+					A2(
+					elm$html$Html$h2,
+					_List_Nil,
+					_List_fromArray(
+						[
+							elm$html$Html$text('About This Site')
+						])),
+					A2(
+					elm$html$Html$p,
+					_List_Nil,
+					_List_fromArray(
+						[
+							elm$html$Html$text('This site exists to fulfill homework requirements for CS 212 - Introduction to Web Programming.' + ('Many of the things I put on this site are not serious. I will, after I finish CS 212, refactor this website' + 'into a sort of resume website, but NOT TODAAAAAAAYYYYYYYYYYYYYYYYYYYYY!!!!!'))
+						]))
+				])),
+			A2(
+			elm$html$Html$section,
+			_List_Nil,
+			_List_fromArray(
+				[
+					A2(
+					elm$html$Html$h2,
+					_List_Nil,
+					_List_fromArray(
+						[
+							elm$html$Html$text('Things I want To Learn')
+						])),
+					A2(
+					elm$html$Html$ul,
+					_List_Nil,
+					_List_fromArray(
+						[
+							A2(
+							elm$html$Html$li,
+							_List_Nil,
+							_List_fromArray(
+								[
+									elm$html$Html$text('Angular')
+								])),
+							A2(
+							elm$html$Html$li,
+							_List_Nil,
+							_List_fromArray(
+								[
+									elm$html$Html$text('React')
+								])),
+							A2(
+							elm$html$Html$li,
+							_List_Nil,
+							_List_fromArray(
+								[
+									elm$html$Html$text('More Elm')
+								])),
+							A2(
+							elm$html$Html$li,
+							_List_Nil,
+							_List_fromArray(
+								[
+									elm$html$Html$text('SQL server management')
+								])),
+							A2(
+							elm$html$Html$li,
+							_List_Nil,
+							_List_fromArray(
+								[
+									elm$html$Html$text('Flask')
+								])),
+							A2(
+							elm$html$Html$li,
+							_List_Nil,
+							_List_fromArray(
+								[
+									elm$html$Html$text('Django')
+								])),
+							A2(
+							elm$html$Html$li,
+							_List_Nil,
+							_List_fromArray(
+								[
+									elm$html$Html$text('Spring')
+								])),
+							A2(
+							elm$html$Html$li,
+							_List_Nil,
+							_List_fromArray(
+								[
+									elm$html$Html$text('Material Design library')
+								]))
+						]))
+				])),
+			A2(
+			elm$html$Html$footer,
+			_List_Nil,
+			_List_fromArray(
+				[
+					A2(
+					elm$html$Html$p,
+					_List_fromArray(
+						[
+							elm$html$Html$Attributes$id('copyright')
+						]),
+					_List_fromArray(
+						[
+							elm$html$Html$text('© Jared Weinberger the Magnificent')
+						]))
+				]))
+		]));
+var author$project$Pages$MartialArts$view = A2(
+	elm$html$Html$article,
+	_List_Nil,
+	_List_fromArray(
+		[
+			A2(
+			elm$html$Html$div,
+			_List_fromArray(
+				[
+					elm$html$Html$Attributes$class('main-title')
+				]),
 			_List_fromArray(
 				[
 					A2(
@@ -5877,84 +5713,179 @@ var author$project$Pages$WebDevelopment$view = A2(
 							_List_Nil,
 							_List_fromArray(
 								[
-									elm$html$Html$text('Web Development')
+									elm$html$Html$text('Martial Arts')
 								]))
-						])),
+						]))
+				])),
+			A2(
+			elm$html$Html$section,
+			_List_Nil,
+			_List_fromArray(
+				[
 					A2(
-					elm$html$Html$section,
+					elm$html$Html$h2,
 					_List_Nil,
 					_List_fromArray(
 						[
-							A2(
-							elm$html$Html$h2,
-							_List_Nil,
-							_List_fromArray(
-								[
-									elm$html$Html$text('The Good')
-								])),
-							A2(
-							elm$html$Html$p,
-							_List_Nil,
-							_List_fromArray(
-								[
-									elm$html$Html$text('I get to make cool stuff and watch them work immediately.')
-								]))
+							elm$html$Html$text('Benefits')
 						])),
 					A2(
-					elm$html$Html$section,
+					elm$html$Html$p,
 					_List_Nil,
 					_List_fromArray(
 						[
-							A2(
-							elm$html$Html$h2,
-							_List_Nil,
-							_List_fromArray(
-								[
-									elm$html$Html$text('The Bad')
-								])),
-							A2(
-							elm$html$Html$p,
-							_List_Nil,
-							_List_fromArray(
-								[
-									elm$html$Html$text('JavaScript or EF6 is a glorified mess and I want it to either go through a major refactoring or die.')
-								]))
-						])),
+							elm$html$Html$text('It can be really cool because you get to scream a lot in white pajamas.')
+						]))
+				])),
+			A2(
+			elm$html$Html$section,
+			_List_Nil,
+			_List_fromArray(
+				[
 					A2(
-					elm$html$Html$section,
+					elm$html$Html$h2,
 					_List_Nil,
 					_List_fromArray(
 						[
-							A2(
-							elm$html$Html$h2,
-							_List_Nil,
-							_List_fromArray(
-								[
-									elm$html$Html$text('The Ugly')
-								])),
-							A2(
-							elm$html$Html$p,
-							_List_Nil,
-							_List_fromArray(
-								[
-									elm$html$Html$text('CSS. \'Nuff said.')
-								]))
+							elm$html$Html$text('Weapons')
 						])),
 					A2(
-					elm$html$Html$footer,
+					elm$html$Html$p,
 					_List_Nil,
 					_List_fromArray(
 						[
-							A2(
-							elm$html$Html$p,
-							_List_fromArray(
-								[
-									elm$html$Html$Attributes$id('copyright')
-								]),
-							_List_fromArray(
-								[
-									elm$html$Html$text('© Jared Weinberger the Magnificent')
-								]))
+							elm$html$Html$text('We get to use cool-ass weapons like spears and sticks and swords and nunchaku and stuff.')
+						]))
+				])),
+			A2(
+			elm$html$Html$section,
+			_List_Nil,
+			_List_fromArray(
+				[
+					A2(
+					elm$html$Html$h2,
+					_List_Nil,
+					_List_fromArray(
+						[
+							elm$html$Html$text('Accomplishments')
+						])),
+					A2(
+					elm$html$Html$p,
+					_List_Nil,
+					_List_fromArray(
+						[
+							elm$html$Html$text('I done got like a billion million-dan black belts and stuff.')
+						]))
+				])),
+			A2(
+			elm$html$Html$footer,
+			_List_Nil,
+			_List_fromArray(
+				[
+					A2(
+					elm$html$Html$p,
+					_List_fromArray(
+						[
+							elm$html$Html$Attributes$id('copyright')
+						]),
+					_List_fromArray(
+						[
+							elm$html$Html$text('© Jared Weinberger the Magnificent')
+						]))
+				]))
+		]));
+var author$project$Pages$WebDevelopment$view = A2(
+	elm$html$Html$article,
+	_List_Nil,
+	_List_fromArray(
+		[
+			A2(
+			elm$html$Html$header,
+			_List_Nil,
+			_List_fromArray(
+				[
+					A2(
+					elm$html$Html$h1,
+					_List_Nil,
+					_List_fromArray(
+						[
+							elm$html$Html$text('Web Development')
+						]))
+				])),
+			A2(
+			elm$html$Html$section,
+			_List_Nil,
+			_List_fromArray(
+				[
+					A2(
+					elm$html$Html$h2,
+					_List_Nil,
+					_List_fromArray(
+						[
+							elm$html$Html$text('The Good')
+						])),
+					A2(
+					elm$html$Html$p,
+					_List_Nil,
+					_List_fromArray(
+						[
+							elm$html$Html$text('I get to make cool stuff and watch them work immediately.')
+						]))
+				])),
+			A2(
+			elm$html$Html$section,
+			_List_Nil,
+			_List_fromArray(
+				[
+					A2(
+					elm$html$Html$h2,
+					_List_Nil,
+					_List_fromArray(
+						[
+							elm$html$Html$text('The Bad')
+						])),
+					A2(
+					elm$html$Html$p,
+					_List_Nil,
+					_List_fromArray(
+						[
+							elm$html$Html$text('JavaScript or EF6 is a glorified mess and I want it to either go through a major refactoring or die.')
+						]))
+				])),
+			A2(
+			elm$html$Html$section,
+			_List_Nil,
+			_List_fromArray(
+				[
+					A2(
+					elm$html$Html$h2,
+					_List_Nil,
+					_List_fromArray(
+						[
+							elm$html$Html$text('The Ugly')
+						])),
+					A2(
+					elm$html$Html$p,
+					_List_Nil,
+					_List_fromArray(
+						[
+							elm$html$Html$text('CSS. \'Nuff said.')
+						]))
+				])),
+			A2(
+			elm$html$Html$footer,
+			_List_Nil,
+			_List_fromArray(
+				[
+					A2(
+					elm$html$Html$p,
+					_List_fromArray(
+						[
+							elm$html$Html$Attributes$id('copyright')
+						]),
+					_List_fromArray(
+						[
+							elm$html$Html$text('© Jared Weinberger the Magnificent')
 						]))
 				]))
 		]));
@@ -5988,7 +5919,7 @@ var author$project$Main$view = function (model) {
 		body: _List_fromArray(
 			[
 				A2(
-				author$project$Grid$grid,
+				elm$html$Html$div,
 				_List_fromArray(
 					[
 						elm$html$Html$Attributes$class('background')
@@ -6004,10 +5935,10 @@ var author$project$Main$view = function (model) {
 						_List_fromArray(
 							[
 								A2(
-								elm$html$Html$div,
+								elm$html$Html$ul,
 								_List_fromArray(
 									[
-										elm$html$Html$Attributes$class('contents')
+										elm$html$Html$Attributes$class('nav-list')
 									]),
 								_List_fromArray(
 									[
@@ -6030,13 +5961,28 @@ var author$project$Main$view = function (model) {
 										'About Me',
 										_Utils_eq(model.page, author$project$Main$AboutMe)),
 										A2(
-										elm$html$Html$img,
+										elm$html$Html$li,
+										_List_Nil,
 										_List_fromArray(
 											[
-												elm$html$Html$Attributes$class('logo'),
-												elm$html$Html$Attributes$src('./images/logo-no-bg.png')
-											]),
-										_List_Nil),
+												A2(
+												elm$html$Html$div,
+												_List_fromArray(
+													[
+														elm$html$Html$Attributes$class('nav-item logo-div')
+													]),
+												_List_fromArray(
+													[
+														A2(
+														elm$html$Html$img,
+														_List_fromArray(
+															[
+																elm$html$Html$Attributes$class('logo'),
+																elm$html$Html$Attributes$src('./images/logo-no-bg.png')
+															]),
+														_List_Nil)
+													]))
+											])),
 										A3(
 										author$project$Main$navbarButton,
 										_List_fromArray(
@@ -6058,19 +6004,28 @@ var author$project$Main$view = function (model) {
 									]))
 							])),
 						A2(elm$html$Html$hr, _List_Nil, _List_Nil),
-						function () {
-						var _n0 = model.page;
-						switch (_n0.$) {
-							case 'Home':
-								return author$project$Pages$Home$view;
-							case 'AboutMe':
-								return author$project$Pages$AboutMe$view;
-							case 'MartialArts':
-								return author$project$Pages$MartialArts$view;
-							default:
-								return author$project$Pages$WebDevelopment$view;
-						}
-					}()
+						A2(
+						elm$html$Html$div,
+						_List_fromArray(
+							[
+								elm$html$Html$Attributes$class('main-content')
+							]),
+						_List_fromArray(
+							[
+								function () {
+								var _n0 = model.page;
+								switch (_n0.$) {
+									case 'Home':
+										return author$project$Pages$Home$view;
+									case 'AboutMe':
+										return author$project$Pages$AboutMe$view;
+									case 'MartialArts':
+										return author$project$Pages$MartialArts$view;
+									default:
+										return author$project$Pages$WebDevelopment$view;
+								}
+							}()
+							]))
 					]))
 			]),
 		title: 'Jared Weinberger'
