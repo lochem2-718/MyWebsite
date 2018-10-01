@@ -11,12 +11,26 @@
   text-align: center;
 }
 
-h2 {
-  color: #000000;
+h1, h2, h3 {
+  color: #a62139;
 }
 
-h3 {
-  color: #ffbb33;
+table {
+  color: #ffffff;
+}
+
+hr {
+  color: #a62139;
+  width: 60%;
+  border: solid;
+}
+
+p {
+  color: #ffffff;
+}
+
+li {
+  color: #ffffff;
 }
 
 .background {
@@ -45,19 +59,23 @@ nav {
 
 .logo {
   height: 100%;
-  position: relative;
-  left: 50%;
-  display: inline;
+  left: 100%;
+  display: inline-block;
+  margin: auto;
 }
 
 .navbar {
   height: 5em;
   padding: 0 20% 0 20%;
 }
+.navbar .contents {
+  height: 5em;
+}
 
 .nav-item {
   cursor: pointer;
-  display: inline;
+  display: inline-block;
+  margin: auto;
   font-size: 1.5em;
   color: #ffffff;
 }

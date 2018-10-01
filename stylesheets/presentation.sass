@@ -1,5 +1,3 @@
-$gold-color: #ffbb33
-$blue-color: #33b5e5
 $header-font-color: #a62139
 $selected-color: #a62139
 $primary-font-color: #ffffff
@@ -15,11 +13,23 @@ $dark-bg: #151515
 #copyright
     text-align: center
 
-h2
-    color: #000000
 
-h3
-    color: $gold-color
+h1, h2, h3
+    color: $header-font-color
+
+table
+    color: $primary-font-color
+
+hr
+    color: #a62139
+    width: 60%
+    border: solid
+
+p
+    color: $primary-font-color
+
+li 
+    color: $primary-font-color 
 
 .background
     min-height: 100%
@@ -44,17 +54,21 @@ nav
 
 .logo
     height: 100%
-    position: relative
-    left: 50%
-    display: inline
+    left: 100%
+    display: inline-block
+    margin: auto
 
 .navbar
     height: 5em
     padding: 0 20% 0 20%
+    .contents
+        height: 5em
+        
 
 .nav-item
     cursor: pointer
-    display: inline
+    display: inline-block
+    margin: auto
     font-size: 1.5em
     color: $primary-font-color
 

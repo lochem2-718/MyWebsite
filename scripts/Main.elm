@@ -1,13 +1,13 @@
 module Main exposing (Model, Msg, init, subscriptions, update, view)
 
-import Bootstrap.Buttons as Button exposing (..)
-import Bootstrap.Navbar as Nav exposing (navbar)
 import Browser
 import Browser.Navigation as Nav
+import Grid exposing (..)
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (..)
 import Pages.AboutMe as AboutMe
+import Pages.Home as Home
 import Pages.MartialArts as MartialArts
 import Pages.WebDevelopment as WebDevelopment
 import Url exposing (Url)
@@ -22,8 +22,10 @@ type alias Model =
 
 type Msg
     = DoNothing
+    | PageChanged Page
     | LinkClicked Browser.UrlRequest
     | UrlChanged Url
+
 
 type Page
     = Home
@@ -36,28 +38,43 @@ view : Model -> Browser.Document Msg
 view model =
     { title = "Jared Weinberger"
     , body =
-        [ div [ class "background" ]
+        [ grid [ class "background" ]
             [ div [ class "navbar" ]
-                [ navbarButton (model.page == Home)  "Home"
-                , navbarButton (model.page == AboutMe) "About Me"
-                , img [ class "logo", src "./images/logo-no-bg.png" ] []
-                , navbarButton (model.page == MartialArts) "Martial Arts"
-                , navbarButton (model.page == WebDevelopment) "Web Development"
+                [ div [ class "contents" ]
+                    [ navbarButton [ onClick (PageChanged Home) ] "Home" (model.page == Home)
+                    , navbarButton [ onClick (PageChanged AboutMe) ] "About Me" (model.page == AboutMe)
+                    , img [ class "logo", src "./images/logo-no-bg.png" ] []
+                    , navbarButton [ onClick (PageChanged MartialArts) ] "Martial Arts" (model.page == MartialArts)
+                    , navbarButton [ onClick (PageChanged WebDevelopment) ] "Web Development" (model.page == WebDevelopment)
+                    ]
                 ]
-            , AboutMe.view
+            , hr [] []
+            , case model.page of
+                Home ->
+                    Home.view
+
+                AboutMe ->
+                    AboutMe.view
+
+                MartialArts ->
+                    MartialArts.view
+
+                WebDevelopment ->
+                    WebDevelopment.view
             ]
         ]
     }
 
 
-navbarButton : Bool -> String -> Html msg
-navbarButton selected content =
+navbarButton : List (Attribute msg) -> String -> Bool -> Html msg
+navbarButton attributes content selected =
     div
-        [ classList
+        (classList
             [ ( "nav-item", True )
             , ( "item-active", selected )
             ]
-        ]
+            :: attributes
+        )
         [ text content ]
 
 
@@ -74,6 +91,9 @@ update msg model =
 
                 Browser.External href ->
                     ( model, Nav.load href )
+
+        PageChanged page ->
+            ( { model | page = page }, Cmd.none )
 
         UrlChanged url ->
             ( { model | url = url }, Cmd.none )
