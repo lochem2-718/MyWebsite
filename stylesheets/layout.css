@@ -1,10 +1,13 @@
 .grid-container {
   display: grid;
   grid-template-columns: 20% 20% 20% 20% 20%;
+  grid-template-rows: auto;
+  overflow: auto;
 }
 
 .main-content {
   grid-column: 2/span 3;
+  grid-row: 1;
 }
 
 /*# sourceMappingURL=layout.css.map */

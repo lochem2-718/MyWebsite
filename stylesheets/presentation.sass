@@ -5,6 +5,7 @@ $dark-bg: #151515
     
 *
     font-family: Ubuntu, sans-serif
+    box-sizing: border-box
 
 .main-title
     text-align: center
@@ -16,6 +17,9 @@ $dark-bg: #151515
 
 h1, h2, h3
     color: $header-font-color
+
+h1
+    text-align: center
 
 table
     color: $primary-font-color
@@ -31,17 +35,21 @@ p
 li 
     color: $primary-font-color 
 
+footer
+    margin: 1em
+
 .background
     min-height: 100%
     min-width: 100%
     margin: 0
-
     position: fixed
-
     background-color: $dark-bg
 
 .main-content
     padding: 1em
+    margin: 0 20% 0 20%
+    max-height: 75vh
+    overflow-y: auto
 
 .parent-grid
     padding-top: 4.5em
@@ -49,6 +57,10 @@ li
 .table-container
     width: 50%
 
+.padding
+    width: 20%
+    height: 100%
+    opacity: 0
 
 .logo
     height: 5em
@@ -62,19 +74,22 @@ li
     margin: auto
     li
         display: inline
-        padding: 3em
+    div
+        text-align: center
+        width: 10em
 
 .nav-item
     display: inline-block
+    
 
 .nav-link
     cursor: pointer
     font-size: 1.5em
     color: $primary-font-color
+    width: 7em
 
 .item-active
     color: $selected-color
 
 .nav-link:hover
     color: $selected-color
-

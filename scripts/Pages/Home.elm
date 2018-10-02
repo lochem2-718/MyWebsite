@@ -29,8 +29,4 @@ view =
                 , li [] [ text "Material Design library" ]
                 ]
             ]
-        , footer []
-            [ p [ id "copyright" ]
-                [ text "© Jared Weinberger the Magnificent" ]
-            ]
         ]

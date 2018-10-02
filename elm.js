@@ -5224,7 +5224,6 @@ var author$project$Main$navbarButton = F3(
 				]));
 	});
 var elm$html$Html$article = _VirtualDom_node('article');
-var elm$html$Html$footer = _VirtualDom_node('footer');
 var elm$html$Html$h1 = _VirtualDom_node('h1');
 var elm$html$Html$h2 = _VirtualDom_node('h2');
 var elm$html$Html$h3 = _VirtualDom_node('h3');
@@ -5237,7 +5236,6 @@ var elm$html$Html$th = _VirtualDom_node('th');
 var elm$html$Html$thead = _VirtualDom_node('thead');
 var elm$html$Html$tr = _VirtualDom_node('tr');
 var elm$html$Html$ul = _VirtualDom_node('ul');
-var elm$html$Html$Attributes$id = elm$html$Html$Attributes$stringProperty('id');
 var author$project$Pages$AboutMe$view = A2(
 	elm$html$Html$article,
 	_List_Nil,
@@ -5262,51 +5260,38 @@ var author$project$Pages$AboutMe$view = A2(
 			_List_fromArray(
 				[
 					A2(
-					elm$html$Html$h2,
+					elm$html$Html$h3,
 					_List_Nil,
 					_List_fromArray(
 						[
-							elm$html$Html$text('Bio')
+							elm$html$Html$text('Early Life')
 						])),
 					A2(
-					elm$html$Html$section,
+					elm$html$Html$p,
 					_List_Nil,
 					_List_fromArray(
 						[
-							A2(
-							elm$html$Html$h3,
-							_List_Nil,
-							_List_fromArray(
-								[
-									elm$html$Html$text('Early Life')
-								])),
-							A2(
-							elm$html$Html$p,
-							_List_Nil,
-							_List_fromArray(
-								[
-									elm$html$Html$text('I was in a military family and moved around a ton. I also got born and stuff.')
-								]))
+							elm$html$Html$text('I was in a military family and moved around a ton. I also got born and stuff.')
+						]))
+				])),
+			A2(
+			elm$html$Html$section,
+			_List_Nil,
+			_List_fromArray(
+				[
+					A2(
+					elm$html$Html$h3,
+					_List_Nil,
+					_List_fromArray(
+						[
+							elm$html$Html$text('Recent')
 						])),
 					A2(
-					elm$html$Html$section,
+					elm$html$Html$p,
 					_List_Nil,
 					_List_fromArray(
 						[
-							A2(
-							elm$html$Html$h3,
-							_List_Nil,
-							_List_fromArray(
-								[
-									elm$html$Html$text('Recent')
-								])),
-							A2(
-							elm$html$Html$p,
-							_List_Nil,
-							_List_fromArray(
-								[
-									elm$html$Html$text('Spent the summer doing web programming making websites of the web variety for Wiegand Glas in Germany.')
-								]))
+							elm$html$Html$text('Spent the summer doing web programming making websites of the web variety for Wiegand Glas in Germany.')
 						]))
 				])),
 			A2(
@@ -5555,22 +5540,6 @@ var author$project$Pages$AboutMe$view = A2(
 									elm$html$Html$text('Other cool stuff')
 								]))
 						]))
-				])),
-			A2(
-			elm$html$Html$footer,
-			_List_Nil,
-			_List_fromArray(
-				[
-					A2(
-					elm$html$Html$p,
-					_List_fromArray(
-						[
-							elm$html$Html$Attributes$id('copyright')
-						]),
-					_List_fromArray(
-						[
-							elm$html$Html$text('© Jared Weinberger the Magnificent')
-						]))
 				]))
 		]));
 var author$project$Pages$Home$view = A2(
@@ -5672,22 +5641,6 @@ var author$project$Pages$Home$view = A2(
 									elm$html$Html$text('Material Design library')
 								]))
 						]))
-				])),
-			A2(
-			elm$html$Html$footer,
-			_List_Nil,
-			_List_fromArray(
-				[
-					A2(
-					elm$html$Html$p,
-					_List_fromArray(
-						[
-							elm$html$Html$Attributes$id('copyright')
-						]),
-					_List_fromArray(
-						[
-							elm$html$Html$text('© Jared Weinberger the Magnificent')
-						]))
 				]))
 		]));
 var author$project$Pages$MartialArts$view = A2(
@@ -5776,22 +5729,6 @@ var author$project$Pages$MartialArts$view = A2(
 						[
 							elm$html$Html$text('I done got like a billion million-dan black belts and stuff.')
 						]))
-				])),
-			A2(
-			elm$html$Html$footer,
-			_List_Nil,
-			_List_fromArray(
-				[
-					A2(
-					elm$html$Html$p,
-					_List_fromArray(
-						[
-							elm$html$Html$Attributes$id('copyright')
-						]),
-					_List_fromArray(
-						[
-							elm$html$Html$text('© Jared Weinberger the Magnificent')
-						]))
 				]))
 		]));
 var author$project$Pages$WebDevelopment$view = A2(
@@ -5871,26 +5808,12 @@ var author$project$Pages$WebDevelopment$view = A2(
 						[
 							elm$html$Html$text('CSS. \'Nuff said.')
 						]))
-				])),
-			A2(
-			elm$html$Html$footer,
-			_List_Nil,
-			_List_fromArray(
-				[
-					A2(
-					elm$html$Html$p,
-					_List_fromArray(
-						[
-							elm$html$Html$Attributes$id('copyright')
-						]),
-					_List_fromArray(
-						[
-							elm$html$Html$text('© Jared Weinberger the Magnificent')
-						]))
 				]))
 		]));
+var elm$html$Html$footer = _VirtualDom_node('footer');
 var elm$html$Html$hr = _VirtualDom_node('hr');
 var elm$html$Html$img = _VirtualDom_node('img');
+var elm$html$Html$Attributes$id = elm$html$Html$Attributes$stringProperty('id');
 var elm$html$Html$Attributes$src = function (url) {
 	return A2(
 		elm$html$Html$Attributes$stringProperty,
@@ -6008,23 +5931,48 @@ var author$project$Main$view = function (model) {
 						elm$html$Html$div,
 						_List_fromArray(
 							[
-								elm$html$Html$Attributes$class('main-content')
+								elm$html$Html$Attributes$class('grid-container')
 							]),
 						_List_fromArray(
 							[
-								function () {
-								var _n0 = model.page;
-								switch (_n0.$) {
-									case 'Home':
-										return author$project$Pages$Home$view;
-									case 'AboutMe':
-										return author$project$Pages$AboutMe$view;
-									case 'MartialArts':
-										return author$project$Pages$MartialArts$view;
-									default:
-										return author$project$Pages$WebDevelopment$view;
-								}
-							}()
+								A2(
+								elm$html$Html$div,
+								_List_fromArray(
+									[
+										elm$html$Html$Attributes$class('main-content')
+									]),
+								_List_fromArray(
+									[
+										function () {
+										var _n0 = model.page;
+										switch (_n0.$) {
+											case 'Home':
+												return author$project$Pages$Home$view;
+											case 'AboutMe':
+												return author$project$Pages$AboutMe$view;
+											case 'MartialArts':
+												return author$project$Pages$MartialArts$view;
+											default:
+												return author$project$Pages$WebDevelopment$view;
+										}
+									}()
+									]))
+							])),
+						A2(
+						elm$html$Html$footer,
+						_List_Nil,
+						_List_fromArray(
+							[
+								A2(
+								elm$html$Html$p,
+								_List_fromArray(
+									[
+										elm$html$Html$Attributes$id('copyright')
+									]),
+								_List_fromArray(
+									[
+										elm$html$Html$text('© Jared Weinberger the Magnificent')
+									]))
 							]))
 					]))
 			]),

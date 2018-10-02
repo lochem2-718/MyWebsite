@@ -1,5 +1,6 @@
 * {
   font-family: Ubuntu, sans-serif;
+  box-sizing: border-box;
 }
 
 .main-title {
@@ -13,6 +14,10 @@
 
 h1, h2, h3 {
   color: #a62139;
+}
+
+h1 {
+  text-align: center;
 }
 
 table {
@@ -33,6 +38,10 @@ li {
   color: #ffffff;
 }
 
+footer {
+  margin: 1em;
+}
+
 .background {
   min-height: 100%;
   min-width: 100%;
@@ -43,6 +52,9 @@ li {
 
 .main-content {
   padding: 1em;
+  margin: 0 20% 0 20%;
+  max-height: 75vh;
+  overflow-y: auto;
 }
 
 .parent-grid {
@@ -51,6 +63,12 @@ li {
 
 .table-container {
   width: 50%;
+}
+
+.padding {
+  width: 20%;
+  height: 100%;
+  opacity: 0;
 }
 
 .logo {
@@ -67,7 +85,10 @@ li {
 }
 .nav-list li {
   display: inline;
-  padding: 3em;
+}
+.nav-list div {
+  text-align: center;
+  width: 10em;
 }
 
 .nav-item {
@@ -78,6 +99,7 @@ li {
   cursor: pointer;
   font-size: 1.5em;
   color: #ffffff;
+  width: 7em;
 }
 
 .item-active {

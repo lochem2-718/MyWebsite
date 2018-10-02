@@ -21,8 +21,4 @@ view =
             [ h2 [] [ text "Accomplishments" ]
             , p [] [ text "I done got like a billion million-dan black belts and stuff." ]
             ]
-        , footer []
-            [ p [ id "copyright" ]
-                [ text "© Jared Weinberger the Magnificent" ]
-            ]
         ]

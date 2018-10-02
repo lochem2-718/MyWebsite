@@ -10,6 +10,7 @@ import Pages.Home as Home
 import Pages.MartialArts as MartialArts
 import Pages.WebDevelopment as WebDevelopment
 import Url exposing (Url)
+import Url.Parser as UrlParser exposing (Parser)
 
 
 type alias Model =
@@ -33,13 +34,23 @@ type Page
     | WebDevelopment
 
 
+routeParser : Parser (Page -> a) a
+routeParser =
+    UrlParser.oneOf
+        [ UrlParser.map Home <| UrlParser.s "home"
+        , UrlParser.map AboutMe <| UrlParser.s "about-me"
+        , UrlParser.map MartialArts <| UrlParser.s "martial-arts"
+        , UrlParser.map WebDevelopment <| UrlParser.s "web-development"
+        ]
+
+
 view : Model -> Browser.Document Msg
 view model =
     { title = "Jared Weinberger"
     , body =
         [ div [ class "background" ]
             [ div [ class "navbar" ]
-                [ ul [class "nav-list"]
+                [ ul [ class "nav-list" ]
                     [ navbarButton [ onClick (PageChanged Home) ] "Home" (model.page == Home)
                     , navbarButton [ onClick (PageChanged AboutMe) ] "About Me" (model.page == AboutMe)
                     , li [] [ div [ class "nav-item logo-div" ] [ img [ class "logo", src "./images/logo-no-bg.png" ] [] ] ]
@@ -48,20 +59,23 @@ view model =
                     ]
                 ]
             , hr [] []
-            , div [ class "main-content" ]
-                [ case model.page of
-                    Home ->
-                        Home.view
+            , div [ class "grid-container" ]
+                [ div [ class "main-content" ]
+                    [ case model.page of
+                        Home ->
+                            Home.view
 
-                    AboutMe ->
-                        AboutMe.view
+                        AboutMe ->
+                            AboutMe.view
 
-                    MartialArts ->
-                        MartialArts.view
+                        MartialArts ->
+                            MartialArts.view
 
-                    WebDevelopment ->
-                        WebDevelopment.view
+                        WebDevelopment ->
+                            WebDevelopment.view
+                    ]
                 ]
+            , footer [] [ p [ id "copyright" ] [ text "© Jared Weinberger the Magnificent" ] ]
             ]
         ]
     }

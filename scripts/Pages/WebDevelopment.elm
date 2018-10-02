@@ -25,8 +25,4 @@ view =
                 [ text "The Ugly" ]
             , p [] [ text "CSS. 'Nuff said." ]
             ]
-        , footer []
-            [ p [ id "copyright" ]
-                [ text "© Jared Weinberger the Magnificent" ]
-            ]
         ]
