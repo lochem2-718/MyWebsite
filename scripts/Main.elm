@@ -22,7 +22,6 @@ type alias Model =
 
 type Msg
     = DoNothing
-    | PageChanged Page
     | LinkClicked Browser.UrlRequest
     | UrlChanged Url
 
@@ -41,6 +40,7 @@ routeParser =
         , UrlParser.map AboutMe <| UrlParser.s "about-me"
         , UrlParser.map MartialArts <| UrlParser.s "martial-arts"
         , UrlParser.map WebDevelopment <| UrlParser.s "web-development"
+        , UrlParser.map Home <| UrlParser.top
         ]
 
 
@@ -51,11 +51,11 @@ view model =
         [ div [ class "background" ]
             [ div [ class "navbar" ]
                 [ ul [ class "nav-list" ]
-                    [ navbarButton [ onClick (PageChanged Home) ] "Home" (model.page == Home)
-                    , navbarButton [ onClick (PageChanged AboutMe) ] "About Me" (model.page == AboutMe)
+                    [ navbarButton Home model.page "Home"
+                    , navbarButton AboutMe model.page "About Me"
                     , li [] [ div [ class "nav-item logo-div" ] [ img [ class "logo", src "./images/logo-no-bg.png" ] [] ] ]
-                    , navbarButton [ onClick (PageChanged MartialArts) ] "Martial Arts" (model.page == MartialArts)
-                    , navbarButton [ onClick (PageChanged WebDevelopment) ] "Web Development" (model.page == WebDevelopment)
+                    , navbarButton MartialArts model.page "Martial Arts"
+                    , navbarButton WebDevelopment model.page "Web Development"
                     ]
                 ]
             , hr [] []
@@ -81,23 +81,52 @@ view model =
     }
 
 
-navbarButton : List (Attribute msg) -> String -> Bool -> Html msg
-navbarButton attributes content selected =
-    li []
-        [ div
-            (class
-                ("nav-link nav-item"
-                    ++ (if selected then
-                            " item-active"
+navbarButton : Page -> Page -> String -> Html msg
+navbarButton targetPage currentPage content =
+    let
+        linkPath =
+            case targetPage of
+                Home ->
+                    "/home"
 
-                        else
-                            ""
-                       )
-                )
-                :: attributes
-            )
-            [ text content ]
-        ]
+                AboutMe ->
+                    "/about-me"
+
+                MartialArts ->
+                    "/martial-arts"
+
+                WebDevelopment ->
+                    "/web-dev"
+
+        attrs =
+            [ href linkPath
+            , classList
+                [ ( "nav-link", True )
+                , ( "nav-item", True )
+                , ( "item-active", targetPage == currentPage )
+                ]
+            ]
+    in
+    li [] [ a attrs [ text content ] ]
+
+
+urlToPage : Url -> Page
+urlToPage url =
+    case url.path of
+        "/home" ->
+            Home
+
+        "/about-me" ->
+            AboutMe
+
+        "/martial-arts" ->
+            MartialArts
+
+        "/web-dev" ->
+            WebDevelopment
+
+        _ ->
+            Home
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -109,13 +138,10 @@ update msg model =
         LinkClicked urlRequest ->
             case urlRequest of
                 Browser.Internal url ->
-                    ( model, Nav.pushUrl model.key (Url.toString url) )
+                    ( { model | page = urlToPage url }, Nav.pushUrl model.key (Url.toString url) )
 
                 Browser.External href ->
                     ( model, Nav.load href )
-
-        PageChanged page ->
-            ( { model | page = page }, Cmd.none )
 
         UrlChanged url ->
             ( { model | url = url }, Cmd.none )

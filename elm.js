@@ -4788,6 +4788,24 @@ var elm$core$Platform$Sub$none = elm$core$Platform$Sub$batch(_List_Nil);
 var author$project$Main$subscriptions = function (_n0) {
 	return elm$core$Platform$Sub$none;
 };
+var author$project$Main$AboutMe = {$: 'AboutMe'};
+var author$project$Main$MartialArts = {$: 'MartialArts'};
+var author$project$Main$WebDevelopment = {$: 'WebDevelopment'};
+var author$project$Main$urlToPage = function (url) {
+	var _n0 = url.path;
+	switch (_n0) {
+		case '/home':
+			return author$project$Main$Home;
+		case '/about-me':
+			return author$project$Main$AboutMe;
+		case '/martial-arts':
+			return author$project$Main$MartialArts;
+		case '/web-dev':
+			return author$project$Main$WebDevelopment;
+		default:
+			return author$project$Main$Home;
+	}
+};
 var elm$browser$Browser$External = function (a) {
 	return {$: 'External', a: a};
 };
@@ -5157,7 +5175,11 @@ var author$project$Main$update = F2(
 				if (urlRequest.$ === 'Internal') {
 					var url = urlRequest.a;
 					return _Utils_Tuple2(
-						model,
+						_Utils_update(
+							model,
+							{
+								page: author$project$Main$urlToPage(url)
+							}),
 						A2(
 							elm$browser$Browser$Navigation$pushUrl,
 							model.key,
@@ -5168,13 +5190,6 @@ var author$project$Main$update = F2(
 						model,
 						elm$browser$Browser$Navigation$load(href));
 				}
-			case 'PageChanged':
-				var page = msg.a;
-				return _Utils_Tuple2(
-					_Utils_update(
-						model,
-						{page: page}),
-					elm$core$Platform$Cmd$none);
 			default:
 				var url = msg.a;
 				return _Utils_Tuple2(
@@ -5184,16 +5199,25 @@ var author$project$Main$update = F2(
 					elm$core$Platform$Cmd$none);
 		}
 	});
-var author$project$Main$AboutMe = {$: 'AboutMe'};
-var author$project$Main$MartialArts = {$: 'MartialArts'};
-var author$project$Main$PageChanged = function (a) {
-	return {$: 'PageChanged', a: a};
-};
-var author$project$Main$WebDevelopment = {$: 'WebDevelopment'};
-var elm$html$Html$div = _VirtualDom_node('div');
+var elm$html$Html$a = _VirtualDom_node('a');
 var elm$html$Html$li = _VirtualDom_node('li');
 var elm$virtual_dom$VirtualDom$text = _VirtualDom_text;
 var elm$html$Html$text = elm$virtual_dom$VirtualDom$text;
+var elm$core$List$filter = F2(
+	function (isGood, list) {
+		return A3(
+			elm$core$List$foldr,
+			F2(
+				function (x, xs) {
+					return isGood(x) ? A2(elm$core$List$cons, x, xs) : xs;
+				}),
+			_List_Nil,
+			list);
+	});
+var elm$core$Tuple$second = function (_n0) {
+	var y = _n0.b;
+	return y;
+};
 var elm$json$Json$Encode$string = _Json_wrap;
 var elm$html$Html$Attributes$stringProperty = F2(
 	function (key, string) {
@@ -5203,20 +5227,57 @@ var elm$html$Html$Attributes$stringProperty = F2(
 			elm$json$Json$Encode$string(string));
 	});
 var elm$html$Html$Attributes$class = elm$html$Html$Attributes$stringProperty('className');
+var elm$html$Html$Attributes$classList = function (classes) {
+	return elm$html$Html$Attributes$class(
+		A2(
+			elm$core$String$join,
+			' ',
+			A2(
+				elm$core$List$map,
+				elm$core$Tuple$first,
+				A2(elm$core$List$filter, elm$core$Tuple$second, classes))));
+};
+var elm$html$Html$Attributes$href = function (url) {
+	return A2(
+		elm$html$Html$Attributes$stringProperty,
+		'href',
+		_VirtualDom_noJavaScriptUri(url));
+};
 var author$project$Main$navbarButton = F3(
-	function (attributes, content, selected) {
+	function (targetPage, currentPage, content) {
+		var linkPath = function () {
+			switch (targetPage.$) {
+				case 'Home':
+					return '/home';
+				case 'AboutMe':
+					return '/about-me';
+				case 'MartialArts':
+					return '/martial-arts';
+				default:
+					return '/web-dev';
+			}
+		}();
+		var attrs = _List_fromArray(
+			[
+				elm$html$Html$Attributes$href(linkPath),
+				elm$html$Html$Attributes$classList(
+				_List_fromArray(
+					[
+						_Utils_Tuple2('nav-link', true),
+						_Utils_Tuple2('nav-item', true),
+						_Utils_Tuple2(
+						'item-active',
+						_Utils_eq(targetPage, currentPage))
+					]))
+			]);
 		return A2(
 			elm$html$Html$li,
 			_List_Nil,
 			_List_fromArray(
 				[
 					A2(
-					elm$html$Html$div,
-					A2(
-						elm$core$List$cons,
-						elm$html$Html$Attributes$class(
-							'nav-link nav-item' + (selected ? ' item-active' : '')),
-						attributes),
+					elm$html$Html$a,
+					attrs,
 					_List_fromArray(
 						[
 							elm$html$Html$text(content)
@@ -5224,6 +5285,7 @@ var author$project$Main$navbarButton = F3(
 				]));
 	});
 var elm$html$Html$article = _VirtualDom_node('article');
+var elm$html$Html$div = _VirtualDom_node('div');
 var elm$html$Html$h1 = _VirtualDom_node('h1');
 var elm$html$Html$h2 = _VirtualDom_node('h2');
 var elm$html$Html$h3 = _VirtualDom_node('h3');
@@ -5820,23 +5882,6 @@ var elm$html$Html$Attributes$src = function (url) {
 		'src',
 		_VirtualDom_noJavaScriptOrHtmlUri(url));
 };
-var elm$virtual_dom$VirtualDom$Normal = function (a) {
-	return {$: 'Normal', a: a};
-};
-var elm$virtual_dom$VirtualDom$on = _VirtualDom_on;
-var elm$html$Html$Events$on = F2(
-	function (event, decoder) {
-		return A2(
-			elm$virtual_dom$VirtualDom$on,
-			event,
-			elm$virtual_dom$VirtualDom$Normal(decoder));
-	});
-var elm$html$Html$Events$onClick = function (msg) {
-	return A2(
-		elm$html$Html$Events$on,
-		'click',
-		elm$json$Json$Decode$succeed(msg));
-};
 var author$project$Main$view = function (model) {
 	return {
 		body: _List_fromArray(
@@ -5865,24 +5910,8 @@ var author$project$Main$view = function (model) {
 									]),
 								_List_fromArray(
 									[
-										A3(
-										author$project$Main$navbarButton,
-										_List_fromArray(
-											[
-												elm$html$Html$Events$onClick(
-												author$project$Main$PageChanged(author$project$Main$Home))
-											]),
-										'Home',
-										_Utils_eq(model.page, author$project$Main$Home)),
-										A3(
-										author$project$Main$navbarButton,
-										_List_fromArray(
-											[
-												elm$html$Html$Events$onClick(
-												author$project$Main$PageChanged(author$project$Main$AboutMe))
-											]),
-										'About Me',
-										_Utils_eq(model.page, author$project$Main$AboutMe)),
+										A3(author$project$Main$navbarButton, author$project$Main$Home, model.page, 'Home'),
+										A3(author$project$Main$navbarButton, author$project$Main$AboutMe, model.page, 'About Me'),
 										A2(
 										elm$html$Html$li,
 										_List_Nil,
@@ -5906,24 +5935,8 @@ var author$project$Main$view = function (model) {
 														_List_Nil)
 													]))
 											])),
-										A3(
-										author$project$Main$navbarButton,
-										_List_fromArray(
-											[
-												elm$html$Html$Events$onClick(
-												author$project$Main$PageChanged(author$project$Main$MartialArts))
-											]),
-										'Martial Arts',
-										_Utils_eq(model.page, author$project$Main$MartialArts)),
-										A3(
-										author$project$Main$navbarButton,
-										_List_fromArray(
-											[
-												elm$html$Html$Events$onClick(
-												author$project$Main$PageChanged(author$project$Main$WebDevelopment))
-											]),
-										'Web Development',
-										_Utils_eq(model.page, author$project$Main$WebDevelopment))
+										A3(author$project$Main$navbarButton, author$project$Main$MartialArts, model.page, 'Martial Arts'),
+										A3(author$project$Main$navbarButton, author$project$Main$WebDevelopment, model.page, 'Web Development')
 									]))
 							])),
 						A2(elm$html$Html$hr, _List_Nil, _List_Nil),
