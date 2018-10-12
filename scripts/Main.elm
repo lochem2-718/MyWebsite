@@ -2,9 +2,11 @@ module Main exposing (Model, Msg, init, subscriptions, update, view)
 
 import Browser
 import Browser.Navigation as Nav
-import Html exposing (..)
+import Html exposing (Attribute, Html, a, div, footer, li, text, ul)
 import Html.Attributes exposing (..)
 import Html.Events exposing (..)
+import Materialize exposing (..)
+import Navbar exposing (..)
 import Pages.AboutMe as AboutMe
 import Pages.Home as Home
 import Pages.MartialArts as MartialArts
@@ -48,19 +50,17 @@ view : Model -> Browser.Document Msg
 view model =
     { title = "Jared Weinberger"
     , body =
-        [ div [ class "background" ]
-            [ div [ class "navbar" ]
-                [ ul [ class "nav-list" ]
-                    [ navbarButton Home model.page "Home"
-                    , navbarButton AboutMe model.page "About Me"
-                    , li [] [ div [ class "nav-item logo-div" ] [ img [ class "logo", src "./images/logo-no-bg.png" ] [] ] ]
-                    , navbarButton MartialArts model.page "Martial Arts"
-                    , navbarButton WebDevelopment model.page "Web Development"
-                    ]
-                ]
-            , hr [] []
-            , div [ class "grid-container" ]
-                [ div [ class "main-content" ]
+        [ navbar []
+            [ navbarButton Home model.page "Home"
+            , navbarButton AboutMe model.page "About Me"
+            , navbarButton MartialArts model.page "Martial Arts"
+            , navbarButton WebDevelopment model.page "Web Development"
+            ]
+            (Just (centerNavLogo [] [ image [ class "logo", src "./images/logo-no-bg.png" ] [] ]))
+        , divider []
+        , container [ class "main-content" ]
+            [ row []
+                [ col []
                     [ case model.page of
                         Home ->
                             Home.view
@@ -75,7 +75,13 @@ view model =
                             WebDevelopment.view
                     ]
                 ]
-            , footer [] [ p [ id "copyright" ] [ text "© Jared Weinberger the Magnificent" ] ]
+            , row []
+                [ col []
+                    [ footer []
+                        [ p [ id "copyright" ] [ text "© Jared Weinberger the Magnificent" ]
+                        ]
+                    ]
+                ]
             ]
         ]
     }
@@ -107,7 +113,7 @@ navbarButton targetPage currentPage content =
                 ]
             ]
     in
-    li [] [ a attrs [ text content ] ]
+    a attrs [ text content ]
 
 
 urlToPage : Url -> Page

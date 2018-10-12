@@ -5200,7 +5200,6 @@ var author$project$Main$update = F2(
 		}
 	});
 var elm$html$Html$a = _VirtualDom_node('a');
-var elm$html$Html$li = _VirtualDom_node('li');
 var elm$virtual_dom$VirtualDom$text = _VirtualDom_text;
 var elm$html$Html$text = elm$virtual_dom$VirtualDom$text;
 var elm$core$List$filter = F2(
@@ -5271,33 +5270,130 @@ var author$project$Main$navbarButton = F3(
 					]))
 			]);
 		return A2(
-			elm$html$Html$li,
-			_List_Nil,
+			elm$html$Html$a,
+			attrs,
 			_List_fromArray(
 				[
-					A2(
-					elm$html$Html$a,
-					attrs,
-					_List_fromArray(
-						[
-							elm$html$Html$text(content)
-						]))
+					elm$html$Html$text(content)
+				]));
+	});
+var elm$html$Html$div = _VirtualDom_node('div');
+var author$project$Materialize$col = F2(
+	function (attributes, contents) {
+		var attrs = A2(
+			elm$core$List$cons,
+			elm$html$Html$Attributes$class('col'),
+			attributes);
+		return A2(elm$html$Html$div, attrs, contents);
+	});
+var author$project$Materialize$container = F2(
+	function (attributes, contents) {
+		var attrs = A2(
+			elm$core$List$cons,
+			elm$html$Html$Attributes$class('container'),
+			attributes);
+		return A2(elm$html$Html$div, attrs, contents);
+	});
+var author$project$Materialize$divider = function (attributes) {
+	var attrs = A2(
+		elm$core$List$cons,
+		elm$html$Html$Attributes$class('divider'),
+		attributes);
+	return A2(elm$html$Html$div, attrs, _List_Nil);
+};
+var elm$html$Html$img = _VirtualDom_node('img');
+var author$project$Materialize$image = F2(
+	function (attributes, contents) {
+		var attrs = A2(
+			elm$core$List$cons,
+			elm$html$Html$Attributes$class('resposive-img'),
+			attributes);
+		return A2(elm$html$Html$img, attrs, contents);
+	});
+var elm$html$Html$p = _VirtualDom_node('p');
+var author$project$Materialize$p = F2(
+	function (attributes, contents) {
+		var attrs = A2(
+			elm$core$List$cons,
+			elm$html$Html$Attributes$class('flow-text'),
+			attributes);
+		return A2(elm$html$Html$p, attrs, contents);
+	});
+var author$project$Materialize$row = F2(
+	function (attributes, contents) {
+		var attrs = A2(
+			elm$core$List$cons,
+			elm$html$Html$Attributes$class('row'),
+			attributes);
+		return A2(elm$html$Html$div, attrs, contents);
+	});
+var author$project$Navbar$centerNavLogo = F2(
+	function (attributes, contents) {
+		var attrs = A2(
+			elm$core$List$cons,
+			elm$html$Html$Attributes$class('brand-logo center'),
+			attributes);
+		return A2(elm$html$Html$a, attrs, contents);
+	});
+var elm$html$Html$li = _VirtualDom_node('li');
+var elm$html$Html$nav = _VirtualDom_node('nav');
+var elm$html$Html$ul = _VirtualDom_node('ul');
+var elm$html$Html$Attributes$id = elm$html$Html$Attributes$stringProperty('id');
+var author$project$Navbar$navbar = F3(
+	function (attributes, links, logo) {
+		var navAttrs = A2(
+			elm$core$List$cons,
+			elm$html$Html$Attributes$class('nav-wrapper'),
+			attributes);
+		var logoElement = function () {
+			if (logo.$ === 'Just') {
+				var l = logo.a;
+				return _List_fromArray(
+					[l]);
+			} else {
+				return _List_Nil;
+			}
+		}();
+		var contents = A2(
+			elm$core$List$cons,
+			A2(
+				elm$html$Html$ul,
+				_List_fromArray(
+					[
+						elm$html$Html$Attributes$class('left hide-on-med-and-down'),
+						elm$html$Html$Attributes$id('nav-mobile')
+					]),
+				A2(
+					elm$core$List$map,
+					function (link) {
+						return A2(
+							elm$html$Html$li,
+							_List_Nil,
+							_List_fromArray(
+								[link]));
+					},
+					links)),
+			logoElement);
+		return A2(
+			elm$html$Html$nav,
+			attributes,
+			_List_fromArray(
+				[
+					A2(elm$html$Html$div, navAttrs, contents)
 				]));
 	});
 var elm$html$Html$article = _VirtualDom_node('article');
-var elm$html$Html$div = _VirtualDom_node('div');
 var elm$html$Html$h1 = _VirtualDom_node('h1');
 var elm$html$Html$h2 = _VirtualDom_node('h2');
 var elm$html$Html$h3 = _VirtualDom_node('h3');
 var elm$html$Html$header = _VirtualDom_node('header');
-var elm$html$Html$p = _VirtualDom_node('p');
 var elm$html$Html$section = _VirtualDom_node('section');
 var elm$html$Html$table = _VirtualDom_node('table');
+var elm$html$Html$tbody = _VirtualDom_node('tbody');
 var elm$html$Html$td = _VirtualDom_node('td');
 var elm$html$Html$th = _VirtualDom_node('th');
 var elm$html$Html$thead = _VirtualDom_node('thead');
 var elm$html$Html$tr = _VirtualDom_node('tr');
-var elm$html$Html$ul = _VirtualDom_node('ul');
 var author$project$Pages$AboutMe$view = A2(
 	elm$html$Html$article,
 	_List_Nil,
@@ -5425,71 +5521,77 @@ var author$project$Pages$AboutMe$view = A2(
 												]))
 										])),
 									A2(
-									elm$html$Html$tr,
+									elm$html$Html$tbody,
 									_List_Nil,
 									_List_fromArray(
 										[
 											A2(
-											elm$html$Html$td,
+											elm$html$Html$tr,
 											_List_Nil,
 											_List_fromArray(
 												[
-													elm$html$Html$text('Lifeguard')
+													A2(
+													elm$html$Html$td,
+													_List_Nil,
+													_List_fromArray(
+														[
+															elm$html$Html$text('Lifeguard')
+														])),
+													A2(
+													elm$html$Html$td,
+													_List_Nil,
+													_List_fromArray(
+														[
+															elm$html$Html$text('Oro Valley')
+														])),
+													A2(
+													elm$html$Html$td,
+													_List_Nil,
+													_List_fromArray(
+														[
+															elm$html$Html$text('2015')
+														])),
+													A2(
+													elm$html$Html$td,
+													_List_Nil,
+													_List_fromArray(
+														[
+															elm$html$Html$text('2017')
+														]))
 												])),
 											A2(
-											elm$html$Html$td,
+											elm$html$Html$tr,
 											_List_Nil,
 											_List_fromArray(
 												[
-													elm$html$Html$text('Oro Valley')
-												])),
-											A2(
-											elm$html$Html$td,
-											_List_Nil,
-											_List_fromArray(
-												[
-													elm$html$Html$text('2015')
-												])),
-											A2(
-											elm$html$Html$td,
-											_List_Nil,
-											_List_fromArray(
-												[
-													elm$html$Html$text('2017')
-												]))
-										])),
-									A2(
-									elm$html$Html$tr,
-									_List_Nil,
-									_List_fromArray(
-										[
-											A2(
-											elm$html$Html$td,
-											_List_Nil,
-											_List_fromArray(
-												[
-													elm$html$Html$text('Web Programming Intern')
-												])),
-											A2(
-											elm$html$Html$td,
-											_List_Nil,
-											_List_fromArray(
-												[
-													elm$html$Html$text('Wiegand Glas')
-												])),
-											A2(
-											elm$html$Html$td,
-											_List_Nil,
-											_List_fromArray(
-												[
-													elm$html$Html$text('2018')
-												])),
-											A2(
-											elm$html$Html$td,
-											_List_Nil,
-											_List_fromArray(
-												[
-													elm$html$Html$text('2018')
+													A2(
+													elm$html$Html$td,
+													_List_Nil,
+													_List_fromArray(
+														[
+															elm$html$Html$text('Web Programming Intern')
+														])),
+													A2(
+													elm$html$Html$td,
+													_List_Nil,
+													_List_fromArray(
+														[
+															elm$html$Html$text('Wiegand Glas')
+														])),
+													A2(
+													elm$html$Html$td,
+													_List_Nil,
+													_List_fromArray(
+														[
+															elm$html$Html$text('2018')
+														])),
+													A2(
+													elm$html$Html$td,
+													_List_Nil,
+													_List_fromArray(
+														[
+															elm$html$Html$text('2018')
+														]))
 												]))
 										]))
 								]))
@@ -5873,9 +5975,6 @@ var author$project$Pages$WebDevelopment$view = A2(
 				]))
 		]));
 var elm$html$Html$footer = _VirtualDom_node('footer');
-var elm$html$Html$hr = _VirtualDom_node('hr');
-var elm$html$Html$img = _VirtualDom_node('img');
-var elm$html$Html$Attributes$id = elm$html$Html$Attributes$stringProperty('id');
 var elm$html$Html$Attributes$src = function (url) {
 	return A2(
 		elm$html$Html$Attributes$stringProperty,
@@ -5886,74 +5985,48 @@ var author$project$Main$view = function (model) {
 	return {
 		body: _List_fromArray(
 			[
-				A2(
-				elm$html$Html$div,
+				A3(
+				author$project$Navbar$navbar,
+				_List_Nil,
 				_List_fromArray(
 					[
-						elm$html$Html$Attributes$class('background')
+						A3(author$project$Main$navbarButton, author$project$Main$Home, model.page, 'Home'),
+						A3(author$project$Main$navbarButton, author$project$Main$AboutMe, model.page, 'About Me'),
+						A3(author$project$Main$navbarButton, author$project$Main$MartialArts, model.page, 'Martial Arts'),
+						A3(author$project$Main$navbarButton, author$project$Main$WebDevelopment, model.page, 'Web Development')
+					]),
+				elm$core$Maybe$Just(
+					A2(
+						author$project$Navbar$centerNavLogo,
+						_List_Nil,
+						_List_fromArray(
+							[
+								A2(
+								author$project$Materialize$image,
+								_List_fromArray(
+									[
+										elm$html$Html$Attributes$class('logo'),
+										elm$html$Html$Attributes$src('./images/logo-no-bg.png')
+									]),
+								_List_Nil)
+							])))),
+				author$project$Materialize$divider(_List_Nil),
+				A2(
+				author$project$Materialize$container,
+				_List_fromArray(
+					[
+						elm$html$Html$Attributes$class('main-content')
 					]),
 				_List_fromArray(
 					[
 						A2(
-						elm$html$Html$div,
-						_List_fromArray(
-							[
-								elm$html$Html$Attributes$class('navbar')
-							]),
+						author$project$Materialize$row,
+						_List_Nil,
 						_List_fromArray(
 							[
 								A2(
-								elm$html$Html$ul,
-								_List_fromArray(
-									[
-										elm$html$Html$Attributes$class('nav-list')
-									]),
-								_List_fromArray(
-									[
-										A3(author$project$Main$navbarButton, author$project$Main$Home, model.page, 'Home'),
-										A3(author$project$Main$navbarButton, author$project$Main$AboutMe, model.page, 'About Me'),
-										A2(
-										elm$html$Html$li,
-										_List_Nil,
-										_List_fromArray(
-											[
-												A2(
-												elm$html$Html$div,
-												_List_fromArray(
-													[
-														elm$html$Html$Attributes$class('nav-item logo-div')
-													]),
-												_List_fromArray(
-													[
-														A2(
-														elm$html$Html$img,
-														_List_fromArray(
-															[
-																elm$html$Html$Attributes$class('logo'),
-																elm$html$Html$Attributes$src('./images/logo-no-bg.png')
-															]),
-														_List_Nil)
-													]))
-											])),
-										A3(author$project$Main$navbarButton, author$project$Main$MartialArts, model.page, 'Martial Arts'),
-										A3(author$project$Main$navbarButton, author$project$Main$WebDevelopment, model.page, 'Web Development')
-									]))
-							])),
-						A2(elm$html$Html$hr, _List_Nil, _List_Nil),
-						A2(
-						elm$html$Html$div,
-						_List_fromArray(
-							[
-								elm$html$Html$Attributes$class('grid-container')
-							]),
-						_List_fromArray(
-							[
-								A2(
-								elm$html$Html$div,
-								_List_fromArray(
-									[
-										elm$html$Html$Attributes$class('main-content')
-									]),
+								author$project$Materialize$col,
+								_List_Nil,
 								_List_fromArray(
 									[
 										function () {
@@ -5972,19 +6045,31 @@ var author$project$Main$view = function (model) {
 									]))
 							])),
 						A2(
-						elm$html$Html$footer,
+						author$project$Materialize$row,
 						_List_Nil,
 						_List_fromArray(
 							[
 								A2(
-								elm$html$Html$p,
+								author$project$Materialize$col,
+								_List_Nil,
 								_List_fromArray(
 									[
-										elm$html$Html$Attributes$id('copyright')
-									]),
-								_List_fromArray(
-									[
-										elm$html$Html$text('© Jared Weinberger the Magnificent')
+										A2(
+										elm$html$Html$footer,
+										_List_Nil,
+										_List_fromArray(
+											[
+												A2(
+												author$project$Materialize$p,
+												_List_fromArray(
+													[
+														elm$html$Html$Attributes$id('copyright')
+													]),
+												_List_fromArray(
+													[
+														elm$html$Html$text('© Jared Weinberger the Magnificent')
+													]))
+											]))
 									]))
 							]))
 					]))
