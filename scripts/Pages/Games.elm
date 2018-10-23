@@ -1,8 +1,9 @@
-module Pages.Games exposing (Model, view, update, Msg(..), init)
+module Pages.Games exposing (Model, Msg(..), init, update, view)
 
 import Html exposing (Attribute, Html, a, div, footer, li, text, ul)
-import Task
 import Materialize exposing (..)
+import Random
+import Task
 import Time exposing (..)
 
 
@@ -11,11 +12,14 @@ type Msg
     | GameRestarted
     | GameWon
     | BoxClicked Int Int
+    | AquiredCurrentTime Posix
+    | AquiredRandomPair ( Int, Int )
 
 
 type alias Model =
     { won : Bool
-    , timeElapsed : Time.Posix
+    , coordinates : Maybe ( Int, Int )
+    , startTime : Maybe Time.Posix
     }
 
 
@@ -31,16 +35,31 @@ update msg model =
             ( model, Cmd.none )
 
         GameRestarted ->
-            ( model, Cmd.none )
+            ( model, getCurrentTime )
 
         GameWon ->
             ( model, Cmd.none )
+
+        AquiredRandomPair pair ->
+            ( { model | coordinates = Just pair }, Cmd.none )
+
+        AquiredCurrentTime time ->
+            ( { model | startTime = Just time }, Cmd.none )
 
         BoxClicked row collumn ->
             ( model, Cmd.none )
 
 
+getRandomInt : Cmd Msg
+getRandomInt =
+    Random.generate AquiredRandomPair <| Random.pair (Random.int 0 4) (Random.int 0 4)
+
+
+getCurrentTime : Cmd Msg
+getCurrentTime =
+    Task.perform AquiredCurrentTime Time.now
+
 
 init : ( Model, Cmd Msg )
 init =
-    ( { won = False, Task.perform Time.now }, Cmd.none )
+    ( { won = False, startTime = Nothing, coordinates = Nothing }, getCurrentTime )
