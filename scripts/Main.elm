@@ -8,6 +8,7 @@ import Html.Events exposing (..)
 import Materialize exposing (..)
 import Navbar exposing (..)
 import Pages.AboutMe as AboutMe
+import Pages.Games as Games
 import Pages.Home as Home
 import Pages.MartialArts as MartialArts
 import Pages.WebDevelopment as WebDevelopment
@@ -33,6 +34,7 @@ type Page
     | AboutMe
     | MartialArts
     | WebDevelopment
+    | Games
 
 
 routeParser : Parser (Page -> a) a
@@ -42,7 +44,7 @@ routeParser =
         , UrlParser.map AboutMe <| UrlParser.s "about-me"
         , UrlParser.map MartialArts <| UrlParser.s "martial-arts"
         , UrlParser.map WebDevelopment <| UrlParser.s "web-development"
-        , UrlParser.map Home <| UrlParser.top
+        , UrlParser.map Games <| UrlParser.s "games"
         ]
 
 
@@ -51,13 +53,26 @@ view model =
     { title = "Jared Weinberger"
     , body =
         [ navbar []
-            [ navbarButton Home model.page "Home"
-            , navbarButton AboutMe model.page "About Me"
-            , navbarButton MartialArts model.page "Martial Arts"
-            , navbarButton WebDevelopment model.page "Web Development"
-            ]
-            (Just (centerNavLogo [] [ image [ class "logo", src "./images/logo-no-bg.png" ] [] ]))
-        , divider []
+            { fixed = False
+            , extended = False
+            , logo =
+                logo [ class "logo" ]
+                    Left
+                    [ image [ class "logo-image", src "./images/logo-no-bg.png" ] []
+                    , div [ class "logo-text" ] [ text <| nbsb ++ "Jared Weinberger" ]
+                    ]
+            , items =
+                { position = Right
+                , contents =
+                    List.map (link [])
+                        [ navbarButton Home model.page "Home"
+                        , navbarButton AboutMe model.page "About Me"
+                        , navbarButton MartialArts model.page "Martial Arts"
+                        , navbarButton WebDevelopment model.page "Web Development"
+                        , navbarButton Games model.page "Games"
+                        ]
+                }
+            }
         , container [ class "main-content" ]
             [ row []
                 [ col []
@@ -73,6 +88,9 @@ view model =
 
                         WebDevelopment ->
                             WebDevelopment.view
+
+                        Games ->
+                            Games.view
                     ]
                 ]
             , row []
@@ -93,23 +111,25 @@ navbarButton targetPage currentPage content =
         linkPath =
             case targetPage of
                 Home ->
-                    "/home"
+                    "/#home"
 
                 AboutMe ->
-                    "/about-me"
+                    "/#about-me"
 
                 MartialArts ->
-                    "/martial-arts"
+                    "/#martial-arts"
 
                 WebDevelopment ->
-                    "/web-dev"
+                    "/#web-dev"
+
+                Games ->
+                    "/#games"
 
         attrs =
             [ href linkPath
             , classList
                 [ ( "nav-link", True )
-                , ( "nav-item", True )
-                , ( "item-active", targetPage == currentPage )
+                , ( "link-active", targetPage == currentPage )
                 ]
             ]
     in
@@ -118,18 +138,18 @@ navbarButton targetPage currentPage content =
 
 urlToPage : Url -> Page
 urlToPage url =
-    case url.path of
-        "/home" ->
-            Home
-
-        "/about-me" ->
+    case url.fragment of
+        Just "about-me" ->
             AboutMe
 
-        "/martial-arts" ->
+        Just "martial-arts" ->
             MartialArts
 
-        "/web-dev" ->
+        Just "web-dev" ->
             WebDevelopment
+
+        Just "games" ->
+            Games
 
         _ ->
             Home

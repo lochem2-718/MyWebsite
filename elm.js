@@ -4789,22 +4789,31 @@ var author$project$Main$subscriptions = function (_n0) {
 	return elm$core$Platform$Sub$none;
 };
 var author$project$Main$AboutMe = {$: 'AboutMe'};
+var author$project$Main$Games = {$: 'Games'};
 var author$project$Main$MartialArts = {$: 'MartialArts'};
 var author$project$Main$WebDevelopment = {$: 'WebDevelopment'};
 var author$project$Main$urlToPage = function (url) {
-	var _n0 = url.path;
-	switch (_n0) {
-		case '/home':
-			return author$project$Main$Home;
-		case '/about-me':
-			return author$project$Main$AboutMe;
-		case '/martial-arts':
-			return author$project$Main$MartialArts;
-		case '/web-dev':
-			return author$project$Main$WebDevelopment;
-		default:
-			return author$project$Main$Home;
+	var _n0 = url.fragment;
+	_n0$4:
+	while (true) {
+		if (_n0.$ === 'Just') {
+			switch (_n0.a) {
+				case 'about-me':
+					return author$project$Main$AboutMe;
+				case 'martial-arts':
+					return author$project$Main$MartialArts;
+				case 'web-dev':
+					return author$project$Main$WebDevelopment;
+				case 'games':
+					return author$project$Main$Games;
+				default:
+					break _n0$4;
+			}
+		} else {
+			break _n0$4;
+		}
 	}
+	return author$project$Main$Home;
 };
 var elm$browser$Browser$External = function (a) {
 	return {$: 'External', a: a};
@@ -5247,13 +5256,15 @@ var author$project$Main$navbarButton = F3(
 		var linkPath = function () {
 			switch (targetPage.$) {
 				case 'Home':
-					return '/home';
+					return '/#home';
 				case 'AboutMe':
-					return '/about-me';
+					return '/#about-me';
 				case 'MartialArts':
-					return '/martial-arts';
+					return '/#martial-arts';
+				case 'WebDevelopment':
+					return '/#web-dev';
 				default:
-					return '/web-dev';
+					return '/#games';
 			}
 		}();
 		var attrs = _List_fromArray(
@@ -5263,9 +5274,8 @@ var author$project$Main$navbarButton = F3(
 				_List_fromArray(
 					[
 						_Utils_Tuple2('nav-link', true),
-						_Utils_Tuple2('nav-item', true),
 						_Utils_Tuple2(
-						'item-active',
+						'link-active',
 						_Utils_eq(targetPage, currentPage))
 					]))
 			]);
@@ -5294,13 +5304,6 @@ var author$project$Materialize$container = F2(
 			attributes);
 		return A2(elm$html$Html$div, attrs, contents);
 	});
-var author$project$Materialize$divider = function (attributes) {
-	var attrs = A2(
-		elm$core$List$cons,
-		elm$html$Html$Attributes$class('divider'),
-		attributes);
-	return A2(elm$html$Html$div, attrs, _List_Nil);
-};
 var elm$html$Html$img = _VirtualDom_node('img');
 var author$project$Materialize$image = F2(
 	function (attributes, contents) {
@@ -5310,6 +5313,12 @@ var author$project$Materialize$image = F2(
 			attributes);
 		return A2(elm$html$Html$img, attrs, contents);
 	});
+var elm$core$String$cons = _String_cons;
+var elm$core$String$fromChar = function (_char) {
+	return A2(elm$core$String$cons, _char, '');
+};
+var author$project$Materialize$nbsb = elm$core$String$fromChar(
+	_Utils_chr('\u00a0'));
 var elm$html$Html$p = _VirtualDom_node('p');
 var author$project$Materialize$p = F2(
 	function (attributes, contents) {
@@ -5327,59 +5336,89 @@ var author$project$Materialize$row = F2(
 			attributes);
 		return A2(elm$html$Html$div, attrs, contents);
 	});
-var author$project$Navbar$centerNavLogo = F2(
-	function (attributes, contents) {
-		var attrs = A2(
-			elm$core$List$cons,
-			elm$html$Html$Attributes$class('brand-logo center'),
-			attributes);
+var author$project$Navbar$Left = {$: 'Left'};
+var author$project$Navbar$Right = {$: 'Right'};
+var elm$html$Html$li = _VirtualDom_node('li');
+var author$project$Navbar$link = F2(
+	function (attributes, content) {
+		return A2(
+			elm$html$Html$li,
+			attributes,
+			_List_fromArray(
+				[content]));
+	});
+var author$project$Navbar$logo = F3(
+	function (attributes, position, contents) {
+		var posClass = elm$html$Html$Attributes$class(
+			'brand-logo' + function () {
+				switch (position.$) {
+					case 'Center':
+						return ' center';
+					case 'Right':
+						return ' right';
+					default:
+						return '';
+				}
+			}());
+		var attrs = A2(elm$core$List$cons, posClass, attributes);
 		return A2(elm$html$Html$a, attrs, contents);
 	});
-var elm$html$Html$li = _VirtualDom_node('li');
 var elm$html$Html$nav = _VirtualDom_node('nav');
 var elm$html$Html$ul = _VirtualDom_node('ul');
 var elm$html$Html$Attributes$id = elm$html$Html$Attributes$stringProperty('id');
-var author$project$Navbar$navbar = F3(
-	function (attributes, links, logo) {
-		var navAttrs = A2(
+var author$project$Navbar$navbar = F2(
+	function (attributes, navbar_) {
+		var navAttrs = navbar_.extended ? A2(
 			elm$core$List$cons,
-			elm$html$Html$Attributes$class('nav-wrapper'),
-			attributes);
-		var logoElement = function () {
-			if (logo.$ === 'Just') {
-				var l = logo.a;
-				return _List_fromArray(
-					[l]);
-			} else {
-				return _List_Nil;
-			}
-		}();
-		var contents = A2(
-			elm$core$List$cons,
-			A2(
-				elm$html$Html$ul,
-				_List_fromArray(
-					[
-						elm$html$Html$Attributes$class('left hide-on-med-and-down'),
-						elm$html$Html$Attributes$id('nav-mobile')
-					]),
+			elm$html$Html$Attributes$class('nav-extended'),
+			attributes) : attributes;
+		var contents = _List_fromArray(
+			[
+				navbar_.logo,
 				A2(
-					elm$core$List$map,
-					function (link) {
-						return A2(
-							elm$html$Html$li,
-							_List_Nil,
-							_List_fromArray(
-								[link]));
-					},
-					links)),
-			logoElement);
-		return A2(
-			elm$html$Html$nav,
-			attributes,
+				elm$html$Html$ul,
+				A2(
+					elm$core$List$cons,
+					function () {
+						var _n0 = navbar_.items.position;
+						if (_n0.$ === 'Left') {
+							return elm$html$Html$Attributes$class('left');
+						} else {
+							return elm$html$Html$Attributes$class('right');
+						}
+					}(),
+					_List_fromArray(
+						[
+							elm$html$Html$Attributes$class('hide-on-men-and-down'),
+							elm$html$Html$Attributes$id('nav-mobile')
+						])),
+				navbar_.items.contents)
+			]);
+		var attrs = _List_fromArray(
+			[
+				elm$html$Html$Attributes$class('nav-wrapper')
+			]);
+		return navbar_.fixed ? A2(
+			elm$html$Html$div,
 			_List_fromArray(
 				[
-					A2(elm$html$Html$div, navAttrs, contents)
+					elm$html$Html$Attributes$class('navbar-fixed')
+				]),
+			_List_fromArray(
+				[
+					A2(
+					elm$html$Html$nav,
+					navAttrs,
+					_List_fromArray(
+						[
+							A2(elm$html$Html$div, attrs, contents)
+						]))
+				])) : A2(
+			elm$html$Html$nav,
+			navAttrs,
+			_List_fromArray(
+				[
+					A2(elm$html$Html$div, attrs, contents)
 				]));
 	});
 var elm$html$Html$article = _VirtualDom_node('article');
@@ -5706,6 +5745,7 @@ var author$project$Pages$AboutMe$view = A2(
 						]))
 				]))
 		]));
+var author$project$Pages$Games$view = A2(elm$html$Html$div, _List_Nil, _List_Nil);
 var author$project$Pages$Home$view = A2(
 	elm$html$Html$article,
 	_List_Nil,
@@ -5985,32 +6025,55 @@ var author$project$Main$view = function (model) {
 	return {
 		body: _List_fromArray(
 			[
-				A3(
+				A2(
 				author$project$Navbar$navbar,
 				_List_Nil,
-				_List_fromArray(
-					[
-						A3(author$project$Main$navbarButton, author$project$Main$Home, model.page, 'Home'),
-						A3(author$project$Main$navbarButton, author$project$Main$AboutMe, model.page, 'About Me'),
-						A3(author$project$Main$navbarButton, author$project$Main$MartialArts, model.page, 'Martial Arts'),
-						A3(author$project$Main$navbarButton, author$project$Main$WebDevelopment, model.page, 'Web Development')
-					]),
-				elm$core$Maybe$Just(
-					A2(
-						author$project$Navbar$centerNavLogo,
-						_List_Nil,
+				{
+					extended: false,
+					fixed: false,
+					items: {
+						contents: A2(
+							elm$core$List$map,
+							author$project$Navbar$link(_List_Nil),
+							_List_fromArray(
+								[
+									A3(author$project$Main$navbarButton, author$project$Main$Home, model.page, 'Home'),
+									A3(author$project$Main$navbarButton, author$project$Main$AboutMe, model.page, 'About Me'),
+									A3(author$project$Main$navbarButton, author$project$Main$MartialArts, model.page, 'Martial Arts'),
+									A3(author$project$Main$navbarButton, author$project$Main$WebDevelopment, model.page, 'Web Development'),
+									A3(author$project$Main$navbarButton, author$project$Main$Games, model.page, 'Games')
+								])),
+						position: author$project$Navbar$Right
+					},
+					logo: A3(
+						author$project$Navbar$logo,
+						_List_fromArray(
+							[
+								elm$html$Html$Attributes$class('logo')
+							]),
+						author$project$Navbar$Left,
 						_List_fromArray(
 							[
 								A2(
 								author$project$Materialize$image,
 								_List_fromArray(
 									[
-										elm$html$Html$Attributes$class('logo'),
+										elm$html$Html$Attributes$class('logo-image'),
 										elm$html$Html$Attributes$src('./images/logo-no-bg.png')
 									]),
-								_List_Nil)
-							])))),
-				author$project$Materialize$divider(_List_Nil),
+								_List_Nil),
+								A2(
+								elm$html$Html$div,
+								_List_fromArray(
+									[
+										elm$html$Html$Attributes$class('logo-text')
+									]),
+								_List_fromArray(
+									[
+										elm$html$Html$text(author$project$Materialize$nbsb + 'Jared Weinberger')
+									]))
+							]))
+				}),
 				A2(
 				author$project$Materialize$container,
 				_List_fromArray(
@@ -6038,8 +6101,10 @@ var author$project$Main$view = function (model) {
 												return author$project$Pages$AboutMe$view;
 											case 'MartialArts':
 												return author$project$Pages$MartialArts$view;
-											default:
+											case 'WebDevelopment':
 												return author$project$Pages$WebDevelopment$view;
+											default:
+												return author$project$Pages$Games$view;
 										}
 									}()
 									]))
