@@ -1,11 +1,14 @@
-module Pages.AboutMe exposing (view)
+module Pages.AboutMe exposing (Model, view, init)
 
 import Html exposing (..)
 import Html.Attributes exposing (..)
 
+type alias Model = ()
 
-view : Html msg
-view =
+type Msg = DoNothing
+
+view : Model -> Html msg
+view _ =
     article []
         [ header []
             [ h1 []
@@ -98,3 +101,9 @@ view =
                 ]
             ]
         ]
+
+
+
+init : ( Model, Cmd Msg )
+init =
+    ( (), Cmd.none )

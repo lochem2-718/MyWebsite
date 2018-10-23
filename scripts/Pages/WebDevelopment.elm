@@ -1,11 +1,14 @@
-module Pages.WebDevelopment exposing (view)
+module Pages.WebDevelopment exposing (Model, view, init)
 
 import Html exposing (..)
 import Html.Attributes exposing (..)
 
+type alias Model = ()
 
-view : Html msg
-view =
+type Msg = DoNothing
+
+view : Model -> Html msg
+view _ =
     article []
         [ header []
             [ h1 []
@@ -26,3 +29,9 @@ view =
             , p [] [ text "CSS. 'Nuff said." ]
             ]
         ]
+
+
+
+init : ( Model, Cmd Msg )
+init =
+    ( (), Cmd.none )

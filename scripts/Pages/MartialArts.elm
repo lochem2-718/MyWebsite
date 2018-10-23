@@ -1,11 +1,14 @@
-module Pages.MartialArts exposing (view)
+module Pages.MartialArts exposing (Model, view, init)
 
 import Html exposing (..)
 import Html.Attributes exposing (..)
 
+type alias Model = ()
 
-view : Html msg
-view =
+type Msg = DoNothing
+
+view : Model -> Html msg
+view _ =
     article []
         [ div [ class "main-title" ]
             [ header [] [ h1 [] [ text "Martial Arts" ] ] ]
@@ -22,3 +25,8 @@ view =
             , p [] [ text "I done got like a billion million-dan black belts and stuff." ]
             ]
         ]
+
+
+init : ( Model, Cmd Msg )
+init =
+    ( (), Cmd.none )

@@ -19,7 +19,7 @@ import Url.Parser as UrlParser exposing (Parser)
 type alias Model =
     { key : Nav.Key
     , url : Url
-    , page : Page
+    , pageModel : PageModel
     }
 
 
@@ -27,17 +27,22 @@ type Msg
     = DoNothing
     | LinkClicked Browser.UrlRequest
     | UrlChanged Url
+    | PageMessage PageMsg
 
 
-type Page
-    = Home
-    | AboutMe
-    | MartialArts
-    | WebDevelopment
-    | Games
+type PageMsg
+    = GamesMsg Games.Msg
 
 
-routeParser : Parser (Page -> a) a
+type PageModel
+    = Home Home.Model
+    | AboutMe AboutMe.Model
+    | MartialArts MartialArts.Model
+    | WebDevelopment WebDevelopment.Model
+    | Games Games.Model
+
+
+routeParser : Parser (PageModel -> a) a
 routeParser =
     UrlParser.oneOf
         [ UrlParser.map Home <| UrlParser.s "home"
@@ -76,21 +81,21 @@ view model =
         , container [ class "main-content" ]
             [ row []
                 [ col []
-                    [ case model.page of
-                        Home ->
-                            Home.view
+                    [ case model.pageModel of
+                        Home mdl ->
+                            Home.view mdl
 
-                        AboutMe ->
-                            AboutMe.view
+                        AboutMe mdl ->
+                            AboutMe.view mdl
 
-                        MartialArts ->
-                            MartialArts.view
+                        MartialArts mdl ->
+                            MartialArts.view mdl
 
-                        WebDevelopment ->
-                            WebDevelopment.view
+                        WebDevelopment mdl ->
+                            WebDevelopment.view mdl
 
-                        Games ->
-                            Games.view
+                        Games mdl ->
+                            Games.view mdl
                     ]
                 ]
             , row []
@@ -105,24 +110,24 @@ view model =
     }
 
 
-navbarButton : Page -> Page -> String -> Html msg
+navbarButton : PageModel -> PageModel -> String -> Html msg
 navbarButton targetPage currentPage content =
     let
         linkPath =
             case targetPage of
-                Home ->
+                Home _ ->
                     "/#home"
 
-                AboutMe ->
+                AboutMe _ ->
                     "/#about-me"
 
-                MartialArts ->
+                MartialArts _ ->
                     "/#martial-arts"
 
-                WebDevelopment ->
+                WebDevelopment _ ->
                     "/#web-dev"
 
-                Games ->
+                Games _ ->
                     "/#games"
 
         attrs =
@@ -136,7 +141,7 @@ navbarButton targetPage currentPage content =
     a attrs [ text content ]
 
 
-urlToPage : Url -> Page
+urlToPage : Url -> PageModel
 urlToPage url =
     case url.fragment of
         Just "about-me" ->
@@ -161,6 +166,15 @@ update msg model =
         DoNothing ->
             ( model, Cmd.none )
 
+        PageMessage pageMsg ->
+            case pageMsg of
+                GamesMsg msg_ ->
+                    let
+                        ( gamesModel, gamesCmd ) =
+                            Games.update msg_ model.pageModel
+                    in
+                    ( { model | pageModel = GamesMsg gamesModel }, gamesCmd )
+
         LinkClicked urlRequest ->
             case urlRequest of
                 Browser.Internal url ->
@@ -180,7 +194,12 @@ subscriptions _ =
 
 init : () -> Url -> Nav.Key -> ( Model, Cmd Msg )
 init flags url key =
-    ( Model key url Home, Cmd.none )
+    let
+        ( homeModel, homeCmd ) = 
+            Home.init
+    in
+    
+    ( Model key url Home, homeCmd )
 
 
 main : Program () Model Msg
