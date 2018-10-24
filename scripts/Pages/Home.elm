@@ -1,4 +1,4 @@
-module Pages.Home exposing (Model, view, init)
+module Pages.Home exposing (Model, Msg(..), init, update, view)
 
 import Html exposing (..)
 import Html.Attributes exposing (..)
@@ -7,7 +7,10 @@ import Html.Attributes exposing (..)
 type alias Model =
     ()
 
-type Msg = DoNothing
+
+type Msg
+    = DoNothing
+
 
 view : Model -> Html msg
 view _ =
@@ -35,6 +38,13 @@ view _ =
                 ]
             ]
         ]
+
+
+update : Msg -> Model -> ( Model, Cmd Msg )
+update msg model =
+    case msg of
+        DoNothing ->
+            ( model, Cmd.none )
 
 
 init : ( Model, Cmd Msg )

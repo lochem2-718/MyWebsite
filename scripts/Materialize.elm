@@ -1,4 +1,19 @@
-module Materialize exposing (Col, MediaSource, Row, circleImage, col, container, divider, image, p, nbsb, row, section, video)
+module Materialize exposing
+    ( Col
+    , MediaSource
+    , Row
+    , circleImage
+    , col
+    , container
+    , divider
+    , image
+    , nbsb
+    , button
+    , p
+    , row
+    , section
+    , video
+    )
 
 import Html as H exposing (Attribute, Html, a, div, img, text)
 import Html.Attributes exposing (class, href, id)
@@ -75,9 +90,16 @@ p attributes contents =
     in
     H.p attrs contents
 
+
 nbsb : String
 nbsb =
     String.fromChar '\u{00A0}'
+
+
+button : List (Attribute msg) -> List (Html msg) -> Html msg
+button attributes contents =
+    a (class "waves-effect waves-light btn" :: attributes) contents
+
 
 image : List (Attribute msg) -> List (Html msg) -> Html msg
 image attributes contents =

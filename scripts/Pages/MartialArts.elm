@@ -1,11 +1,16 @@
-module Pages.MartialArts exposing (Model, view, init)
+module Pages.MartialArts exposing (Model, Msg(..), init, update, view)
 
 import Html exposing (..)
 import Html.Attributes exposing (..)
 
-type alias Model = ()
 
-type Msg = DoNothing
+type alias Model =
+    ()
+
+
+type Msg
+    = DoNothing
+
 
 view : Model -> Html msg
 view _ =
@@ -25,6 +30,13 @@ view _ =
             , p [] [ text "I done got like a billion million-dan black belts and stuff." ]
             ]
         ]
+
+
+update : Msg -> Model -> ( Model, Cmd Msg )
+update msg model =
+    case msg of
+        DoNothing ->
+            ( model, Cmd.none )
 
 
 init : ( Model, Cmd Msg )

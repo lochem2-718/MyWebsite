@@ -2298,6 +2298,52 @@ function _Platform_mergeExportsDebug(moduleName, obj, exports)
 
 
 
+function _Time_now(millisToPosix)
+{
+	return _Scheduler_binding(function(callback)
+	{
+		callback(_Scheduler_succeed(millisToPosix(Date.now())));
+	});
+}
+
+var _Time_setInterval = F2(function(interval, task)
+{
+	return _Scheduler_binding(function(callback)
+	{
+		var id = setInterval(function() { _Scheduler_rawSpawn(task); }, interval);
+		return function() { clearInterval(id); };
+	});
+});
+
+function _Time_here()
+{
+	return _Scheduler_binding(function(callback)
+	{
+		callback(_Scheduler_succeed(
+			A2(elm$time$Time$customZone, -(new Date().getTimezoneOffset()), _List_Nil)
+		));
+	});
+}
+
+
+function _Time_getZoneName()
+{
+	return _Scheduler_binding(function(callback)
+	{
+		try
+		{
+			var name = elm$time$Time$Name(Intl.DateTimeFormat().resolvedOptions().timeZone);
+		}
+		catch (e)
+		{
+			var name = elm$time$Time$Offset(new Date().getTimezoneOffset());
+		}
+		callback(_Scheduler_succeed(name));
+	});
+}
+
+
+
 
 // HELPERS
 
@@ -4296,10 +4342,12 @@ var author$project$Main$UrlChanged = function (a) {
 	return {$: 'UrlChanged', a: a};
 };
 var author$project$Main$Home = {$: 'Home'};
-var author$project$Main$Model = F3(
-	function (key, url, page) {
-		return {key: key, page: page, url: url};
-	});
+var author$project$Main$HomeModel = function (a) {
+	return {$: 'HomeModel', a: a};
+};
+var author$project$Main$HomeMsg = function (a) {
+	return {$: 'HomeMsg', a: a};
+};
 var elm$core$Basics$False = {$: 'False'};
 var elm$core$Basics$True = {$: 'True'};
 var elm$core$Result$isOk = function (result) {
@@ -4777,16 +4825,120 @@ var elm$json$Json$Decode$errorToStringHelp = F2(
 	});
 var elm$core$Platform$Cmd$batch = _Platform_batch;
 var elm$core$Platform$Cmd$none = elm$core$Platform$Cmd$batch(_List_Nil);
+var author$project$Pages$Home$init = _Utils_Tuple2(_Utils_Tuple0, elm$core$Platform$Cmd$none);
+var elm$core$Platform$Cmd$map = _Platform_map;
 var author$project$Main$init = F3(
 	function (flags, url, key) {
+		var _n0 = author$project$Pages$Home$init;
+		var homeModel = _n0.a;
+		var homeCmd = _n0.b;
+		var command = A2(elm$core$Platform$Cmd$map, author$project$Main$HomeMsg, homeCmd);
 		return _Utils_Tuple2(
-			A3(author$project$Main$Model, key, url, author$project$Main$Home),
-			elm$core$Platform$Cmd$none);
+			{
+				key: key,
+				page: author$project$Main$Home,
+				pageModel: author$project$Main$HomeModel(homeModel),
+				url: url
+			},
+			command);
 	});
 var elm$core$Platform$Sub$batch = _Platform_batch;
 var elm$core$Platform$Sub$none = elm$core$Platform$Sub$batch(_List_Nil);
 var author$project$Main$subscriptions = function (_n0) {
 	return elm$core$Platform$Sub$none;
+};
+var author$project$Main$AboutMeModel = function (a) {
+	return {$: 'AboutMeModel', a: a};
+};
+var author$project$Main$AboutMeMsg = function (a) {
+	return {$: 'AboutMeMsg', a: a};
+};
+var author$project$Main$GamesModel = function (a) {
+	return {$: 'GamesModel', a: a};
+};
+var author$project$Main$GamesMsg = function (a) {
+	return {$: 'GamesMsg', a: a};
+};
+var author$project$Main$MartialArtsModel = function (a) {
+	return {$: 'MartialArtsModel', a: a};
+};
+var author$project$Main$MartialArtsMsg = function (a) {
+	return {$: 'MartialArtsMsg', a: a};
+};
+var author$project$Main$WebDevelopmentModel = function (a) {
+	return {$: 'WebDevelopmentModel', a: a};
+};
+var author$project$Main$WebDevelopmentMsg = function (a) {
+	return {$: 'WebDevelopmentMsg', a: a};
+};
+var author$project$Pages$AboutMe$init = _Utils_Tuple2(_Utils_Tuple0, elm$core$Platform$Cmd$none);
+var elm$core$Array$repeat = F2(
+	function (n, e) {
+		return A2(
+			elm$core$Array$initialize,
+			n,
+			function (_n0) {
+				return e;
+			});
+	});
+var author$project$Pages$Games$init = _Utils_Tuple2(
+	{
+		board: A2(
+			elm$core$Array$repeat,
+			5,
+			A2(elm$core$Array$repeat, 5, true)),
+		coordinates: elm$core$Maybe$Nothing,
+		currentTime: elm$core$Maybe$Nothing,
+		startTime: elm$core$Maybe$Nothing,
+		timeZone: elm$core$Maybe$Nothing,
+		won: false
+	},
+	elm$core$Platform$Cmd$none);
+var author$project$Pages$MartialArts$init = _Utils_Tuple2(_Utils_Tuple0, elm$core$Platform$Cmd$none);
+var author$project$Pages$WebDevelopment$init = _Utils_Tuple2(_Utils_Tuple0, elm$core$Platform$Cmd$none);
+var author$project$Main$pageToMdlCmd = function (page) {
+	switch (page.$) {
+		case 'Home':
+			var _n1 = author$project$Pages$Home$init;
+			var pageMdl = _n1.a;
+			var pageCmd = _n1.b;
+			var command = A2(elm$core$Platform$Cmd$map, author$project$Main$HomeMsg, pageCmd);
+			return _Utils_Tuple2(
+				author$project$Main$HomeModel(pageMdl),
+				command);
+		case 'AboutMe':
+			var _n2 = author$project$Pages$AboutMe$init;
+			var pageMdl = _n2.a;
+			var pageCmd = _n2.b;
+			var command = A2(elm$core$Platform$Cmd$map, author$project$Main$AboutMeMsg, pageCmd);
+			return _Utils_Tuple2(
+				author$project$Main$AboutMeModel(pageMdl),
+				command);
+		case 'MartialArts':
+			var _n3 = author$project$Pages$MartialArts$init;
+			var pageMdl = _n3.a;
+			var pageCmd = _n3.b;
+			var command = A2(elm$core$Platform$Cmd$map, author$project$Main$MartialArtsMsg, pageCmd);
+			return _Utils_Tuple2(
+				author$project$Main$MartialArtsModel(pageMdl),
+				command);
+		case 'WebDevelopment':
+			var _n4 = author$project$Pages$WebDevelopment$init;
+			var pageMdl = _n4.a;
+			var pageCmd = _n4.b;
+			var command = A2(elm$core$Platform$Cmd$map, author$project$Main$WebDevelopmentMsg, pageCmd);
+			return _Utils_Tuple2(
+				author$project$Main$WebDevelopmentModel(pageMdl),
+				command);
+		default:
+			var _n5 = author$project$Pages$Games$init;
+			var pageMdl = _n5.a;
+			var pageCmd = _n5.b;
+			var command = A2(elm$core$Platform$Cmd$map, author$project$Main$GamesMsg, pageCmd);
+			return _Utils_Tuple2(
+				author$project$Main$GamesModel(pageMdl),
+				command);
+	}
 };
 var author$project$Main$AboutMe = {$: 'AboutMe'};
 var author$project$Main$Games = {$: 'Games'};
@@ -4815,23 +4967,12 @@ var author$project$Main$urlToPage = function (url) {
 	}
 	return author$project$Main$Home;
 };
-var elm$browser$Browser$External = function (a) {
-	return {$: 'External', a: a};
-};
-var elm$browser$Browser$Internal = function (a) {
-	return {$: 'Internal', a: a};
-};
-var elm$browser$Browser$Dom$NotFound = function (a) {
-	return {$: 'NotFound', a: a};
-};
-var elm$core$Basics$never = function (_n0) {
-	never:
-	while (true) {
-		var nvr = _n0.a;
-		var $temp$_n0 = nvr;
-		_n0 = $temp$_n0;
-		continue never;
-	}
+var author$project$Pages$AboutMe$update = F2(
+	function (msg, model) {
+		return _Utils_Tuple2(model, elm$core$Platform$Cmd$none);
+	});
+var author$project$Pages$Games$AquiredCurrentTime = function (a) {
+	return {$: 'AquiredCurrentTime', a: a};
 };
 var elm$core$Basics$identity = function (x) {
 	return x;
@@ -4984,6 +5125,86 @@ var elm$core$Task$perform = F2(
 			elm$core$Task$Perform(
 				A2(elm$core$Task$map, toMessage, task)));
 	});
+var elm$time$Time$Name = function (a) {
+	return {$: 'Name', a: a};
+};
+var elm$time$Time$Offset = function (a) {
+	return {$: 'Offset', a: a};
+};
+var elm$time$Time$Zone = F2(
+	function (a, b) {
+		return {$: 'Zone', a: a, b: b};
+	});
+var elm$time$Time$customZone = elm$time$Time$Zone;
+var elm$time$Time$Posix = function (a) {
+	return {$: 'Posix', a: a};
+};
+var elm$time$Time$millisToPosix = elm$time$Time$Posix;
+var elm$time$Time$now = _Time_now(elm$time$Time$millisToPosix);
+var author$project$Pages$Games$getCurrentTime = A2(elm$core$Task$perform, author$project$Pages$Games$AquiredCurrentTime, elm$time$Time$now);
+var author$project$Pages$Games$update = F2(
+	function (msg, model) {
+		switch (msg.$) {
+			case 'DoNothing':
+				return _Utils_Tuple2(model, elm$core$Platform$Cmd$none);
+			case 'NewGame':
+				return _Utils_Tuple2(model, author$project$Pages$Games$getCurrentTime);
+			case 'GameWon':
+				return _Utils_Tuple2(model, elm$core$Platform$Cmd$none);
+			case 'AquiredRandomPairs':
+				var pair = msg.a;
+				return _Utils_Tuple2(
+					_Utils_update(
+						model,
+						{
+							coordinates: elm$core$Maybe$Just(pair)
+						}),
+					elm$core$Platform$Cmd$none);
+			case 'AquiredCurrentTime':
+				var time = msg.a;
+				return _Utils_Tuple2(
+					_Utils_update(
+						model,
+						{
+							startTime: elm$core$Maybe$Just(time)
+						}),
+					elm$core$Platform$Cmd$none);
+			default:
+				var row = msg.a;
+				var collumn = msg.b;
+				return _Utils_Tuple2(model, elm$core$Platform$Cmd$none);
+		}
+	});
+var author$project$Pages$Home$update = F2(
+	function (msg, model) {
+		return _Utils_Tuple2(model, elm$core$Platform$Cmd$none);
+	});
+var author$project$Pages$MartialArts$update = F2(
+	function (msg, model) {
+		return _Utils_Tuple2(model, elm$core$Platform$Cmd$none);
+	});
+var author$project$Pages$WebDevelopment$update = F2(
+	function (msg, model) {
+		return _Utils_Tuple2(model, elm$core$Platform$Cmd$none);
+	});
+var elm$browser$Browser$External = function (a) {
+	return {$: 'External', a: a};
+};
+var elm$browser$Browser$Internal = function (a) {
+	return {$: 'Internal', a: a};
+};
+var elm$browser$Browser$Dom$NotFound = function (a) {
+	return {$: 'NotFound', a: a};
+};
+var elm$core$Basics$never = function (_n0) {
+	never:
+	while (true) {
+		var nvr = _n0.a;
+		var $temp$_n0 = nvr;
+		_n0 = $temp$_n0;
+		continue never;
+	}
+};
 var elm$json$Json$Decode$map = _Json_map1;
 var elm$json$Json$Decode$map2 = _Json_map2;
 var elm$json$Json$Decode$succeed = _Json_succeed;
@@ -5130,6 +5351,7 @@ var elm$url$Url$fromString = function (str) {
 };
 var elm$browser$Browser$Navigation$load = _Browser_load;
 var elm$browser$Browser$Navigation$pushUrl = _Browser_pushUrl;
+var elm$core$Debug$log = _Debug_log;
 var elm$url$Url$addPort = F2(
 	function (maybePort, starter) {
 		if (maybePort.$ === 'Nothing') {
@@ -5183,29 +5405,131 @@ var author$project$Main$update = F2(
 				var urlRequest = msg.a;
 				if (urlRequest.$ === 'Internal') {
 					var url = urlRequest.a;
+					var page = author$project$Main$urlToPage(url);
+					var _n2 = author$project$Main$pageToMdlCmd(page);
+					var pageMdl = _n2.a;
+					var pageCmd = _n2.b;
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
-							{
-								page: author$project$Main$urlToPage(url)
-							}),
-						A2(
-							elm$browser$Browser$Navigation$pushUrl,
-							model.key,
-							elm$url$Url$toString(url)));
+							{page: page, pageModel: pageMdl}),
+						elm$core$Platform$Cmd$batch(
+							_List_fromArray(
+								[
+									A2(
+									elm$browser$Browser$Navigation$pushUrl,
+									model.key,
+									elm$url$Url$toString(url)),
+									pageCmd
+								])));
 				} else {
 					var href = urlRequest.a;
 					return _Utils_Tuple2(
 						model,
 						elm$browser$Browser$Navigation$load(href));
 				}
-			default:
+			case 'UrlChanged':
 				var url = msg.a;
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
 						{url: url}),
 					elm$core$Platform$Cmd$none);
+			case 'HomeMsg':
+				var msg_ = msg.a;
+				var _n3 = model.pageModel;
+				if (_n3.$ === 'HomeModel') {
+					var mdl = _n3.a;
+					var _n4 = A2(author$project$Pages$Home$update, msg_, mdl);
+					var homeMdl = _n4.a;
+					var homeCmd = _n4.b;
+					var command = A2(elm$core$Platform$Cmd$map, author$project$Main$HomeMsg, homeCmd);
+					return _Utils_Tuple2(
+						_Utils_update(
+							model,
+							{
+								pageModel: author$project$Main$HomeModel(homeMdl)
+							}),
+						command);
+				} else {
+					return _Utils_Tuple2(model, elm$core$Platform$Cmd$none);
+				}
+			case 'AboutMeMsg':
+				var msg_ = msg.a;
+				var _n5 = model.pageModel;
+				if (_n5.$ === 'AboutMeModel') {
+					var mdl = _n5.a;
+					var _n6 = A2(author$project$Pages$AboutMe$update, msg_, mdl);
+					var aboutMeMdl = _n6.a;
+					var aboutMeCmd = _n6.b;
+					var command = A2(elm$core$Platform$Cmd$map, author$project$Main$AboutMeMsg, aboutMeCmd);
+					return _Utils_Tuple2(
+						_Utils_update(
+							model,
+							{
+								pageModel: author$project$Main$AboutMeModel(aboutMeMdl)
+							}),
+						command);
+				} else {
+					return _Utils_Tuple2(model, elm$core$Platform$Cmd$none);
+				}
+			case 'MartialArtsMsg':
+				var msg_ = msg.a;
+				var _n7 = model.pageModel;
+				if (_n7.$ === 'MartialArtsModel') {
+					var mdl = _n7.a;
+					var _n8 = A2(author$project$Pages$MartialArts$update, msg_, mdl);
+					var martialArtsMdl = _n8.a;
+					var martialArtsCmd = _n8.b;
+					var command = A2(elm$core$Platform$Cmd$map, author$project$Main$MartialArtsMsg, martialArtsCmd);
+					return _Utils_Tuple2(
+						_Utils_update(
+							model,
+							{
+								pageModel: author$project$Main$MartialArtsModel(martialArtsMdl)
+							}),
+						command);
+				} else {
+					return _Utils_Tuple2(model, elm$core$Platform$Cmd$none);
+				}
+			case 'WebDevelopmentMsg':
+				var msg_ = msg.a;
+				var _n9 = model.pageModel;
+				if (_n9.$ === 'WebDevelopmentModel') {
+					var mdl = _n9.a;
+					var _n10 = A2(author$project$Pages$WebDevelopment$update, msg_, mdl);
+					var webDevMdl = _n10.a;
+					var webDevCmd = _n10.b;
+					var command = A2(elm$core$Platform$Cmd$map, author$project$Main$WebDevelopmentMsg, webDevCmd);
+					return _Utils_Tuple2(
+						_Utils_update(
+							model,
+							{
+								pageModel: author$project$Main$WebDevelopmentModel(webDevMdl)
+							}),
+						command);
+				} else {
+					return _Utils_Tuple2(model, elm$core$Platform$Cmd$none);
+				}
+			default:
+				var msg_ = msg.a;
+				var _n11 = A2(elm$core$Debug$log, 'model', model.pageModel);
+				if (_n11.$ === 'GamesModel') {
+					var mdl = _n11.a;
+					var _n12 = A2(author$project$Pages$Games$update, msg_, mdl);
+					var gamesMdl = _n12.a;
+					var gamesCmd = _n12.b;
+					var command = A2(elm$core$Platform$Cmd$map, author$project$Main$GamesMsg, gamesCmd);
+					return _Utils_Tuple2(
+						_Utils_update(
+							model,
+							{
+								pageModel: author$project$Main$GamesModel(gamesMdl)
+							}),
+						command);
+				} else {
+					return _Utils_Tuple2(model, elm$core$Platform$Cmd$none);
+				}
 		}
 	});
 var elm$html$Html$a = _VirtualDom_node('a');
@@ -5433,588 +5757,770 @@ var elm$html$Html$td = _VirtualDom_node('td');
 var elm$html$Html$th = _VirtualDom_node('th');
 var elm$html$Html$thead = _VirtualDom_node('thead');
 var elm$html$Html$tr = _VirtualDom_node('tr');
-var author$project$Pages$AboutMe$view = A2(
-	elm$html$Html$article,
-	_List_Nil,
-	_List_fromArray(
-		[
+var author$project$Pages$AboutMe$view = function (_n0) {
+	return A2(
+		elm$html$Html$article,
+		_List_Nil,
+		_List_fromArray(
+			[
+				A2(
+				elm$html$Html$header,
+				_List_Nil,
+				_List_fromArray(
+					[
+						A2(
+						elm$html$Html$h1,
+						_List_Nil,
+						_List_fromArray(
+							[
+								elm$html$Html$text('About Me')
+							]))
+					])),
+				A2(
+				elm$html$Html$section,
+				_List_Nil,
+				_List_fromArray(
+					[
+						A2(
+						elm$html$Html$h3,
+						_List_Nil,
+						_List_fromArray(
+							[
+								elm$html$Html$text('Early Life')
+							])),
+						A2(
+						elm$html$Html$p,
+						_List_Nil,
+						_List_fromArray(
+							[
+								elm$html$Html$text('I was in a military family and moved around a ton. I also got born and stuff.')
+							]))
+					])),
+				A2(
+				elm$html$Html$section,
+				_List_Nil,
+				_List_fromArray(
+					[
+						A2(
+						elm$html$Html$h3,
+						_List_Nil,
+						_List_fromArray(
+							[
+								elm$html$Html$text('Recent')
+							])),
+						A2(
+						elm$html$Html$p,
+						_List_Nil,
+						_List_fromArray(
+							[
+								elm$html$Html$text('Spent the summer doing web programming making websites of the web variety for Wiegand Glas in Germany.')
+							]))
+					])),
+				A2(
+				elm$html$Html$section,
+				_List_Nil,
+				_List_fromArray(
+					[
+						A2(
+						elm$html$Html$h2,
+						_List_Nil,
+						_List_fromArray(
+							[
+								elm$html$Html$text('Work Experience')
+							])),
+						A2(
+						elm$html$Html$div,
+						_List_fromArray(
+							[
+								elm$html$Html$Attributes$class('table-container')
+							]),
+						_List_fromArray(
+							[
+								A2(
+								elm$html$Html$table,
+								_List_fromArray(
+									[
+										elm$html$Html$Attributes$class('table')
+									]),
+								_List_fromArray(
+									[
+										A2(
+										elm$html$Html$thead,
+										_List_Nil,
+										_List_fromArray(
+											[
+												A2(
+												elm$html$Html$tr,
+												_List_Nil,
+												_List_fromArray(
+													[
+														A2(
+														elm$html$Html$th,
+														_List_Nil,
+														_List_fromArray(
+															[
+																elm$html$Html$text('Position')
+															])),
+														A2(
+														elm$html$Html$th,
+														_List_Nil,
+														_List_fromArray(
+															[
+																elm$html$Html$text('Employer')
+															])),
+														A2(
+														elm$html$Html$th,
+														_List_Nil,
+														_List_fromArray(
+															[
+																elm$html$Html$text('Start Year')
+															])),
+														A2(
+														elm$html$Html$th,
+														_List_Nil,
+														_List_fromArray(
+															[
+																elm$html$Html$text('End Year')
+															]))
+													]))
+											])),
+										A2(
+										elm$html$Html$tbody,
+										_List_Nil,
+										_List_fromArray(
+											[
+												A2(
+												elm$html$Html$tr,
+												_List_Nil,
+												_List_fromArray(
+													[
+														A2(
+														elm$html$Html$td,
+														_List_Nil,
+														_List_fromArray(
+															[
+																elm$html$Html$text('Lifeguard')
+															])),
+														A2(
+														elm$html$Html$td,
+														_List_Nil,
+														_List_fromArray(
+															[
+																elm$html$Html$text('Oro Valley')
+															])),
+														A2(
+														elm$html$Html$td,
+														_List_Nil,
+														_List_fromArray(
+															[
+																elm$html$Html$text('2015')
+															])),
+														A2(
+														elm$html$Html$td,
+														_List_Nil,
+														_List_fromArray(
+															[
+																elm$html$Html$text('2017')
+															]))
+													])),
+												A2(
+												elm$html$Html$tr,
+												_List_Nil,
+												_List_fromArray(
+													[
+														A2(
+														elm$html$Html$td,
+														_List_Nil,
+														_List_fromArray(
+															[
+																elm$html$Html$text('Web Programming Intern')
+															])),
+														A2(
+														elm$html$Html$td,
+														_List_Nil,
+														_List_fromArray(
+															[
+																elm$html$Html$text('Wiegand Glas')
+															])),
+														A2(
+														elm$html$Html$td,
+														_List_Nil,
+														_List_fromArray(
+															[
+																elm$html$Html$text('2018')
+															])),
+														A2(
+														elm$html$Html$td,
+														_List_Nil,
+														_List_fromArray(
+															[
+																elm$html$Html$text('2018')
+															]))
+													]))
+											]))
+									]))
+							]))
+					])),
+				A2(
+				elm$html$Html$section,
+				_List_Nil,
+				_List_fromArray(
+					[
+						A2(
+						elm$html$Html$h2,
+						_List_Nil,
+						_List_fromArray(
+							[
+								elm$html$Html$text('Accomplishments')
+							])),
+						A2(
+						elm$html$Html$ul,
+						_List_Nil,
+						_List_fromArray(
+							[
+								A2(
+								elm$html$Html$li,
+								_List_Nil,
+								_List_fromArray(
+									[
+										elm$html$Html$text('Dean\'s List')
+									])),
+								A2(
+								elm$html$Html$li,
+								_List_Nil,
+								_List_fromArray(
+									[
+										elm$html$Html$text('NAU Honors College')
+									])),
+								A2(
+								elm$html$Html$li,
+								_List_Nil,
+								_List_fromArray(
+									[
+										elm$html$Html$text('Other Cool Stuff')
+									]))
+							]))
+					])),
+				A2(
+				elm$html$Html$section,
+				_List_Nil,
+				_List_fromArray(
+					[
+						A2(
+						elm$html$Html$h2,
+						_List_Nil,
+						_List_fromArray(
+							[
+								elm$html$Html$text('Hobbies & Interests')
+							])),
+						A2(
+						elm$html$Html$ul,
+						_List_Nil,
+						_List_fromArray(
+							[
+								A2(
+								elm$html$Html$li,
+								_List_Nil,
+								_List_fromArray(
+									[
+										elm$html$Html$text('Sword Fighting')
+									])),
+								A2(
+								elm$html$Html$li,
+								_List_Nil,
+								_List_fromArray(
+									[
+										elm$html$Html$text('Karate')
+									])),
+								A2(
+								elm$html$Html$li,
+								_List_Nil,
+								_List_fromArray(
+									[
+										elm$html$Html$text('Swimming')
+									])),
+								A2(
+								elm$html$Html$li,
+								_List_Nil,
+								_List_fromArray(
+									[
+										elm$html$Html$text('Biking')
+									])),
+								A2(
+								elm$html$Html$li,
+								_List_Nil,
+								_List_fromArray(
+									[
+										elm$html$Html$text('Not running')
+									])),
+								A2(
+								elm$html$Html$li,
+								_List_Nil,
+								_List_fromArray(
+									[
+										elm$html$Html$text('Full Stack Web Development')
+									])),
+								A2(
+								elm$html$Html$li,
+								_List_Nil,
+								_List_fromArray(
+									[
+										elm$html$Html$text('Other cool stuff')
+									]))
+							]))
+					]))
+			]));
+};
+var author$project$Materialize$button = F2(
+	function (attributes, contents) {
+		return A2(
+			elm$html$Html$a,
 			A2(
-			elm$html$Html$header,
-			_List_Nil,
-			_List_fromArray(
-				[
-					A2(
-					elm$html$Html$h1,
-					_List_Nil,
-					_List_fromArray(
-						[
-							elm$html$Html$text('About Me')
-						]))
-				])),
+				elm$core$List$cons,
+				elm$html$Html$Attributes$class('waves-effect waves-light btn'),
+				attributes),
+			contents);
+	});
+var author$project$Pages$Games$NewGame = {$: 'NewGame'};
+var elm$html$Html$span = _VirtualDom_node('span');
+var author$project$Pages$Games$displayClock = function (time) {
+	var timeString = function () {
+		if (time.$ === 'Nothing') {
+			return '00:00';
+		} else {
+			var t = time.a;
+			var _n1 = t;
+			var mins = _n1.a;
+			var secs = _n1.b;
+			var minStr = (mins < 10) ? ('0' + elm$core$String$fromInt(mins)) : elm$core$String$fromInt(mins);
+			var secStr = (secs < 10) ? ('0' + elm$core$String$fromInt(secs)) : elm$core$String$fromInt(secs);
+			return minStr + (':' + secStr);
+		}
+	}();
+	return A2(
+		elm$html$Html$span,
+		_List_Nil,
+		_List_fromArray(
+			[
+				elm$html$Html$text(timeString)
+			]));
+};
+var elm$core$Maybe$withDefault = F2(
+	function (_default, maybe) {
+		if (maybe.$ === 'Just') {
+			var value = maybe.a;
+			return value;
+		} else {
+			return _default;
+		}
+	});
+var elm$core$Basics$modBy = _Basics_modBy;
+var elm$time$Time$flooredDiv = F2(
+	function (numerator, denominator) {
+		return elm$core$Basics$floor(numerator / denominator);
+	});
+var elm$time$Time$posixToMillis = function (_n0) {
+	var millis = _n0.a;
+	return millis;
+};
+var elm$time$Time$toAdjustedMinutesHelp = F3(
+	function (defaultOffset, posixMinutes, eras) {
+		toAdjustedMinutesHelp:
+		while (true) {
+			if (!eras.b) {
+				return posixMinutes + defaultOffset;
+			} else {
+				var era = eras.a;
+				var olderEras = eras.b;
+				if (_Utils_cmp(era.start, posixMinutes) < 0) {
+					return posixMinutes + era.offset;
+				} else {
+					var $temp$defaultOffset = defaultOffset,
+						$temp$posixMinutes = posixMinutes,
+						$temp$eras = olderEras;
+					defaultOffset = $temp$defaultOffset;
+					posixMinutes = $temp$posixMinutes;
+					eras = $temp$eras;
+					continue toAdjustedMinutesHelp;
+				}
+			}
+		}
+	});
+var elm$time$Time$toAdjustedMinutes = F2(
+	function (_n0, time) {
+		var defaultOffset = _n0.a;
+		var eras = _n0.b;
+		return A3(
+			elm$time$Time$toAdjustedMinutesHelp,
+			defaultOffset,
 			A2(
-			elm$html$Html$section,
-			_List_Nil,
-			_List_fromArray(
-				[
-					A2(
-					elm$html$Html$h3,
-					_List_Nil,
-					_List_fromArray(
-						[
-							elm$html$Html$text('Early Life')
-						])),
-					A2(
-					elm$html$Html$p,
-					_List_Nil,
-					_List_fromArray(
-						[
-							elm$html$Html$text('I was in a military family and moved around a ton. I also got born and stuff.')
-						]))
-				])),
+				elm$time$Time$flooredDiv,
+				elm$time$Time$posixToMillis(time),
+				60000),
+			eras);
+	});
+var elm$time$Time$toMinute = F2(
+	function (zone, time) {
+		return A2(
+			elm$core$Basics$modBy,
+			60,
+			A2(elm$time$Time$toAdjustedMinutes, zone, time));
+	});
+var elm$time$Time$toSecond = F2(
+	function (_n0, time) {
+		return A2(
+			elm$core$Basics$modBy,
+			60,
 			A2(
-			elm$html$Html$section,
-			_List_Nil,
-			_List_fromArray(
-				[
-					A2(
-					elm$html$Html$h3,
-					_List_Nil,
-					_List_fromArray(
-						[
-							elm$html$Html$text('Recent')
-						])),
-					A2(
-					elm$html$Html$p,
-					_List_Nil,
-					_List_fromArray(
-						[
-							elm$html$Html$text('Spent the summer doing web programming making websites of the web variety for Wiegand Glas in Germany.')
-						]))
-				])),
-			A2(
-			elm$html$Html$section,
-			_List_Nil,
-			_List_fromArray(
-				[
-					A2(
-					elm$html$Html$h2,
-					_List_Nil,
-					_List_fromArray(
-						[
-							elm$html$Html$text('Work Experience')
-						])),
-					A2(
-					elm$html$Html$div,
-					_List_fromArray(
-						[
-							elm$html$Html$Attributes$class('table-container')
-						]),
-					_List_fromArray(
-						[
-							A2(
-							elm$html$Html$table,
-							_List_fromArray(
-								[
-									elm$html$Html$Attributes$class('table')
-								]),
-							_List_fromArray(
-								[
-									A2(
-									elm$html$Html$thead,
-									_List_Nil,
-									_List_fromArray(
-										[
-											A2(
-											elm$html$Html$tr,
-											_List_Nil,
-											_List_fromArray(
-												[
-													A2(
-													elm$html$Html$th,
-													_List_Nil,
-													_List_fromArray(
-														[
-															elm$html$Html$text('Position')
-														])),
-													A2(
-													elm$html$Html$th,
-													_List_Nil,
-													_List_fromArray(
-														[
-															elm$html$Html$text('Employer')
-														])),
-													A2(
-													elm$html$Html$th,
-													_List_Nil,
-													_List_fromArray(
-														[
-															elm$html$Html$text('Start Year')
-														])),
-													A2(
-													elm$html$Html$th,
-													_List_Nil,
-													_List_fromArray(
-														[
-															elm$html$Html$text('End Year')
-														]))
-												]))
-										])),
-									A2(
-									elm$html$Html$tbody,
-									_List_Nil,
-									_List_fromArray(
-										[
-											A2(
-											elm$html$Html$tr,
-											_List_Nil,
-											_List_fromArray(
-												[
-													A2(
-													elm$html$Html$td,
-													_List_Nil,
-													_List_fromArray(
-														[
-															elm$html$Html$text('Lifeguard')
-														])),
-													A2(
-													elm$html$Html$td,
-													_List_Nil,
-													_List_fromArray(
-														[
-															elm$html$Html$text('Oro Valley')
-														])),
-													A2(
-													elm$html$Html$td,
-													_List_Nil,
-													_List_fromArray(
-														[
-															elm$html$Html$text('2015')
-														])),
-													A2(
-													elm$html$Html$td,
-													_List_Nil,
-													_List_fromArray(
-														[
-															elm$html$Html$text('2017')
-														]))
-												])),
-											A2(
-											elm$html$Html$tr,
-											_List_Nil,
-											_List_fromArray(
-												[
-													A2(
-													elm$html$Html$td,
-													_List_Nil,
-													_List_fromArray(
-														[
-															elm$html$Html$text('Web Programming Intern')
-														])),
-													A2(
-													elm$html$Html$td,
-													_List_Nil,
-													_List_fromArray(
-														[
-															elm$html$Html$text('Wiegand Glas')
-														])),
-													A2(
-													elm$html$Html$td,
-													_List_Nil,
-													_List_fromArray(
-														[
-															elm$html$Html$text('2018')
-														])),
-													A2(
-													elm$html$Html$td,
-													_List_Nil,
-													_List_fromArray(
-														[
-															elm$html$Html$text('2018')
-														]))
-												]))
-										]))
-								]))
-						]))
-				])),
-			A2(
-			elm$html$Html$section,
-			_List_Nil,
-			_List_fromArray(
-				[
-					A2(
-					elm$html$Html$h2,
-					_List_Nil,
-					_List_fromArray(
-						[
-							elm$html$Html$text('Accomplishments')
-						])),
-					A2(
-					elm$html$Html$ul,
-					_List_Nil,
-					_List_fromArray(
-						[
-							A2(
-							elm$html$Html$li,
-							_List_Nil,
-							_List_fromArray(
-								[
-									elm$html$Html$text('Dean\'s List')
-								])),
-							A2(
-							elm$html$Html$li,
-							_List_Nil,
-							_List_fromArray(
-								[
-									elm$html$Html$text('NAU Honors College')
-								])),
-							A2(
-							elm$html$Html$li,
-							_List_Nil,
-							_List_fromArray(
-								[
-									elm$html$Html$text('Other Cool Stuff')
-								]))
-						]))
-				])),
-			A2(
-			elm$html$Html$section,
-			_List_Nil,
-			_List_fromArray(
-				[
-					A2(
-					elm$html$Html$h2,
-					_List_Nil,
-					_List_fromArray(
-						[
-							elm$html$Html$text('Hobbies & Interests')
-						])),
-					A2(
-					elm$html$Html$ul,
-					_List_Nil,
-					_List_fromArray(
-						[
-							A2(
-							elm$html$Html$li,
-							_List_Nil,
-							_List_fromArray(
-								[
-									elm$html$Html$text('Sword Fighting')
-								])),
-							A2(
-							elm$html$Html$li,
-							_List_Nil,
-							_List_fromArray(
-								[
-									elm$html$Html$text('Karate')
-								])),
-							A2(
-							elm$html$Html$li,
-							_List_Nil,
-							_List_fromArray(
-								[
-									elm$html$Html$text('Swimming')
-								])),
-							A2(
-							elm$html$Html$li,
-							_List_Nil,
-							_List_fromArray(
-								[
-									elm$html$Html$text('Biking')
-								])),
-							A2(
-							elm$html$Html$li,
-							_List_Nil,
-							_List_fromArray(
-								[
-									elm$html$Html$text('Not running')
-								])),
-							A2(
-							elm$html$Html$li,
-							_List_Nil,
-							_List_fromArray(
-								[
-									elm$html$Html$text('Full Stack Web Development')
-								])),
-							A2(
-							elm$html$Html$li,
-							_List_Nil,
-							_List_fromArray(
-								[
-									elm$html$Html$text('Other cool stuff')
-								]))
-						]))
-				]))
-		]));
-var author$project$Pages$Games$view = A2(elm$html$Html$div, _List_Nil, _List_Nil);
-var author$project$Pages$Home$view = A2(
-	elm$html$Html$article,
-	_List_Nil,
-	_List_fromArray(
-		[
-			A2(
-			elm$html$Html$section,
-			_List_Nil,
-			_List_fromArray(
-				[
-					A2(
-					elm$html$Html$h2,
-					_List_Nil,
-					_List_fromArray(
-						[
-							elm$html$Html$text('About This Site')
-						])),
-					A2(
-					elm$html$Html$p,
-					_List_Nil,
-					_List_fromArray(
-						[
-							elm$html$Html$text('This site exists to fulfill homework requirements for CS 212 - Introduction to Web Programming.' + ('Many of the things I put on this site are not serious. I will, after I finish CS 212, refactor this website' + 'into a sort of resume website, but NOT TODAAAAAAAYYYYYYYYYYYYYYYYYYYYY!!!!!'))
-						]))
-				])),
-			A2(
-			elm$html$Html$section,
-			_List_Nil,
-			_List_fromArray(
-				[
-					A2(
-					elm$html$Html$h2,
-					_List_Nil,
-					_List_fromArray(
-						[
-							elm$html$Html$text('Things I want To Learn')
-						])),
-					A2(
-					elm$html$Html$ul,
-					_List_Nil,
-					_List_fromArray(
-						[
-							A2(
-							elm$html$Html$li,
-							_List_Nil,
-							_List_fromArray(
-								[
-									elm$html$Html$text('Angular')
-								])),
-							A2(
-							elm$html$Html$li,
-							_List_Nil,
-							_List_fromArray(
-								[
-									elm$html$Html$text('React')
-								])),
-							A2(
-							elm$html$Html$li,
-							_List_Nil,
-							_List_fromArray(
-								[
-									elm$html$Html$text('More Elm')
-								])),
-							A2(
-							elm$html$Html$li,
-							_List_Nil,
-							_List_fromArray(
-								[
-									elm$html$Html$text('SQL server management')
-								])),
-							A2(
-							elm$html$Html$li,
-							_List_Nil,
-							_List_fromArray(
-								[
-									elm$html$Html$text('Flask')
-								])),
-							A2(
-							elm$html$Html$li,
-							_List_Nil,
-							_List_fromArray(
-								[
-									elm$html$Html$text('Django')
-								])),
-							A2(
-							elm$html$Html$li,
-							_List_Nil,
-							_List_fromArray(
-								[
-									elm$html$Html$text('Spring')
-								])),
-							A2(
-							elm$html$Html$li,
-							_List_Nil,
-							_List_fromArray(
-								[
-									elm$html$Html$text('Material Design library')
-								]))
-						]))
-				]))
-		]));
-var author$project$Pages$MartialArts$view = A2(
-	elm$html$Html$article,
-	_List_Nil,
-	_List_fromArray(
-		[
-			A2(
-			elm$html$Html$div,
-			_List_fromArray(
-				[
-					elm$html$Html$Attributes$class('main-title')
-				]),
-			_List_fromArray(
-				[
-					A2(
-					elm$html$Html$header,
-					_List_Nil,
-					_List_fromArray(
-						[
-							A2(
-							elm$html$Html$h1,
-							_List_Nil,
-							_List_fromArray(
-								[
-									elm$html$Html$text('Martial Arts')
-								]))
-						]))
-				])),
-			A2(
-			elm$html$Html$section,
-			_List_Nil,
-			_List_fromArray(
-				[
-					A2(
-					elm$html$Html$h2,
-					_List_Nil,
-					_List_fromArray(
-						[
-							elm$html$Html$text('Benefits')
-						])),
-					A2(
-					elm$html$Html$p,
-					_List_Nil,
-					_List_fromArray(
-						[
-							elm$html$Html$text('It can be really cool because you get to scream a lot in white pajamas.')
-						]))
-				])),
-			A2(
-			elm$html$Html$section,
-			_List_Nil,
-			_List_fromArray(
-				[
-					A2(
-					elm$html$Html$h2,
-					_List_Nil,
-					_List_fromArray(
-						[
-							elm$html$Html$text('Weapons')
-						])),
-					A2(
-					elm$html$Html$p,
-					_List_Nil,
-					_List_fromArray(
-						[
-							elm$html$Html$text('We get to use cool-ass weapons like spears and sticks and swords and nunchaku and stuff.')
-						]))
-				])),
-			A2(
-			elm$html$Html$section,
-			_List_Nil,
-			_List_fromArray(
-				[
-					A2(
-					elm$html$Html$h2,
-					_List_Nil,
-					_List_fromArray(
-						[
-							elm$html$Html$text('Accomplishments')
-						])),
-					A2(
-					elm$html$Html$p,
-					_List_Nil,
-					_List_fromArray(
-						[
-							elm$html$Html$text('I done got like a billion million-dan black belts and stuff.')
-						]))
-				]))
-		]));
-var author$project$Pages$WebDevelopment$view = A2(
-	elm$html$Html$article,
-	_List_Nil,
-	_List_fromArray(
-		[
-			A2(
-			elm$html$Html$header,
-			_List_Nil,
-			_List_fromArray(
-				[
-					A2(
-					elm$html$Html$h1,
-					_List_Nil,
-					_List_fromArray(
-						[
-							elm$html$Html$text('Web Development')
-						]))
-				])),
-			A2(
-			elm$html$Html$section,
-			_List_Nil,
-			_List_fromArray(
-				[
-					A2(
-					elm$html$Html$h2,
-					_List_Nil,
-					_List_fromArray(
-						[
-							elm$html$Html$text('The Good')
-						])),
-					A2(
-					elm$html$Html$p,
-					_List_Nil,
-					_List_fromArray(
-						[
-							elm$html$Html$text('I get to make cool stuff and watch them work immediately.')
-						]))
-				])),
-			A2(
-			elm$html$Html$section,
-			_List_Nil,
-			_List_fromArray(
-				[
-					A2(
-					elm$html$Html$h2,
-					_List_Nil,
-					_List_fromArray(
-						[
-							elm$html$Html$text('The Bad')
-						])),
-					A2(
-					elm$html$Html$p,
-					_List_Nil,
-					_List_fromArray(
-						[
-							elm$html$Html$text('JavaScript or EF6 is a glorified mess and I want it to either go through a major refactoring or die.')
-						]))
-				])),
-			A2(
-			elm$html$Html$section,
-			_List_Nil,
-			_List_fromArray(
-				[
-					A2(
-					elm$html$Html$h2,
-					_List_Nil,
-					_List_fromArray(
-						[
-							elm$html$Html$text('The Ugly')
-						])),
-					A2(
-					elm$html$Html$p,
-					_List_Nil,
-					_List_fromArray(
-						[
-							elm$html$Html$text('CSS. \'Nuff said.')
-						]))
-				]))
-		]));
+				elm$time$Time$flooredDiv,
+				elm$time$Time$posixToMillis(time),
+				1000));
+	});
+var elm$time$Time$utc = A2(elm$time$Time$Zone, 0, _List_Nil);
+var author$project$Pages$Games$timeDifference = F3(
+	function (timeZone, previousTime, currentTime) {
+		if (_Utils_eq(timeZone, elm$core$Maybe$Nothing) || (_Utils_eq(previousTime, elm$core$Maybe$Nothing) || _Utils_eq(currentTime, elm$core$Maybe$Nothing))) {
+			return elm$core$Maybe$Nothing;
+		} else {
+			var z = A2(elm$core$Maybe$withDefault, elm$time$Time$utc, timeZone);
+			var p = A2(
+				elm$core$Maybe$withDefault,
+				elm$time$Time$millisToPosix(0),
+				previousTime);
+			var c = A2(
+				elm$core$Maybe$withDefault,
+				elm$time$Time$millisToPosix(0),
+				currentTime);
+			var minutes = A2(elm$time$Time$toMinute, z, c) - A2(elm$time$Time$toMinute, z, p);
+			var seconds = A2(elm$time$Time$toSecond, z, c) - A2(elm$time$Time$toMinute, z, p);
+			return elm$core$Maybe$Just(
+				_Utils_Tuple2(minutes, seconds));
+		}
+	});
+var elm$virtual_dom$VirtualDom$Normal = function (a) {
+	return {$: 'Normal', a: a};
+};
+var elm$virtual_dom$VirtualDom$on = _VirtualDom_on;
+var elm$html$Html$Events$on = F2(
+	function (event, decoder) {
+		return A2(
+			elm$virtual_dom$VirtualDom$on,
+			event,
+			elm$virtual_dom$VirtualDom$Normal(decoder));
+	});
+var elm$html$Html$Events$onClick = function (msg) {
+	return A2(
+		elm$html$Html$Events$on,
+		'click',
+		elm$json$Json$Decode$succeed(msg));
+};
+var author$project$Pages$Games$view = function (model) {
+	return A2(
+		author$project$Materialize$container,
+		_List_Nil,
+		_List_fromArray(
+			[
+				A2(
+				author$project$Materialize$row,
+				_List_Nil,
+				_List_fromArray(
+					[
+						A2(
+						author$project$Materialize$col,
+						_List_Nil,
+						_List_fromArray(
+							[
+								A2(
+								author$project$Materialize$button,
+								_List_fromArray(
+									[
+										elm$html$Html$Events$onClick(author$project$Pages$Games$NewGame),
+										elm$html$Html$Attributes$class('start-button')
+									]),
+								_List_Nil),
+								author$project$Pages$Games$displayClock(
+								A3(author$project$Pages$Games$timeDifference, model.timeZone, model.startTime, model.currentTime))
+							]))
+					]))
+			]));
+};
+var author$project$Pages$Home$view = function (_n0) {
+	return A2(
+		elm$html$Html$article,
+		_List_Nil,
+		_List_fromArray(
+			[
+				A2(
+				elm$html$Html$section,
+				_List_Nil,
+				_List_fromArray(
+					[
+						A2(
+						elm$html$Html$h2,
+						_List_Nil,
+						_List_fromArray(
+							[
+								elm$html$Html$text('About This Site')
+							])),
+						A2(
+						elm$html$Html$p,
+						_List_Nil,
+						_List_fromArray(
+							[
+								elm$html$Html$text('This site exists to fulfill homework requirements for CS 212 - Introduction to Web Programming.' + ('Many of the things I put on this site are not serious. I will, after I finish CS 212, refactor this website' + 'into a sort of resume website, but NOT TODAAAAAAAYYYYYYYYYYYYYYYYYYYYY!!!!!'))
+							]))
+					])),
+				A2(
+				elm$html$Html$section,
+				_List_Nil,
+				_List_fromArray(
+					[
+						A2(
+						elm$html$Html$h2,
+						_List_Nil,
+						_List_fromArray(
+							[
+								elm$html$Html$text('Things I want To Learn')
+							])),
+						A2(
+						elm$html$Html$ul,
+						_List_Nil,
+						_List_fromArray(
+							[
+								A2(
+								elm$html$Html$li,
+								_List_Nil,
+								_List_fromArray(
+									[
+										elm$html$Html$text('Angular')
+									])),
+								A2(
+								elm$html$Html$li,
+								_List_Nil,
+								_List_fromArray(
+									[
+										elm$html$Html$text('React')
+									])),
+								A2(
+								elm$html$Html$li,
+								_List_Nil,
+								_List_fromArray(
+									[
+										elm$html$Html$text('More Elm')
+									])),
+								A2(
+								elm$html$Html$li,
+								_List_Nil,
+								_List_fromArray(
+									[
+										elm$html$Html$text('SQL server management')
+									])),
+								A2(
+								elm$html$Html$li,
+								_List_Nil,
+								_List_fromArray(
+									[
+										elm$html$Html$text('Flask')
+									])),
+								A2(
+								elm$html$Html$li,
+								_List_Nil,
+								_List_fromArray(
+									[
+										elm$html$Html$text('Django')
+									])),
+								A2(
+								elm$html$Html$li,
+								_List_Nil,
+								_List_fromArray(
+									[
+										elm$html$Html$text('Spring')
+									])),
+								A2(
+								elm$html$Html$li,
+								_List_Nil,
+								_List_fromArray(
+									[
+										elm$html$Html$text('Material Design library')
+									]))
+							]))
+					]))
+			]));
+};
+var author$project$Pages$MartialArts$view = function (_n0) {
+	return A2(
+		elm$html$Html$article,
+		_List_Nil,
+		_List_fromArray(
+			[
+				A2(
+				elm$html$Html$div,
+				_List_fromArray(
+					[
+						elm$html$Html$Attributes$class('main-title')
+					]),
+				_List_fromArray(
+					[
+						A2(
+						elm$html$Html$header,
+						_List_Nil,
+						_List_fromArray(
+							[
+								A2(
+								elm$html$Html$h1,
+								_List_Nil,
+								_List_fromArray(
+									[
+										elm$html$Html$text('Martial Arts')
+									]))
+							]))
+					])),
+				A2(
+				elm$html$Html$section,
+				_List_Nil,
+				_List_fromArray(
+					[
+						A2(
+						elm$html$Html$h2,
+						_List_Nil,
+						_List_fromArray(
+							[
+								elm$html$Html$text('Benefits')
+							])),
+						A2(
+						elm$html$Html$p,
+						_List_Nil,
+						_List_fromArray(
+							[
+								elm$html$Html$text('It can be really cool because you get to scream a lot in white pajamas.')
+							]))
+					])),
+				A2(
+				elm$html$Html$section,
+				_List_Nil,
+				_List_fromArray(
+					[
+						A2(
+						elm$html$Html$h2,
+						_List_Nil,
+						_List_fromArray(
+							[
+								elm$html$Html$text('Weapons')
+							])),
+						A2(
+						elm$html$Html$p,
+						_List_Nil,
+						_List_fromArray(
+							[
+								elm$html$Html$text('We get to use cool-ass weapons like spears and sticks and swords and nunchaku and stuff.')
+							]))
+					])),
+				A2(
+				elm$html$Html$section,
+				_List_Nil,
+				_List_fromArray(
+					[
+						A2(
+						elm$html$Html$h2,
+						_List_Nil,
+						_List_fromArray(
+							[
+								elm$html$Html$text('Accomplishments')
+							])),
+						A2(
+						elm$html$Html$p,
+						_List_Nil,
+						_List_fromArray(
+							[
+								elm$html$Html$text('I done got like a billion million-dan black belts and stuff.')
+							]))
+					]))
+			]));
+};
+var author$project$Pages$WebDevelopment$view = function (_n0) {
+	return A2(
+		elm$html$Html$article,
+		_List_Nil,
+		_List_fromArray(
+			[
+				A2(
+				elm$html$Html$header,
+				_List_Nil,
+				_List_fromArray(
+					[
+						A2(
+						elm$html$Html$h1,
+						_List_Nil,
+						_List_fromArray(
+							[
+								elm$html$Html$text('Web Development')
+							]))
+					])),
+				A2(
+				elm$html$Html$section,
+				_List_Nil,
+				_List_fromArray(
+					[
+						A2(
+						elm$html$Html$h2,
+						_List_Nil,
+						_List_fromArray(
+							[
+								elm$html$Html$text('The Good')
+							])),
+						A2(
+						elm$html$Html$p,
+						_List_Nil,
+						_List_fromArray(
+							[
+								elm$html$Html$text('I get to make cool stuff and watch them work immediately.')
+							]))
+					])),
+				A2(
+				elm$html$Html$section,
+				_List_Nil,
+				_List_fromArray(
+					[
+						A2(
+						elm$html$Html$h2,
+						_List_Nil,
+						_List_fromArray(
+							[
+								elm$html$Html$text('The Bad')
+							])),
+						A2(
+						elm$html$Html$p,
+						_List_Nil,
+						_List_fromArray(
+							[
+								elm$html$Html$text('JavaScript or EF6 is a glorified mess and I want it to either go through a major refactoring or die.')
+							]))
+					])),
+				A2(
+				elm$html$Html$section,
+				_List_Nil,
+				_List_fromArray(
+					[
+						A2(
+						elm$html$Html$h2,
+						_List_Nil,
+						_List_fromArray(
+							[
+								elm$html$Html$text('The Ugly')
+							])),
+						A2(
+						elm$html$Html$p,
+						_List_Nil,
+						_List_fromArray(
+							[
+								elm$html$Html$text('CSS. \'Nuff said.')
+							]))
+					]))
+			]));
+};
 var elm$html$Html$footer = _VirtualDom_node('footer');
+var elm$virtual_dom$VirtualDom$map = _VirtualDom_map;
+var elm$html$Html$map = elm$virtual_dom$VirtualDom$map;
 var elm$html$Html$Attributes$src = function (url) {
 	return A2(
 		elm$html$Html$Attributes$stringProperty,
@@ -6093,18 +6599,26 @@ var author$project$Main$view = function (model) {
 								_List_fromArray(
 									[
 										function () {
-										var _n0 = model.page;
+										var _n0 = model.pageModel;
 										switch (_n0.$) {
-											case 'Home':
-												return author$project$Pages$Home$view;
-											case 'AboutMe':
-												return author$project$Pages$AboutMe$view;
-											case 'MartialArts':
-												return author$project$Pages$MartialArts$view;
-											case 'WebDevelopment':
-												return author$project$Pages$WebDevelopment$view;
+											case 'HomeModel':
+												var mdl = _n0.a;
+												return author$project$Pages$Home$view(mdl);
+											case 'AboutMeModel':
+												var mdl = _n0.a;
+												return author$project$Pages$AboutMe$view(mdl);
+											case 'MartialArtsModel':
+												var mdl = _n0.a;
+												return author$project$Pages$MartialArts$view(mdl);
+											case 'WebDevelopmentModel':
+												var mdl = _n0.a;
+												return author$project$Pages$WebDevelopment$view(mdl);
 											default:
-												return author$project$Pages$Games$view;
+												var mdl = _n0.a;
+												return A2(
+													elm$html$Html$map,
+													author$project$Main$GamesMsg,
+													author$project$Pages$Games$view(mdl));
 										}
 									}()
 									]))

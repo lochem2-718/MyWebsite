@@ -19,7 +19,7 @@ import Url.Parser as UrlParser exposing (Parser)
 type alias Model =
     { key : Nav.Key
     , url : Url
-    , pageModel : PageModel
+    , page : Page
     }
 
 
@@ -27,14 +27,13 @@ type Msg
     = DoNothing
     | LinkClicked Browser.UrlRequest
     | UrlChanged Url
-    | PageMessage PageMsg
+    | HomeMsg Home.Msg
+    | AboutMeMsg AboutMe.Msg
+    | MartialArtsMsg MartialArts.Msg
+    | WebDevelopmentMsg WebDevelopment.Msg
+    | GamesMsg Games.Msg
 
-
-type PageMsg
-    = GamesMsg Games.Msg
-
-
-type PageModel
+type Page
     = Home Home.Model
     | AboutMe AboutMe.Model
     | MartialArts MartialArts.Model
@@ -42,7 +41,7 @@ type PageModel
     | Games Games.Model
 
 
-routeParser : Parser (PageModel -> a) a
+routeParser : Parser (Page -> a) a
 routeParser =
     UrlParser.oneOf
         [ UrlParser.map Home <| UrlParser.s "home"
@@ -81,7 +80,7 @@ view model =
         , container [ class "main-content" ]
             [ row []
                 [ col []
-                    [ case model.pageModel of
+                    [ case model.page of
                         Home mdl ->
                             Home.view mdl
 
@@ -96,6 +95,7 @@ view model =
 
                         Games mdl ->
                             Games.view mdl
+                                |> Html.map GamesMsg
                     ]
                 ]
             , row []
@@ -110,7 +110,7 @@ view model =
     }
 
 
-navbarButton : PageModel -> PageModel -> String -> Html msg
+navbarButton : Page -> Page -> String -> Html msg
 navbarButton targetPage currentPage content =
     let
         linkPath =
@@ -121,7 +121,7 @@ navbarButton targetPage currentPage content =
                 AboutMe _ ->
                     "/#about-me"
 
-                MartialArts _ ->
+                MartialArts _  ->
                     "/#martial-arts"
 
                 WebDevelopment _ ->
@@ -141,7 +141,7 @@ navbarButton targetPage currentPage content =
     a attrs [ text content ]
 
 
-urlToPage : Url -> PageModel
+urlToPage : Url -> Page
 urlToPage url =
     case url.fragment of
         Just "about-me" ->
@@ -166,25 +166,156 @@ update msg model =
         DoNothing ->
             ( model, Cmd.none )
 
-        PageMessage pageMsg ->
-            case pageMsg of
-                GamesMsg msg_ ->
-                    let
-                        ( gamesModel, gamesCmd ) =
-                            Games.update msg_ model.pageModel
-                    in
-                    ( { model | pageModel = GamesMsg gamesModel }, gamesCmd )
-
         LinkClicked urlRequest ->
             case urlRequest of
                 Browser.Internal url ->
-                    ( { model | page = urlToPage url }, Nav.pushUrl model.key (Url.toString url) )
+                    let
+                        page =
+                            urlToPage url
+
+                        ( pageMdl, pageCmd ) =
+                            loadPage page
+                    in
+                    ( { model
+                        | page = page
+                        , pageModel = pageMdl
+                      }
+                    , Cmd.batch [ Nav.pushUrl model.key (Url.toString url), pageCmd ]
+                    )
 
                 Browser.External href ->
                     ( model, Nav.load href )
 
         UrlChanged url ->
             ( { model | url = url }, Cmd.none )
+
+        HomeMsg msg_ ->
+            case model.page of
+                Home mdl ->
+                    let
+                        ( homeMdl, homeCmd ) =
+                            Home.update msg_ mdl
+
+                        command =
+                            homeCmd |> Cmd.map HomeMsg
+                    in
+                    ( { model | page = Home homeMdl }, command )
+
+                _ ->
+                    ( model, Cmd.none )
+
+        AboutMeMsg msg_ ->
+            case model.page of
+                AboutMe mdl ->
+                    let
+                        ( aboutMeMdl, aboutMeCmd ) =
+                            AboutMe.update msg_ mdl
+
+                        command =
+                            aboutMeCmd |> Cmd.map AboutMeMsg
+                    in
+                    ( { model | page = AboutMe aboutMeMdl }, command )
+
+                _ ->
+                    ( model, Cmd.none )
+
+        MartialArtsMsg msg_ ->
+            case model.page of
+                MartialArts mdl ->
+                    let
+                        ( martialArtsMdl, martialArtsCmd ) =
+                            MartialArts.update msg_ mdl
+
+                        command =
+                            martialArtsCmd |> Cmd.map MartialArtsMsg
+                    in
+                    ( { model | page = MartialArts martialArtsMdl }, command )
+
+                _ ->
+                    ( model, Cmd.none )
+        WebDevelopmentMsg msg_ ->
+            case model.page of
+                WebDevelopment mdl ->
+                    let
+                        ( webDevMdl, webDevCmd ) =
+                            WebDevelopment.update msg_ mdl
+
+                        command =
+                            webDevCmd |> Cmd.map WebDevelopmentMsg
+                    in
+                    ( { model | page = WebDevelopment webDevMdl }, command )
+
+                _ ->
+                    ( model, Cmd.none )
+
+        GamesMsg msg_ ->
+            case Debug.log "model" model.page of
+                Games mdl ->
+                    let
+                        ( gamesMdl, gamesCmd ) =
+                            Games.update msg_ mdl
+
+                        command =
+                            gamesCmd |> Cmd.map GamesMsg
+                    in
+                    ( { model | page = Games gamesMdl }, command )
+
+                _ ->
+                    ( model, Cmd.none )
+
+
+loadPage : Page -> ( Page, Cmd Msg )
+loadPage page =
+    case page of
+        Home _ ->
+            let
+                ( pageMdl, pageCmd ) =
+                    Home.init
+
+                command =
+                    Cmd.map HomeMsg pageCmd
+            in
+            ( Home pageMdl, command )
+
+        AboutMe _ ->
+            let
+                ( pageMdl, pageCmd ) =
+                    AboutMe.init
+
+                command =
+                    Cmd.map AboutMeMsg pageCmd
+            in
+            ( AboutMe pageMdl, command )
+
+        MartialArts _ ->
+            let
+                ( pageMdl, pageCmd ) =
+                    MartialArts.init
+
+                command =
+                    Cmd.map MartialArtsMsg pageCmd
+            in
+            ( MartialArts pageMdl, command )
+
+        WebDevelopment _ ->
+            let
+                ( pageMdl, pageCmd ) =
+                    WebDevelopment.init
+
+                command =
+                    Cmd.map WebDevelopmentMsg pageCmd
+            in
+            ( WebDevelopment pageMdl, command )
+
+        Games _ ->
+            let
+                ( pageMdl, pageCmd ) =
+                    Games.init
+
+                command =
+                    Cmd.map GamesMsg pageCmd
+            in
+            ( Games pageMdl, command )
 
 
 subscriptions : Model -> Sub Msg
@@ -195,11 +326,20 @@ subscriptions _ =
 init : () -> Url -> Nav.Key -> ( Model, Cmd Msg )
 init flags url key =
     let
-        ( homeModel, homeCmd ) = 
+        ( homeModel, homeCmd ) =
             Home.init
+
+        command =
+            Cmd.map HomeMsg homeCmd
+        
+        page = urlToPage url
     in
-    
-    ( Model key url Home, homeCmd )
+    ( { key = key
+      , url = url
+      , page = Home homeModel
+      }
+    , command
+    )
 
 
 main : Program () Model Msg
