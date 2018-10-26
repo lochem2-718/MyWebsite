@@ -98,7 +98,7 @@ nbsb =
 
 button : List (Attribute msg) -> List (Html msg) -> Html msg
 button attributes contents =
-    a (class "waves-effect waves-light btn" :: attributes) contents
+    button (class "waves-effect waves-light btn" :: attributes) contents
 
 
 image : List (Attribute msg) -> List (Html msg) -> Html msg

@@ -5953,13 +5953,17 @@ var author$project$Pages$AboutMe$view = function (_n0) {
 };
 var author$project$Materialize$button = F2(
 	function (attributes, contents) {
-		return A2(
-			elm$html$Html$a,
-			A2(
+		button:
+		while (true) {
+			var $temp$attributes = A2(
 				elm$core$List$cons,
 				elm$html$Html$Attributes$class('waves-effect waves-light btn'),
 				attributes),
-			contents);
+				$temp$contents = contents;
+			attributes = $temp$attributes;
+			contents = $temp$contents;
+			continue button;
+		}
 	});
 var author$project$Materialize$col = F2(
 	function (attributes, contents) {
