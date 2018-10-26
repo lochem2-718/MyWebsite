@@ -192,7 +192,7 @@ urlToPage url =
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
-    case Debug.log "Msg" msg of
+    case msg of
         DoNothing ->
             ( model, Cmd.none )
 
@@ -279,7 +279,7 @@ update msg model =
                     ( model, Cmd.none )
 
         GamesMsg msg_ ->
-            case Debug.log "pageModel" model.pageModel of
+            case model.pageModel of
                 GamesModel mdl ->
                     let
                         ( gamesMdl, gamesCmd ) =
