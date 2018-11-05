@@ -1,3 +1,11 @@
+@font-face {
+  font-family: "Open Sans";
+  src: url("/../../fonts/OpenSans-Regular.ttf") format("truetype");
+}
+@font-face {
+  font-family: "Fira Code";
+  src: url("/../../fonts/FiraCode-Regular.otf") format("opentype");
+}
 * {
   font-family: "Open Sans", sans-serif;
   box-sizing: border-box;
@@ -26,6 +34,13 @@ table {
 
 p {
   color: #ffffff;
+}
+
+#code {
+  color: #a62139;
+  background-color: #101010;
+  border: solid 3px #000000;
+  font-family: "Fira Code";
 }
 
 li {

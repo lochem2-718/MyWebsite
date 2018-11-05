@@ -2,7 +2,15 @@ $header-font-color: #a62139
 $selected-color: #a62139
 $primary-font-color: #ffffff
 $dark-bg: #151515
-    
+
+@font-face
+    font-family: 'Open Sans'
+    src: url( "/../../fonts/OpenSans-Regular.ttf" ) format( "truetype" )
+
+@font-face
+    font-family: 'Fira Code'
+    src: url( "/../../fonts/FiraCode-Regular.otf" ) format( "opentype" )
+
 *
     font-family: 'Open Sans', sans-serif
     box-sizing: border-box
@@ -26,6 +34,12 @@ table
 
 p
     color: $primary-font-color
+
+#code
+    color: $header-font-color
+    background-color: #101010
+    border: solid 3px #000000
+    font-family: 'Fira Code'
 
 li 
     color: $primary-font-color 

@@ -1,8 +1,20 @@
 // better log function
 
-export function log( item, description = "" )
+export function log( item, label = "" )
 {
-    console.log( description + " : " + item );
+    if( typeof label !== "string" )
+    {
+        InvalidArgumentException();
+    }
+    
+    if( label === "" )
+    {
+        console.log( item );
+    }
+    else
+    {
+        console.log( label + " : " + item );
+    }
     return item;
 }
 
