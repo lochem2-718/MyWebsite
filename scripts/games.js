@@ -1,22 +1,52 @@
 // global variables
 const rows = 5;
 const cols = 5;
+let boardArray;
+let won = false;
+let timeElapsed;
+let startTime;
+let timerId = 0;
 
-initGame();
+setup();
+
+function setup()
+{
+    let startButtons = document.getElementsByClassName( "start-button" );
+    startButtons[ 0 ].addEventListener( "click", startGame );
+    startButtons[ 1 ].addEventListener( "click", startGame );
+    let b = document.getElementById("popup-button");
+    b.addEventListener( "click", function() {
+        document.querySelector(".popup").classList.toggle("popup-active")
+    } )
+}
 
 // view change
 
-function renderBoard( boardArray )
+function renderBoard()
 {
-    let boardContainer = document.getElementById("board-container");
+    let boardContainer = getBoardContainer();
+    let box;
     removeAllChildren( boardContainer );
     for( let row = 0; row < rows; row++ )
     {
         for ( let col = 0; col < cols; col++ )
         {
-            boardContainer.appendChild( createSquare( row, col, boardArray[ row ][ col ] ) );
+            box = createSquare( row, col, boardArray[ row ][ col ] );
+            boardContainer.appendChild( box );
+            box.addEventListener( "click", boardClicked );
         }
     }
+}
+
+function getBoardContainer()
+{
+    const boardContainer = document.getElementById( "board-container" );
+    
+    if( boardContainer )
+    {
+        return boardContainer;
+    }
+    elementDNEException();
 }
 
 function createSquare( row, col, on = true )
@@ -33,7 +63,7 @@ function createSquare( row, col, on = true )
 
 function removeAllChildren( node )
 {
-    while( node.firstChild != null )
+    while( node.firstChild )
     {
         node.firstChild.remove();
     }
@@ -42,55 +72,73 @@ function removeAllChildren( node )
 
 // update
 
-function boardClicked( event, boardArray )
+function boardClicked( event )
 {
+    let body;
     let box = event.target;
     let [ row, col ] = idToCoords( box.id );
-    lightsOutToggle( boardArray, row, col );
-    renderBoard( boardArray );
+    lightsOutToggle( row, col );
+    renderBoard();
+    if( isGameWon() )
+    {
+        let popup = document.querySelector( ".popup" );
+        let gameBoard = document.getElementById( "board-container" );
+        popup.classList.toggle( "popup-active" );
+        gameBoard.classList.toggle("disabled");
+        
+    }
 }
 
-function lightsOutToggle( boardArray, row, col )
+function isGameWon()
 {
-    if( row < rows && col < cols )
+    let numberOfOnCells = 
+        boardArray
+            .flat()
+            .filter( ( item ) => item )
+            .length;
+    return numberOfOnCells === 0;
+}
+
+function lightsOutToggle( row, col )
+{
+    toggle( row, col );
+    toggle( row + 1, col );
+    toggle( row, col + 1 );
+    toggle( row - 1, col );
+    toggle( row, col - 1 );
+}
+
+function toggle( row, col )
+{
+    if( row < rows && row >= 0 && col < cols && col >= 0 )
     {
         boardArray[ row ][ col ] = !boardArray[ row ][ col ];
-    }
-    if( row + 1 < rows && col < cols )
-    {
-        boardArray[ row + 1 ][ col ] = !boardArray[ row + 1 ][ col ];
-    }
-    if( row - 1 < rows && col < cols )
-    {
-        boardArray[ row - 1 ][ col ] = !boardArray[ row - 1 ][ col ];
-    }
-    if( row < rows && col + 1 < cols )
-    {
-        boardArray[ row ][ col + 1 ] = !boardArray[ row ][ col + 1 ];
-    }
-    if( row < rows && col - 1 < cols )
-    {
-        boardArray[ row ][ col - 1 ] = !boardArray[ row ][ col - 1 ];
     }
 }
 
 function idToCoords( id )
 {
-    return id.split( "-" ).map( parseInt );
+    let idArray = id.split( "-" );
+    let row = parseInt( idArray[ 0 ] );
+    let col = parseInt( idArray[ 1 ] );
+    console.log( row, col );
+    return [ row, col ];
 }
 
-function initGame()
+function startGame()
 {
-    let boardArray = initBoardArray();
-    renderBoard( boardArray );
+    document.getElementById( "board-container" ).classList.remove("disabled");
+    initBoardArray();
+    renderBoard();
+    startTimer()
 }
 
 function initBoardArray()
 {
-    let boardArray = new Array();
+    boardArray = [];
     for( let row = 0; row < rows; row++ )
     {
-        boardArray[ row ] = new Array();
+        boardArray[ row ] = [];
         for( let col = 0; col < cols; col++ )
         {
             boardArray[ row ][ col ] = true;
@@ -99,12 +147,52 @@ function initBoardArray()
 
     for( let randMoveCount = 3; randMoveCount > 0; randMoveCount-- )
     {
-        lightsOutToggle( boardArray, getRandomIndex(), getRandomIndex() );
+        lightsOutToggle( getRandomIndex(), getRandomIndex() );
     }
-    return boardArray;
+}
+
+function startTimer()
+{
+    window.clearInterval( timerId );
+    startTime = new Date();
+    timerId = window.setInterval( () => {
+        let timer = document.getElementById("timer");
+        let date = new Date();
+        let mins = date.getMinutes() - startTime.getMinutes();
+        let secs = date.getSeconds() - startTime.getSeconds();
+        timer.innerHTML = minsSecsToString( mins, secs );
+    }, 1000 );
+}
+
+function minsSecsToString( minutes, seconds )
+{
+    let minString;
+    let secString;
+    if( minutes < 10 )
+    {
+        minString = "0" + minutes;
+    }
+    else
+    {
+        minString = "" + minutes;
+    }
+    if( seconds < 10 )
+    {
+        secString = "0" + seconds;
+    }
+    else
+    {
+        secString = "" + seconds;
+    }
+    return minString + ":" + secString;
 }
 
 function getRandomIndex()
 {
-    Math.floor( Math.random() * 5 );
+    return Math.floor( Math.random() * 5 );
+}
+
+function elementDNEException()
+{
+    throw "Element does not exist!"
 }
