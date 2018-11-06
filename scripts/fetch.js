@@ -1,5 +1,3 @@
-import { log } from "./Debug.mjs";
-
 const url = "https://raw.githubusercontent.com/hyperium/hyper/master/examples/client.rs";
 
 main();
