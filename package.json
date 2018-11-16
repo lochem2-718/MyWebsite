@@ -1,0 +1,29 @@
+{
+  "name": "mywebsite",
+  "version": "1.0.0",
+  "description": "A website for my Web Programming class",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lochem2-718/MyWebsite.git"
+  },
+  "author": "Jared Weinberger",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lochem2-718/MyWebsite/issues"
+  },
+  "homepage": "https://github.com/lochem2-718/MyWebsite#readme",
+  "dependencies": {
+    "npm": "^6.4.1"
+  },
+  "devDependencies": {
+    "ejs": "^2.6.1",
+    "express": "^4.16.4",
+    "gulp": "^3.9.1",
+    "gulp-sass": "^4.0.2",
+    "morgan": "^1.9.1"
+  }
+}
