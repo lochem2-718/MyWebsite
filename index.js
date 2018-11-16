@@ -15,15 +15,8 @@ let page = Home;
 
 server.set('view-engine', 'ejs')
 
-server.get('/', (request, response) => {
-    page = Home
-    response.render('index', { page: page })
-})
-
-server.get('/about-me.html', (request, response) => {
-    page = About
-    response.render( 'about', { page: page })
-})
 
 server.use( express.static('static') )
+
+server.listen(port)
 
