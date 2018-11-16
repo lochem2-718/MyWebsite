@@ -1,5 +1,4 @@
 
-
 import { Timer } from './Timer.mjs'
 
 // global variables
