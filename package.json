@@ -4,8 +4,9 @@
   "description": "A website for my Web Programming class",
   "main": "index.js",
   "scripts": {
-    "style": "sass --watch sass\\presentation.sass:static\\stylesheets\\presentation.css sass\\materialize.scss:static\\stylesheets\\materialize.css",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "styler": "sass --watch sass\\presentation.sass:static\\stylesheets\\presentation.css sass\\materialize.scss:static\\stylesheets\\materialize.css",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "server": "node index.js"
   },
   "repository": {
     "type": "git",

@@ -1,47 +1,65 @@
 @font-face {
-  font-family: 'Open Sans';
-  src: url("/../../fonts/OpenSans-Regular.ttf") format("truetype"); }
-
+  font-family: "Open Sans";
+  src: url("/../../fonts/OpenSans-Regular.ttf") format("truetype");
+}
 @font-face {
-  font-family: 'Fira Code';
-  src: url("/../../fonts/FiraCode-Regular.otf") format("opentype"); }
-
+  font-family: "Fira Code";
+  src: url("/../../fonts/FiraCode-Regular.otf") format("opentype");
+}
 * {
-  font-family: 'Open Sans', sans-serif;
-  box-sizing: border-box; }
+  font-family: "Open Sans", sans-serif;
+  box-sizing: border-box;
+}
 
 .main-title {
   text-align: center;
-  border-radius: 20px; }
+  border-radius: 20px;
+}
 
 #copyright {
-  text-align: center; }
+  text-align: center;
+}
 
 h1, h2, h3, h4, h5 {
-  color: #a62139; }
+  color: #a62139;
+}
 
 h1 {
-  text-align: center; }
+  text-align: center;
+}
+
+input {
+  color: #ffffff;
+}
+
+textarea {
+  color: #ffffff;
+}
 
 table {
-  color: #ffffff; }
+  color: #ffffff;
+}
 
 p {
-  color: #ffffff; }
+  color: #ffffff;
+}
 
 #code {
   color: #a62139;
   background-color: #101010;
   border: solid 2px #000000;
-  font-family: 'Fira Code';
+  font-family: "Fira Code";
   padding: 5px;
-  border-radius: 3px; }
+  border-radius: 3px;
+}
 
 li {
-  color: #ffffff; }
+  color: #ffffff;
+}
 
 footer {
-  margin: 1em; }
+  margin: 1em;
+}
 
 .background {
   min-height: 100%;
@@ -49,36 +67,44 @@ footer {
   margin: 0;
   position: fixed;
   background-color: #151515;
-  overflow-y: auto; }
+  overflow-y: auto;
+}
 
 .main-content {
   padding: 1em;
-  max-height: 75vh; }
+  max-height: 75vh;
+}
 
 .parent-grid {
-  padding-top: 4.5em; }
+  padding-top: 4.5em;
+}
 
 .square {
   width: 30px;
   height: 30px;
   background-color: #000000;
-  border: solid 1px; }
+  border: solid 1px;
+}
 
 .on {
-  background-color: #ffffff; }
+  background-color: #ffffff;
+}
 
 #board-container {
   display: grid;
   grid-template-rows: repeat(5, 30px);
-  grid-template-columns: repeat(5, 30px); }
+  grid-template-columns: repeat(5, 30px);
+}
 
 #timer {
   color: #ffffff;
   font-size: 2em;
-  margin: 1em; }
+  margin: 1em;
+}
 
 .disabled {
-  pointer-events: none; }
+  pointer-events: none;
+}
 
 .popup {
   color: #ffffff;
@@ -90,46 +116,61 @@ footer {
   margin-top: 15%;
   z-index: -1;
   display: none;
-  pointer-events: none; }
-  .popup * {
-    display: block;
-    margin: 20%; }
+  pointer-events: none;
+}
+.popup * {
+  display: block;
+  margin: 20%;
+}
 
 .popup-screen {
   margin: 0;
   width: 100%;
-  height: 100vh; }
+  height: 100vh;
+}
 
 .popup-active {
   display: block !important;
-  pointer-events: inherit; }
+  pointer-events: inherit;
+}
 
 .table-container {
-  width: 50%; }
+  width: 50%;
+}
 
 .padding {
   width: 20%;
   height: 100%;
-  opacity: 0; }
+  opacity: 0;
+}
 
 .link-active {
-  color: #a62139; }
+  color: #a62139;
+}
 
 .nav-link {
-  font-size: 1.3em; }
+  font-size: 1.3em;
+}
 
 .nav-link:hover {
-  color: #a62139; }
+  color: #a62139;
+}
 
 .logo {
-  margin-left: .5%; }
+  margin-left: 0.5%;
+}
 
 .logo-image {
   height: 2em;
-  float: left; }
+  float: left;
+}
 
 .logo-text {
-  float: right; }
+  float: right;
+}
 
 body {
-  background-image: url("/../../images/background.jpg"); }
+  background-image: url("/../../images/background.jpg");
+}
+
+/*# sourceMappingURL=presentation.css.map */
