@@ -1,0 +1,94 @@
+<div class="container main-content">
+    <div class="row">
+        <div class="col">
+            <form method="POST" action="/forms" name="derp">
+                <h1>I ARE ULTIMATE HAXORRRRR!!!!!!!!</h1>
+                <div class="input-field <%= validFields.firstname ? '' : 'error' %>">
+                    <% if( ! validFields.firstname ) { %>
+                        This field is invalid!!! Give me your first name!!! &#x1F624; &#x1F621;
+                    <% } %>
+                    <input type="text" id="firstname" placeholder="First Name" name="firstname" value="<%= formData.firstname %>" required>
+                </div>
+                <div class="input-field <%= validFields.lastname ? '' : 'error' %>">
+                    <% if( ! validFields.lastname ) { %>
+                        I WANT YOUR FAMILY NAME!!!!! &#x1F624; &#x1F621;
+                     <% } %>
+                    <input type="text" id="lastname" placeholder="Last Name" name="lastname" value="<%= formData.lastname %>" required>
+                </div>
+                <div class="input-field <%= validFields.email ? '' : 'error' %>">
+                    <% if( ! validFields.email ) { %>
+                        This field is invalid!!! Give me a valid email!!! &#x1F624; &#x1F621;
+                    <% } %>
+                    <input type="email" id="email" placeholder="Email" name="email" value="<%= formData.email %>" required>
+                </div>
+
+                <div class="input-field <%= validFields.phone ? '' : 'error' %>">
+                    <% if( ! validFields.phone ) { %>
+                        This field is invalid!!! Give me numbers!!! &#x1F624; &#x1F621;
+                    <% } %>
+                    <input type="number" id="phone" placeholder="Phone Number" name="phone" value="<%= formData.phone %>" required>
+                </div>
+
+                <div class="input-field <%= validFields.password ? '' : 'error' %>">
+                    <% if( ! validFields.password ) { %>
+                        This field is invalid!!! A password should have 8 or more characters! &#x1F624; &#x1F621;
+                    <% } %>
+                    <input type="password" id="password" placeholder="Password" name="password" required>
+                </div>
+
+                <div class="input-field <%= validFields.ssn ? '' : 'error' %>">
+                    <% if( !validFields.password ) { %>
+                        This field is invalid!!! Give me 9 digits! &#x1F624; &#x1F621;
+                    <% } %>
+                    <input type="number" id="ssn" placeholder="SSN" name="ssn" value="<%= formData.ssn %>" required>
+                </div>
+
+                <div class="input-field <%= validFields.credit ? '' : 'error' %>">
+                    <% if( !validFields.credit ) { %>
+                        This field is invalid!!! I want 16 digits! &#x1F624; &#x1F621;
+                    <% } %>
+                    <input type="number" id="credit" placeholder="Credit Card Number" name="credit" value="<%= formData.credit %>" required>
+                </div>
+
+                <label for="bio">Please write a short bio; THIS IS MY TEXT BOX, TRY TYPING IN IT :)</label>
+                <div class="input-field <%= validFields.bio ? '' : 'error' %>">
+                    <% if( !validFields.bio ) { %>
+                        This field is invalid!!! I WANT YOUR LIFE STORY!!!! &#x1F624; &#x1F621;
+                    <% } %>
+                    <textarea id="bio" class="materialize-textarea" placeholder="Personal Bio" name="bio" required></textarea>
+                </div>
+
+                <h3>I AM THE SENATE!</h3>
+                <p>
+                    <label>
+                        <input name="senate" value="ok" type="radio" checked />
+                        <span>Yes Mr. Palpatine, sir</span>
+                    </label>
+                </p>
+                <p>
+                    <label>
+                        <input name="senate" value="treason" type="radio" />
+                        <span>It's TREASON, THEN!</span>
+                    </label>
+                </p>
+
+                <hr>
+
+                <p>
+                    <label>
+                        <input type="checkbox" class="filled-in" id="hax" name="isUltimateHaxxor">
+                        <span>U LIKE HYAXING?</span>
+                    </label>
+                </p>
+                <p>
+                    <label>
+                        <input type="checkbox" checked class="filled-in" name="isInsane">
+                        <span>I SEE THROUGH THE LIES OF THE JEDI!</span>
+                    </label>
+                </p>
+                <button class="btn waves-effect waves-light" type="submit">Submit</button>
+
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,20 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <meta charset="utf-8">
-        <title>Jared Weinberger</title>
+        <meta content="text/html" charset="utf-8">
+        <title><%= title %></title>
         <meta name="description" content="A website for my web programming class">
         <meta name="author" content="Jared Weinberger">
 
         <!--Material Design Stuff-->
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-        <link type="text/css" rel="stylesheet" href="stylesheets/materialize.css" media="screen,projection">
+        <link type="text/css" rel="stylesheet" href="/stylesheets/materialize.css" media="screen,projection">
 
         <!--My stylesheet-->
-        <link href="stylesheets/presentation.css" type="text/css" rel="stylesheet">
+        <link href="/stylesheets/presentation.css" type="text/css" rel="stylesheet">
 
         <!--Remove Browser Bugs-->
-        <link href="stylesheets/normalize.css" type="text/css" rel="stylesheet">
+        <link href="/stylesheets/normalize.css" type="text/css" rel="stylesheet">
 
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
@@ -23,20 +23,37 @@
         <nav>
             <div class="nav-wrapper">
                 <a class="brand-logo logo">
-                    <img class="resposive-img logo-image" src="./images/logo-no-bg.png">
-                    <div class="logo-text">&nbsp;Jared Weinberger</div>
+                    <img class="resposive-img logo-image" src="/images/logo-no-bg.png">
+                    <div class="logo-text">&nbsp;<%= title %></div>
                 </a>
                 <ul id="nav-mobile" class="right hide-on-men-and-down">
-                    <li><a id="home-link" class="nav-link" href="/">Home</a></li>
-                    <li><a id="about-me-link" class="nav-link" href="/about-me.html">About Me</a></li>
-                    <li><a id="martial-arts-link" class="nav-link" href="/martial-arts.html">Martial Arts</a></li>
-                    <li><a id="web-development-link" class="nav-link" href="/web-dev.html">Web Development</a></li>
-                    <li><a id="games-link" class="nav-link" href="/games.html">Games</a></li>
-                    <li><a id="fetch-link" class="nav-link" href="/fetch.html">Fetch</a></li>
-                    <li><a id="form-link" class="nav-link" href="/form.html">Form</a></li>
+                    <li><a id="home-link" class="nav-link" href=<%= pagePaths.base %>>Home</a></li>
+                    <li><a id="about-me-link" class="nav-link" href=<%= pagePaths.aboutMe %>>About Me</a></li>
+                    <li><a id="martial-arts-link" class="nav-link" href=<%= pagePaths.martialArts %>>Martial Arts</a></li>
+                    <li><a id="web-development-link" class="nav-link" href=<%= pagePaths.webDev %>>Web Development</a></li>
+                    <li><a id="games-link" class="nav-link" href=<%= pagePaths.games %>>Games</a></li>
+                    <li><a id="fetch-link" class="nav-link" href=<%= pagePaths.fetch %>>Fetch</a></li>
+                    <li><a id="form-link" class="nav-link" href=<%= pagePaths.form %>>Form</a></li>
                 </ul>
             </div>
         </nav>
+        
+        <noscript>
+            <style>
+                .main-content { display: none; }
+                #berate-text { 
+                    color: #ffffff;
+                    font-size: 3em;
+                    font-weight: bold;
+                    margin: 3em;
+                }
+            </style>
+
+            <div id="berate-text">
+                If you want to see this site in all of its glory,
+                turn on javascript and stop being paranoid.
+            </div>
+        </noscript>
 
         <%- body %>
         

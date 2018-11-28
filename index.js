@@ -1,17 +1,20 @@
 const express = require('express')
+const bodyParser = require('body-parser')
 const logger = require('morgan')
 const expressLayouts = require('express-ejs-layouts')
 const port = 8080
 const server = express();
 
 const pagePaths = {
-    home: 'home',
-    aboutMe: 'about-me',
-    webDev: 'web-dev',
-    martialArts: 'martial-arts',
-    games: 'games',
-    fetch: 'fetch',
-    form: 'form'
+    base: '/',
+    home: '/index.html',
+    aboutMe: '/about-me.html',
+    webDev: '/web-dev.html',
+    martialArts: '/martial-arts.html',
+    games: '/games.html',
+    fetch: '/fetch.html',
+    form: '/forms/form.html',
+    responseOk: '/forms/response/ok.html'
 }
 
 
@@ -20,8 +23,14 @@ function initServer( server )
     server.set( 'view engine', 'ejs' )
     server.use( expressLayouts )
     server.use( express.static('static') )
+    server.use( bodyParser.urlencoded({ extended: true }) )
+
+    server.locals.title = 'Jared Weinberger'
+    server.locals.email = 'nonOfYourBusiness@mail.org'
+    server.locals.pagePaths = pagePaths
 
     handleRouting( server )
+    handleForm( server )
 
     server.listen( port )
 }
@@ -29,50 +38,125 @@ function initServer( server )
 
 function handleRouting( server )
 {
-    server.get( '/', ( request, response ) => renderHome( response ) )
-    server.get( '/index.html', ( request, response ) => renderHome( response ) )
-    server.get( '/about-me.html', (request, response ) => renderAboutMe( response ) )
-    server.get( '/web-dev.html', ( request, response ) => renderWebDev( response ) )
-    server.get( '/martial-arts.html', ( request, response ) => renderMartialArts( response ) )
-    server.get( '/games.html', ( request, response ) => renderGames( response ) )
-    server.get( '/fetch.html', ( request, response ) => renderFetch( response ) )
-    server.get( '/form.html', ( request, response ) => renderForm( response ) )
+    server.get( pagePaths.base, ( request, response ) => renderHome( response ) )
+    server.get( pagePaths.home, ( request, response ) => renderHome( response ) )
+    server.get( pagePaths.aboutMe, (request, response ) => renderAboutMe( response ) )
+    server.get( pagePaths.webDev, ( request, response ) => renderWebDev( response ) )
+    server.get( pagePaths.martialArts, ( request, response ) => renderMartialArts( response ) )
+    server.get( pagePaths.games, ( request, response ) => renderGames( response ) )
+    server.get( pagePaths.fetch, ( request, response ) => renderFetch( response ) )
+    server.get( pagePaths.form, ( request, response ) => renderForm( response ) )
+    server.get( pagePaths.responseOk, ( request, response ) => renderOk( response ) )
 }
 
+function handleForm( server )
+{
+    server.post( '/forms', ( request, response ) => {
+        let ipAdress = request.ip
+
+        let formData = {
+            firstname: request.body.firstname,
+            lastname: request.body.lastname,
+            email: request.body.email,
+            phone: request.body.phone,
+            password: request.body.password,
+            ssn: request.body.ssn,
+            credit: request.body.credit,
+            bio: request.body.bio,
+            senate: request.body.senate,
+            isHaxor: request.body.isUltimateHaxxor === 'on',
+            isInsane: request.body.isInsane === 'on'
+        }
+
+        let emailRegex = /\w+@\w+.\w+/
+        let numberRegex = /[0-9]+/
+        let validFields = {
+            firstname: Boolean( formData.firstname ),
+            lastname: Boolean( formData.lastname ),
+            email: emailRegex.test( formData.email ),
+            phone: numberRegex.test( formData.phone ),
+            password: formData.password ? formData.password.length >= 8 : false,
+            ssn: formData.ssn ? numberRegex.test( formData.ssn ) && formData.ssn.length === 9 : false,
+            credit: formData.credit ? numberRegex.test( formData.credit ) && formData.credit.length === 16 : false,
+            bio: Boolean( formData.bio )
+        }
+        console.log( validFields )
+        console.log( formData )
+
+        if( validFields.firstname 
+         && validFields.lastname
+         && validFields.email
+         && validFields.phone
+         && validFields.password
+         && validFields.ssn
+         && validFields.credit
+         && validFields.bio )
+        {
+            response.redirect( pagePaths.responseOk )
+        }
+        else
+        {
+            renderForm( response, formData, validFields )
+        }
+        
+    } )
+}
 
 function renderHome( response )
 {
-    response.render( pagePaths.home, { page: 'home' })
+    response.render( 'home', { page: 'home' })
 }
 
 function renderAboutMe( response )
 {
-    response.render( pagePaths.aboutMe, { page: 'about-me' })
+    response.render( 'about-me', { page: 'about-me' })
 }
 
-function renderWebDev( response )
+function renderWebDev( response)
 {
-    response.render( pagePaths.webDev, { page: 'web-dev' })
+    response.render( 'web-dev', { page: 'web-dev' })
 }
 
 function renderMartialArts( response )
 {
-    response.render( pagePaths.martialArts, { page: 'martial-arts' })
+    response.render( 'martial-arts', { page: 'martial-arts' })
 }
 
 function renderGames( response )
 {
-    response.render( pagePaths.games, { page: 'games' })
+    response.render( 'games', { page: 'games' })
 }
 
 function renderFetch( response )
 {
-    response.render( pagePaths.fetch, { page: 'fetch'})
+    response.render( 'fetch', { page: 'fetch'})
 }
 
-function renderForm( response )
+function renderForm( response, formData = {}, validFields = {
+    firstname: true,
+    lastname: true,
+    email: true,
+    phone: true,
+    password: true,
+    ssn: true,
+    credit: true,
+    bio: true
+} )
 {
-    response.render( pagePaths.form, { page: 'form' })
+    console.log( formData )
+    console.log()
+    console.log()
+    console.log()
+    response.render( 'forms/form', { 
+        page: 'form',
+        formData: formData,
+        validFields: validFields
+    })
+}
+
+function renderOk( response )
+{
+    response.render( 'forms/form-response-ok' )
 }
 
 initServer( server )
