@@ -1,0 +1,48 @@
+<div class="container main-content">
+        <div class="row">
+            <div class="col">
+                <h1>Form Submissions</h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="table-container">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>First Name</th>
+                                <th>Last Name</th>
+                                <th>Email</th>
+                                <th>Phone</th>
+                                <th>Password</th>
+                                <th>Social Security Number</th>
+                                <th>Credit Card Number</th>
+                                <th>Personal Bio</th>
+                                <th>Palpatine is the Senate</th>
+                                <th>Like Haxxing?</th>
+                                <th>See through the lies of the Jedi?</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% fools.forEach( ( fool ) => { %>
+                                <tr>
+                                    <td><%= fool.firstname %></td>
+                                    <td><%= fool.lastname %></td>
+                                    <td><%= fool.email %></td>
+                                    <td><%= fool.phone %></td>
+                                    <td><%= fool.email %></td>
+                                    <td><%= fool.password %></td>
+                                    <td><%= fool.ssn %></td>
+                                    <td><%= fool.credit %></td>
+                                    <td><%= fool.bio %></td>
+                                    <td><%= fool.senate ? 'Yes' : 'TREASON' %></td>
+                                    <td><%= fool.isHaxxor ? 'Yes' : 'No' %></td>
+                                    <td><%= fool.isInsane ? 'Yes' : 'No' %></td>
+                                </tr>
+                            <% } ) %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>

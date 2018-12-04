@@ -4,7 +4,7 @@ const logger = require('morgan')
 const expressLayouts = require('express-ejs-layouts')
 const port = 8080
 const server = express();
-const DAL = require('./DAL.js')
+const DAL = require('./DAL')
 
 const pagePaths = {
     base: '/',
@@ -49,7 +49,7 @@ function handleRouting( server )
     server.get( pagePaths.fetch, ( request, response ) => renderFetch( response ) )
     server.get( pagePaths.form, ( request, response ) => renderForm( response ) )
     server.get( pagePaths.responseOk, ( request, response ) => renderOk( response ) )
-    server.get( pagePaths.formSubmissions, ( request, response ) => renderSubmissions( response ) )
+    server.get( pagePaths.formSubmissions, ( request, response ) => renderSubmissions( response, DAL.readAllFools() ) )
 }
 
 function handleForm( server )
@@ -157,8 +157,12 @@ function renderOk( response )
     response.render( 'forms/form-response-ok' )
 }
 
-function renderSubmissions( response )
+function renderSubmissions( response, fools )
 {
-    response.render( 'forms/submissions' )
+    console.log( 'rendering submissions' )
+    response.render( 'forms/all-submissions', {
+        page: 'submissions',
+        fools: fools
+    } )
 }
 initServer( server )
