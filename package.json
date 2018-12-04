@@ -19,13 +19,14 @@
   },
   "homepage": "https://github.com/lochem2-718/MyWebsite#readme",
   "dependencies": {
-    "npm": "^6.4.1"
-  },
-  "devDependencies": {
     "body-parser": "^1.18.3",
     "ejs": "^2.6.1",
     "express": "^4.16.4",
     "express-ejs-layouts": "^2.5.0",
+    "npm": "^6.4.1",
+    "sqlite3": "^4.0.4"
+  },
+  "devDependencies": {
     "morgan": "^1.9.1",
     "nodemon": "^1.18.6"
   }

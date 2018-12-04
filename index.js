@@ -4,6 +4,7 @@ const logger = require('morgan')
 const expressLayouts = require('express-ejs-layouts')
 const port = 8080
 const server = express();
+const DAL = require('./DAL.js')
 
 const pagePaths = {
     base: '/',
@@ -14,7 +15,8 @@ const pagePaths = {
     games: '/games.html',
     fetch: '/fetch.html',
     form: '/forms/form.html',
-    responseOk: '/forms/response/ok.html'
+    responseOk: '/forms/response/ok.html',
+    formSubmissions: '/forms/all-submissions.html'
 }
 
 
@@ -47,6 +49,7 @@ function handleRouting( server )
     server.get( pagePaths.fetch, ( request, response ) => renderFetch( response ) )
     server.get( pagePaths.form, ( request, response ) => renderForm( response ) )
     server.get( pagePaths.responseOk, ( request, response ) => renderOk( response ) )
+    server.get( pagePaths.formSubmissions, ( request, response ) => renderSubmissions( response ) )
 }
 
 function handleForm( server )
@@ -80,8 +83,6 @@ function handleForm( server )
             credit: formData.credit ? numberRegex.test( formData.credit ) && formData.credit.length === 16 : false,
             bio: Boolean( formData.bio )
         }
-        console.log( validFields )
-        console.log( formData )
 
         if( validFields.firstname 
          && validFields.lastname
@@ -92,6 +93,7 @@ function handleForm( server )
          && validFields.credit
          && validFields.bio )
         {
+            DAL.createFool( formData )
             response.redirect( pagePaths.responseOk )
         }
         else
@@ -143,15 +145,11 @@ function renderForm( response, formData = {}, validFields = {
     bio: true
 } )
 {
-    console.log( formData )
-    console.log()
-    console.log()
-    console.log()
     response.render( 'forms/form', { 
         page: 'form',
         formData: formData,
         validFields: validFields
-    })
+    } )
 }
 
 function renderOk( response )
@@ -159,4 +157,8 @@ function renderOk( response )
     response.render( 'forms/form-response-ok' )
 }
 
+function renderSubmissions( response )
+{
+    response.render( 'forms/submissions' )
+}
 initServer( server )
