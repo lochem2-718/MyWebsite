@@ -102,22 +102,25 @@ function readFool( formDataId )
     return dbFoolToJsFool( fool )
 }
 
-function readAllFools()
+function readAllFools(callback)
 {
     const database = initDb()
     const query = 'SELECT * FROM Fools;'
-    let fools = null
     database.all( query , [], ( error, rows ) => {
+        let fools = null
         logErrorIfExists( error )
         if( !error )
         {
             fools = rows
-            console.error( fools )
+            console.log('\n-------------------------------------------------------------------------')
+            console.log( 'Fools at Database Query Retrieval (should be executed first):' )
+            console.log( fools )
+            console.log('-------------------------------------------------------------------------\n')
+        
+            closeDb( database )
         }
+        callback(fools ? fools.map( dbFoolToJsFool ) : null)
     } )
-
-    closeDb( database )
-    return fools ? fools.map( dbFoolToJsFool ) : null
 }
 
 function updateFool( foolId, updatedFool )

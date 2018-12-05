@@ -49,7 +49,7 @@ function handleRouting( server )
     server.get( pagePaths.fetch, ( request, response ) => renderFetch( response ) )
     server.get( pagePaths.form, ( request, response ) => renderForm( response ) )
     server.get( pagePaths.responseOk, ( request, response ) => renderOk( response ) )
-    server.get( pagePaths.formSubmissions, ( request, response ) => renderSubmissions( response, DAL.readAllFools() ) )
+    server.get( pagePaths.formSubmissions, ( request, response ) => DAL.readAllFools( (fools) => renderSubmissions( response, fools ) ) )
 }
 
 function handleForm( server )
@@ -159,13 +159,13 @@ function renderOk( response )
 
 function renderSubmissions( response, fools )
 {
-    console.log('-------------------------------------------------------------------------')
-    console.log( 'fools:' )
+    console.log('\n-------------------------------------------------------------------------')
+    console.log( 'Fools at Submission Page Rendering (should be executed second):' )
     console.log( fools )
-    console.log('-------------------------------------------------------------------------')
+    console.log('-------------------------------------------------------------------------\n')
     response.render( 'forms/all-submissions', {
         page: 'submissions',
         fools: fools ? fools : []
     } )
 }
-initServer( server )
+initServer( server )    

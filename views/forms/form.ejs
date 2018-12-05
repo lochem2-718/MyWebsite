@@ -37,7 +37,7 @@
                 </div>
 
                 <div class="input-field <%= validFields.ssn ? '' : 'error' %>">
-                    <% if( !validFields.password ) { %>
+                    <% if( !validFields.ssn ) { %>
                         This field is invalid!!! Give me 9 digits! &#x1F624; &#x1F621;
                     <% } %>
                     <input type="number" id="ssn" placeholder="SSN" name="ssn" value="<%= formData.ssn %>" required>
