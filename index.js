@@ -159,10 +159,13 @@ function renderOk( response )
 
 function renderSubmissions( response, fools )
 {
-    console.log( 'rendering submissions' )
+    console.log('-------------------------------------------------------------------------')
+    console.log( 'fools:' )
+    console.log( fools )
+    console.log('-------------------------------------------------------------------------')
     response.render( 'forms/all-submissions', {
         page: 'submissions',
-        fools: fools
+        fools: fools ? fools : []
     } )
 }
 initServer( server )
